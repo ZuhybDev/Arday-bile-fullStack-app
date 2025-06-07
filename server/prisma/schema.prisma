@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL1")
+}
+
+model School {
+  id        String     @id @default(uuid())
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  admin     Admin[]
+  student   Student[]
+  subjects  Subjects[]
+  results   Results[]
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id])
+}
+
+model Student {
+  id        String   @id @default(uuid())
+  name      String
+  code      String
+  password  String
+  total     Int?
+  average   Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id])
+}
+
+model Subjects {
+  id        String   @id @default(uuid())
+  name      String
+  maxMark   Int
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id])
+}
+
+model Results {
+  id        String   @id @default(uuid())
+  grade     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id])
+}
+
+enum role {
+  ADMIN
+  STUDENT
+}

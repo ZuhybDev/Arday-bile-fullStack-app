@@ -6,47 +6,41 @@ import {
   Param,
   Patch,
   Post,
-  Req,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { SchoolService } from './school.service';
-import { jwtAuthGuard } from 'src/common/auth-strategies/jwt.auth.guards';
-import { RolesGaurd } from 'src/common/auth-strategies/roles.guard';
-import { Roles } from 'src/common/roles/decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/jwt/roles/roles.guard';
+import { Roles } from 'src/jwt/roles/roles.decorator';
 
 @Controller('school')
 export class SchoolController {
-  constructor(private schoolService: SchoolService) {}
+  constructor(private schoolservice: SchoolService) {}
+
   @Post('register')
-  create(@Body() body: { name: string }) {
-    return this.schoolService.createSchool(body);
+  register(@Body() body: { name: string }) {
+    return this.schoolservice.registerSchools(body);
+  }
+  // update school
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Patch('update/:id')
+  update(@Param('id') id: string, @Body() body: { name: string }) {
+    return this.schoolservice.updateSchool(id, body.name);
   }
 
-  //update School route
-
-  @Patch(':id')
-  @UseGuards(jwtAuthGuard, RolesGaurd)
-  @Roles('admin')
-  async updateSchool(
-    @Param('id') id: string,
-    @Body()
-    body: { name: string },
-  ) {
-    return this.schoolService.updateSchool(id, body.name);
+  // read school data
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Get('school-data')
+  readschoolData() {
+    return this.schoolservice.readSchoolData();
   }
 
-  @Get()
-  @UseGuards(jwtAuthGuard, RolesGaurd)
-  @Roles('admin')
-  async getSchools() {
-    return this.schoolService.getAllSchools();
-  }
-
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
   @Delete('delete/:id')
-  @UseGuards(jwtAuthGuard, RolesGaurd)
-  @Roles('admin')
-  async deletedSchool(@Param('id') id: string) {
-    return await this.schoolService.deleteSchool(id);
+  delete(@Param('id') id: string) {
+    return this.schoolservice.deletedSchool(id);
   }
 }

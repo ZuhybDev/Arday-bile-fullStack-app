@@ -1,75 +1,73 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL1")
+  url      = env("DATABASE_URL")
 }
 
 model School {
-  id        String     @id @default(uuid())
-  name      String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  admin     Admin[]
-  student   Student[]
-  subjects  Subjects[]
-  results   Results[]
+  id         String    @id @default(uuid())
+  name       String
+  admin      Admin[]
+  student    Student[]
+  createdAtd DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Admin {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      role     @default(ADMIN)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  schoolId  String
-  school    School   @relation(fields: [schoolId], references: [id])
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  role       Role     @default(ADMIN)
+  schoolId   String
+  school     School   @relation(fields: [schoolId], references: [id])
+  createdAtd DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Student {
-  id        String   @id @default(uuid())
-  name      String
-  code      String
-  password  String
-  total     Int?
-  average   Float?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  schoolId  String
-  school    School   @relation(fields: [schoolId], references: [id])
+  id         String   @id @default(uuid())
+  name       String
+  code       String   @unique
+  password   String
+  total      Int?
+  average    Float?
+  role       Role     @default(STUDENT)
+  schoolId   String
+  school     School   @relation(fields: [schoolId], references: [id])
+  result     Result[]
+  createdAtd DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
-model Subjects {
-  id        String   @id @default(uuid())
-  name      String
-  maxMark   Int
-  status    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  schoolId  String
-  school    School   @relation(fields: [schoolId], references: [id])
+model Subject {
+  id         String   @id @default(uuid())
+  name       String
+  result     Result[]
+  createdAtd DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
-model Results {
-  id        String   @id @default(uuid())
-  grade     Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  schoolId  String
-  school    School   @relation(fields: [schoolId], references: [id])
+model Result {
+  id         String   @id @default(uuid())
+  grade      Int
+  subjectId  String
+  subject    Subject  @relation(fields: [subjectId], references: [id])
+  studentId  String
+  students   Student  @relation(fields: [studentId], references: [id])
+  createdAtd DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([studentId, subjectId])
 }
 
-enum role {
+enum Role {
   ADMIN
   STUDENT
 }

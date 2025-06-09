@@ -3,9 +3,10 @@ import { AuthAdminService } from './auth-admin.service';
 
 @Controller('auth-admin')
 export class AuthAdminController {
-  constructor(private authAdminService: AuthAdminService) {}
+  constructor(private authAdmin: AuthAdminService) {}
+
   @Post('register')
-  async creaeteAdmin(
+  async registerAdmin(
     @Body()
     body: {
       name: string;
@@ -14,7 +15,7 @@ export class AuthAdminController {
       schoolId: string;
     },
   ) {
-    return this.authAdminService.createAdmin(
+    return this.authAdmin.registerAdmin(
       body.name,
       body.email,
       body.password,

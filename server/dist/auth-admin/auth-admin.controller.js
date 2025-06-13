@@ -23,6 +23,15 @@ let AuthAdminController = class AuthAdminController {
     async registerAdmin(body) {
         return this.authAdmin.registerAdmin(body.name, body.email, body.password, body.schoolId);
     }
+    login(body) {
+        return this.authAdmin.login(body.password, body.email);
+    }
+    findAll() {
+        return this.authAdmin.findAllAdmins();
+    }
+    remove(id) {
+        return this.authAdmin.removeAdmin(id);
+    }
 };
 exports.AuthAdminController = AuthAdminController;
 __decorate([
@@ -32,6 +41,26 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthAdminController.prototype, "registerAdmin", null);
+__decorate([
+    (0, common_1.Post)('login'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthAdminController.prototype, "login", null);
+__decorate([
+    (0, common_1.Get)('admin-data'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AuthAdminController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Delete)('delete/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AuthAdminController.prototype, "remove", null);
 exports.AuthAdminController = AuthAdminController = __decorate([
     (0, common_1.Controller)('auth-admin'),
     __metadata("design:paramtypes", [auth_admin_service_1.AuthAdminService])

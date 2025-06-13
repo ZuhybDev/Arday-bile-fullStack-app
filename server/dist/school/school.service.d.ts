@@ -17,13 +17,13 @@ export declare class SchoolService {
     readSchoolData(): Promise<{
         id: string;
         name: string;
-        createdAtd: Date;
+        createdAt: Date;
         updatedAt: Date;
     }[]>;
     deletedSchool(id: string): Promise<{
         id: string;
         name: string;
-        createdAtd: Date;
+        createdAt: Date;
         updatedAt: Date;
     } | {
         message: string;

@@ -19,13 +19,13 @@ export declare class SchoolController {
     readschoolData(): Promise<{
         id: string;
         name: string;
-        createdAtd: Date;
+        createdAt: Date;
         updatedAt: Date;
     }[]>;
     delete(id: string): Promise<{
         id: string;
         name: string;
-        createdAtd: Date;
+        createdAt: Date;
         updatedAt: Date;
     } | {
         message: string;

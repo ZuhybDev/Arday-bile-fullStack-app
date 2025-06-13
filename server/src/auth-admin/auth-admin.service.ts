@@ -1,4 +1,8 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -53,9 +57,24 @@ export class AuthAdminService {
         role: admin.role,
       },
 
-      token_access: {
-        token,
-      },
+      token,
     };
+  }
+  async login(email: string, password: string) {
+    const admin = await this.prisma.admin.findUnique({ where: { email } });
+    if (!admin) throw new NotFoundException('Admin not found');
+
+    const valid = await bcrypt.compare(password, admin.password);
+    if (!valid) throw new NotFoundException('Invalid credentials');
+
+    return { message: 'Login successful', admin: admin.name };
+  }
+
+  async findAllAdmins() {
+    return this.prisma.admin.findMany();
+  }
+
+  async removeAdmin(id: string) {
+    return this.prisma.admin.delete({ where: { id } });
   }
 }

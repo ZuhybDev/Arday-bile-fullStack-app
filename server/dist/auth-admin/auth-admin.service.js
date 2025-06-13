@@ -51,10 +51,23 @@ let AuthAdminService = class AuthAdminService {
                 schoolId: admin.schoolId,
                 role: admin.role,
             },
-            token_access: {
-                token,
-            },
+            token,
         };
+    }
+    async login(email, password) {
+        const admin = await this.prisma.admin.findUnique({ where: { email } });
+        if (!admin)
+            throw new common_1.NotFoundException('Admin not found');
+        const valid = await bcrypt.compare(password, admin.password);
+        if (!valid)
+            throw new common_1.NotFoundException('Invalid credentials');
+        return { message: 'Login successful', admin: admin.name };
+    }
+    async findAllAdmins() {
+        return this.prisma.admin.findMany();
+    }
+    async removeAdmin(id) {
+        return this.prisma.admin.delete({ where: { id } });
     }
 };
 exports.AuthAdminService = AuthAdminService;

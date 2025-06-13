@@ -17,7 +17,7 @@ export class SchoolService {
       message: `School-ka "${registerSchool.name}" waa la abuuray`,
       id: registerSchool.id,
       school: registerSchool.name,
-      created: registerSchool.createdAtd,
+      created: registerSchool.createdAt,
     };
   }
 
@@ -29,7 +29,7 @@ export class SchoolService {
     });
 
     if (!school) {
-      throw new NotFoundException('xogta lama helin'); // Not found
+      throw new NotFoundException('not foud. Try again'); // Not found
     }
 
     if (!newName) {

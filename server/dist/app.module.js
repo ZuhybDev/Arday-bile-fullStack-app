@@ -15,6 +15,7 @@ const prisma_module_1 = require("./prisma/prisma.module");
 const school_module_1 = require("./school/school.module");
 const auht_admin_module_1 = require("./auth-admin/auht-admin.module");
 const jwt_1 = require("@nestjs/jwt");
+const student_module_1 = require("./student/student.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,6 +29,7 @@ exports.AppModule = AppModule = __decorate([
             auht_admin_module_1.AuthAdminModule,
             school_module_1.SchoolModule,
             jwt_1.JwtModule,
+            student_module_1.StudentModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

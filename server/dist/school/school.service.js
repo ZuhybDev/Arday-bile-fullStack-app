@@ -25,7 +25,7 @@ let SchoolService = class SchoolService {
             message: `School-ka "${registerSchool.name}" waa la abuuray`,
             id: registerSchool.id,
             school: registerSchool.name,
-            created: registerSchool.createdAtd,
+            created: registerSchool.createdAt,
         };
     }
     async updateSchool(id, newName) {
@@ -33,7 +33,7 @@ let SchoolService = class SchoolService {
             where: { id },
         });
         if (!school) {
-            throw new common_1.NotFoundException('xogta lama helin');
+            throw new common_1.NotFoundException('not foud. Try again');
         }
         if (!newName) {
             throw new common_1.BadRequestException('Magaca cusub waa lama huraan');

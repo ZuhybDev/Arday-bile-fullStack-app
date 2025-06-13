@@ -7,7 +7,7 @@ export declare class AuthAdminService {
     registerAdmin(name: string, email: string, password: string, schoolId: string): Promise<{
         message: string;
         admin_info?: undefined;
-        token_access?: undefined;
+        token?: undefined;
     } | {
         admin_info: {
             id: string;
@@ -16,9 +16,31 @@ export declare class AuthAdminService {
             schoolId: string;
             role: import(".prisma/client").$Enums.Role;
         };
-        token_access: {
-            token: string;
-        };
+        token: string;
         message?: undefined;
+    }>;
+    login(email: string, password: string): Promise<{
+        message: string;
+        admin: string;
+    }>;
+    findAllAdmins(): Promise<{
+        id: string;
+        name: string;
+        createdAt: Date;
+        updatedAt: Date;
+        role: import(".prisma/client").$Enums.Role;
+        email: string;
+        password: string;
+        schoolId: string;
+    }[]>;
+    removeAdmin(id: string): Promise<{
+        id: string;
+        name: string;
+        createdAt: Date;
+        updatedAt: Date;
+        role: import(".prisma/client").$Enums.Role;
+        email: string;
+        password: string;
+        schoolId: string;
     }>;
 }

@@ -41,7 +41,12 @@ let AuthAdminService = class AuthAdminService {
                 schoolId,
             },
         });
-        const payload = { sub: admin.id, email: admin.email, role: admin.role };
+        const payload = {
+            userId: admin.id,
+            email: admin.email,
+            role: admin.role,
+            schoolId: admin.schoolId,
+        };
         const token = this.jwtService.sign(payload);
         return {
             admin_info: {
@@ -65,7 +70,12 @@ let AuthAdminService = class AuthAdminService {
         if (!validPassword) {
             throw new common_1.UnauthorizedException('Invalid credentials');
         }
-        const payload = { userId: admin.id, email: admin.email, role: admin.role };
+        const payload = {
+            userId: admin.id,
+            email: admin.email,
+            role: admin.role,
+            schoolId: admin.schoolId,
+        };
         const token = await this.jwtService.signAsync(payload);
         return {
             id: admin.id,

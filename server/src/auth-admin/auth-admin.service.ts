@@ -46,8 +46,12 @@ export class AuthAdminService {
       },
     });
 
-    const payload = { sub: admin.id, email: admin.email, role: admin.role };
-
+    const payload = {
+      userId: admin.id,
+      email: admin.email,
+      role: admin.role,
+      schoolId: admin.schoolId,
+    };
     const token = this.jwtService.sign(payload);
     return {
       admin_info: {
@@ -75,7 +79,12 @@ export class AuthAdminService {
     if (!validPassword) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const payload = { userId: admin.id, email: admin.email, role: admin.role };
+    const payload = {
+      userId: admin.id,
+      email: admin.email,
+      role: admin.role,
+      schoolId: admin.schoolId,
+    };
     const token = await this.jwtService.signAsync(payload);
 
     return {

@@ -28,12 +28,18 @@ let SchoolService = class SchoolService {
             created: registerSchool.createdAt,
         };
     }
-    async updateSchool(id, newName) {
+    async updateSchool(user, id, newName) {
+        if (!newName || newName.trim() === '') {
+            throw new common_1.BadRequestException('New name is required');
+        }
         const school = await this.prisma.school.findUnique({
             where: { id },
         });
         if (!school) {
             throw new common_1.NotFoundException('not foud. Try again');
+        }
+        if (user.schoolId !== school.id) {
+            throw new common_1.ForbiddenException('Access denied');
         }
         const updatedSchool = await this.prisma.school.update({
             where: { id },

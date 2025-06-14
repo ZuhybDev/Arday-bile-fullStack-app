@@ -1,9 +1,15 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+
+// jwt-payload.interface.ts
+export interface JwtPayload {
+  schoolId: string;
+}
 
 @Injectable()
 export class SchoolService {
@@ -23,13 +29,22 @@ export class SchoolService {
 
   // update
 
-  async updateSchool(id: string, newName?: string) {
+  async updateSchool(user: JwtPayload, id: string, newName?: string) {
+    if (!newName || newName.trim() === '') {
+      throw new BadRequestException('New name is required');
+    }
+
     const school = await this.prisma.school.findUnique({
       where: { id },
     });
 
     if (!school) {
       throw new NotFoundException('not foud. Try again'); // Not found
+    }
+
+    // ⛔️ Only allow update if this is their school
+    if (user.schoolId !== school.id) {
+      throw new ForbiddenException('Access denied');
     }
 
     const updatedSchool = await this.prisma.school.update({
@@ -45,10 +60,16 @@ export class SchoolService {
 
   // get all schools only admins and debuging purpose
 
-  async readSchoolData() {
-    const schoolData = await this.prisma.school.findMany();
+  async readSchoolData(user: JwtPayload, id: string) {
+    const schoolData = await this.prisma.school.findUnique({
+      where: { id },
+    });
 
-    return schoolData;
+    if (!schoolData) {
+      throw new NotFoundException();
+    }
+
+    if (user.schoolId !== schoolData.id) return schoolData;
   }
 
   // delete statement

@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { SchoolService } from './school.service';
@@ -25,16 +26,16 @@ export class SchoolController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Patch('update/:id')
-  update(@Param('id') id: string, @Body() body: { name: string }) {
-    return this.schoolservice.updateSchool(id, body.name);
+  update(@Param('id') id: string, @Body() body: { name: string }, @Req() req) {
+    return this.schoolservice.updateSchool(req.user, id, body.name);
   }
 
   // read school data
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Get('school-data')
-  readschoolData() {
-    return this.schoolservice.readSchoolData();
+  readschoolData(@Req() req, @Param('id') id: string) {
+    return this.schoolservice.readSchoolData(req.user, id);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

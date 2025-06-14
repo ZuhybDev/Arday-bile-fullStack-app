@@ -12,7 +12,7 @@ export declare class SchoolController {
     }>;
     update(id: string, body: {
         name: string;
-    }): Promise<{
+    }, req: any): Promise<{
         message: string;
         new_name: string;
     }>;

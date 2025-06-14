@@ -26,8 +26,8 @@ let SchoolController = class SchoolController {
     register(body) {
         return this.schoolservice.registerSchools(body);
     }
-    update(id, body) {
-        return this.schoolservice.updateSchool(id, body.name);
+    update(id, body, req) {
+        return this.schoolservice.updateSchool(req.user, id, body.name);
     }
     readschoolData() {
         return this.schoolservice.readSchoolData();
@@ -50,8 +50,9 @@ __decorate([
     (0, common_1.Patch)('update/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
 ], SchoolController.prototype, "update", null);
 __decorate([

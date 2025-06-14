@@ -23,23 +23,23 @@ export declare class StudentController {
     }): Promise<{
         message: string;
         data: {
+            school: {
+                name: string;
+            };
             result: {
-                grade: number;
                 subject: {
                     name: string;
                     createdAt: Date;
                 };
+                grade: number;
             }[];
             id: string;
             name: string;
-            code: string;
+            role: import(".prisma/client").$Enums.Role;
             password: string;
+            code: string;
             total: number | null;
             average: number | null;
-            role: import(".prisma/client").$Enums.Role;
-            school: {
-                name: string;
-            };
         };
         token: string;
     }>;

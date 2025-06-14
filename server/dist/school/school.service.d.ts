@@ -1,4 +1,7 @@
 import { PrismaService } from 'src/prisma/prisma.service';
+export interface JwtPayload {
+    schoolId: string;
+}
 export declare class SchoolService {
     private readonly prisma;
     constructor(prisma: PrismaService);
@@ -10,7 +13,7 @@ export declare class SchoolService {
         school: string;
         created: Date;
     }>;
-    updateSchool(id: string, newName?: string): Promise<{
+    updateSchool(user: JwtPayload, id: string, newName?: string): Promise<{
         message: string;
         new_name: string;
     }>;

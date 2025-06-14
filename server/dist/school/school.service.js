@@ -35,23 +35,17 @@ let SchoolService = class SchoolService {
         if (!school) {
             throw new common_1.NotFoundException('not foud. Try again');
         }
-        if (!newName) {
-            throw new common_1.BadRequestException('Magaca cusub waa lama huraan');
-        }
         const updatedSchool = await this.prisma.school.update({
             where: { id },
             data: { name: newName },
         });
         return {
-            message: 'Xogta waa la cusboonaysiiyay',
+            message: 'Successfully updated',
             new_name: updatedSchool.name,
         };
     }
     async readSchoolData() {
         const schoolData = await this.prisma.school.findMany();
-        if (!schoolData) {
-            throw new common_1.NotFoundException('Xog maad diwaangalin');
-        }
         return schoolData;
     }
     async deletedSchool(id) {
@@ -60,7 +54,7 @@ let SchoolService = class SchoolService {
                 where: { id: id },
             });
             if (!existingSchool) {
-                throw new common_1.NotFoundException('Xog hore ayaa loo tirtiray');
+                throw new common_1.NotFoundException('Not foud. Try again');
             }
             return this.prisma.school.delete({
                 where: { id: id },

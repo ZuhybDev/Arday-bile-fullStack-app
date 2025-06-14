@@ -32,17 +32,13 @@ export class SchoolService {
       throw new NotFoundException('not foud. Try again'); // Not found
     }
 
-    if (!newName) {
-      throw new BadRequestException('Magaca cusub waa lama huraan'); // Name missing
-    }
-
     const updatedSchool = await this.prisma.school.update({
       where: { id },
       data: { name: newName },
     });
 
     return {
-      message: 'Xogta waa la cusboonaysiiyay',
+      message: 'Successfully updated',
       new_name: updatedSchool.name,
     };
   }
@@ -52,9 +48,6 @@ export class SchoolService {
   async readSchoolData() {
     const schoolData = await this.prisma.school.findMany();
 
-    if (!schoolData) {
-      throw new NotFoundException('Xog maad diwaangalin');
-    }
     return schoolData;
   }
 
@@ -67,7 +60,7 @@ export class SchoolService {
       });
 
       if (!existingSchool) {
-        throw new NotFoundException('Xog hore ayaa loo tirtiray');
+        throw new NotFoundException('Not foud. Try again');
       }
 
       return this.prisma.school.delete({

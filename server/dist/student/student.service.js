@@ -50,7 +50,7 @@ let StudentService = class StudentService {
             };
         }
         catch (error) {
-            return error.message;
+            throw new common_1.InternalServerErrorException(error.message);
         }
     }
     async loginStudent(code, password) {
@@ -114,13 +114,16 @@ let StudentService = class StudentService {
         if (password) {
             password = await bcrypt.hash(password, 10);
         }
+        const updatingData = {};
+        if (name)
+            updatingData.name = name;
+        if (password)
+            updatingData.name = password;
+        if (code)
+            updatingData.name = code;
         const updatedStudent = await this.prisma.student.update({
             where: { id },
-            data: {
-                name: name,
-                password: password,
-                code: code,
-            },
+            data: updatingData,
         });
         return {
             message: 'Student updated successfully',
@@ -142,7 +145,7 @@ let StudentService = class StudentService {
             where: { id: id },
         });
         return {
-            messasge: `successfully deleted ${deleteStudent.name}`,
+            message: `successfully deleted ${deleteStudent.name}`,
         };
     }
 };

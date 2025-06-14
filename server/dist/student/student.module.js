@@ -26,7 +26,7 @@ exports.StudentModule = StudentModule = __decorate([
                 inject: [config_1.ConfigService],
                 useFactory: (config) => ({
                     secret: config.get('JWT_SECRET_KEY'),
-                    signOptions: { expiresIn: config.get('JWT_EXPIRY_IN') },
+                    signOptions: { expiresIn: '8m' },
                 }),
             }),
         ],

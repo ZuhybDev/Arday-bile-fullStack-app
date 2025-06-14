@@ -1,6 +1,7 @@
 import {
   Injectable,
   NotFoundException,
+  UnauthorizedException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -26,7 +27,7 @@ export class AuthAdminService {
 
     if (existingAdmin)
       return {
-        message: 'Email-ka hore ayaa loo isticmaalay',
+        message: 'Email is already in used',
       };
 
     if (password.length < 6) {
@@ -60,21 +61,87 @@ export class AuthAdminService {
       token,
     };
   }
+
   async login(email: string, password: string) {
-    const admin = await this.prisma.admin.findUnique({ where: { email } });
-    if (!admin) throw new NotFoundException('Admin not found');
+    const admin = await this.prisma.admin.findUnique({
+      where: { email },
+    });
 
-    const valid = await bcrypt.compare(password, admin.password);
-    if (!valid) throw new NotFoundException('Invalid credentials');
+    if (!admin) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    const validPassword = await bcrypt.compare(password, admin.password);
 
-    return { message: 'Login successful', admin: admin.name };
+    if (!validPassword) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    const payload = { userId: admin.id, email: admin.email, role: admin.role };
+    const token = await this.jwtService.signAsync(payload);
+
+    return {
+      id: admin.id,
+      name: admin.name,
+      email: admin.email,
+      token,
+    };
   }
+  //update admin
+  async updateAdmin(
+    id: string,
+    name?: string,
+    email?: string,
+    password?: string,
+  ) {
+    const hasAdminExist = await this.prisma.admin.findUnique({
+      where: { id },
+    });
+
+    if (!hasAdminExist) {
+      throw new NotFoundException('Not found. Try again');
+    }
+
+    if (password) {
+      password = await bcrypt.hash(password, 10);
+    }
+    const admin = await this.prisma.admin.update({
+      where: { id },
+      data: {
+        name: name,
+        email: email,
+        password: password,
+      },
+    });
+
+    return {
+      message: 'Successfully updated ',
+      id: admin.id,
+      name: admin.name,
+      email: admin.email,
+    };
+  }
+
+  // for debugiig only dont use this API in the frontend !!!!!
 
   async findAllAdmins() {
     return this.prisma.admin.findMany();
   }
 
+  //remove admin
   async removeAdmin(id: string) {
-    return this.prisma.admin.delete({ where: { id } });
+    const hasAdminExist = await this.prisma.admin.findUnique({
+      where: { id },
+    });
+
+    if (!hasAdminExist) {
+      throw new NotFoundException('Not found. Try again');
+    }
+
+    const deletedAdmin = await this.prisma.admin.delete({
+      where: { id },
+    });
+
+    return {
+      messasge: `${(await deletedAdmin).name} Successfully deleted.`,
+    };
   }
 }

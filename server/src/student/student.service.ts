@@ -59,7 +59,7 @@ export class StudentService {
         created: student.createdAt,
       };
     } catch (error: any) {
-      return error.message;
+      throw new InternalServerErrorException(error.message);
     }
   }
 
@@ -147,13 +147,15 @@ export class StudentService {
       password = await bcrypt.hash(password, 10);
     }
 
+    const updatingData: any = {};
+
+    if (name) updatingData.name = name;
+    if (password) updatingData.name = password;
+    if (code) updatingData.name = code;
+
     const updatedStudent = await this.prisma.student.update({
       where: { id },
-      data: {
-        name: name,
-        password: password,
-        code: code,
-      },
+      data: updatingData,
     });
 
     return {
@@ -184,7 +186,7 @@ export class StudentService {
     });
 
     return {
-      messasge: `successfully deleted ${deleteStudent.name}`,
+      message: `successfully deleted ${deleteStudent.name}`,
     };
   }
 }

@@ -27,7 +27,7 @@ let AuthAdminService = class AuthAdminService {
         });
         if (existingAdmin)
             return {
-                message: 'Email-ka hore ayaa loo isticmaalay',
+                message: 'Email is already in used',
             };
         if (password.length < 6) {
             throw new common_1.UnprocessableEntityException('Password-ka waa inaa ka badnaada 6 xaraf');
@@ -55,19 +55,66 @@ let AuthAdminService = class AuthAdminService {
         };
     }
     async login(email, password) {
-        const admin = await this.prisma.admin.findUnique({ where: { email } });
-        if (!admin)
-            throw new common_1.NotFoundException('Admin not found');
-        const valid = await bcrypt.compare(password, admin.password);
-        if (!valid)
-            throw new common_1.NotFoundException('Invalid credentials');
-        return { message: 'Login successful', admin: admin.name };
+        const admin = await this.prisma.admin.findUnique({
+            where: { email },
+        });
+        if (!admin) {
+            throw new common_1.UnauthorizedException('Invalid credentials');
+        }
+        const validPassword = await bcrypt.compare(password, admin.password);
+        if (!validPassword) {
+            throw new common_1.UnauthorizedException('Invalid credentials');
+        }
+        const payload = { userId: admin.id, email: admin.email, role: admin.role };
+        const token = await this.jwtService.signAsync(payload);
+        return {
+            id: admin.id,
+            name: admin.name,
+            email: admin.email,
+            token,
+        };
+    }
+    async updateAdmin(id, name, email, password) {
+        const hasAdminExist = await this.prisma.admin.findUnique({
+            where: { id },
+        });
+        if (!hasAdminExist) {
+            throw new common_1.NotFoundException('Not found. Try again');
+        }
+        if (password) {
+            password = await bcrypt.hash(password, 10);
+        }
+        const admin = await this.prisma.admin.update({
+            where: { id },
+            data: {
+                name: name,
+                email: email,
+                password: password,
+            },
+        });
+        return {
+            message: 'Successfully updated ',
+            id: admin.id,
+            name: admin.name,
+            email: admin.email,
+        };
     }
     async findAllAdmins() {
         return this.prisma.admin.findMany();
     }
     async removeAdmin(id) {
-        return this.prisma.admin.delete({ where: { id } });
+        const hasAdminExist = await this.prisma.admin.findUnique({
+            where: { id },
+        });
+        if (!hasAdminExist) {
+            throw new common_1.NotFoundException('Not found. Try again');
+        }
+        const deletedAdmin = await this.prisma.admin.delete({
+            where: { id },
+        });
+        return {
+            messasge: `${(await deletedAdmin).name} Successfully deleted.`,
+        };
     }
 };
 exports.AuthAdminService = AuthAdminService;

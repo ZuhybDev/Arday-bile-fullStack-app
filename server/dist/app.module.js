@@ -16,6 +16,7 @@ const school_module_1 = require("./school/school.module");
 const auht_admin_module_1 = require("./auth-admin/auht-admin.module");
 const jwt_1 = require("@nestjs/jwt");
 const student_module_1 = require("./student/student.module");
+const subjects_module_1 = require("./subjects/subjects.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -30,6 +31,7 @@ exports.AppModule = AppModule = __decorate([
             school_module_1.SchoolModule,
             jwt_1.JwtModule,
             student_module_1.StudentModule,
+            subjects_module_1.SubjectsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

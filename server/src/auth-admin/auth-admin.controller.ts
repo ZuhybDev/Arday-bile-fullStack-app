@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthAdminService } from './auth-admin.service';
@@ -49,22 +50,29 @@ export class AuthAdminController {
   }
 
   //update admin
-
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Patch('update/:id')
   updateAdmin(
     @Param('id') id: string,
     @Body()
-    body: { name: string; email: string; password: string },
+    @Body()
+    body: { name?: string; email?: string; password?: string },
+    @Req() req,
   ) {
-    return this.authAdmin.updateAdmin(id, body.name, body.email, body.password);
+    return this.authAdmin.updateAdmin(
+      req.user,
+      id,
+      body.name,
+      body.email,
+      body.password,
+    );
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Delete('delete/:id')
-  remove(@Param('id') id: string) {
-    return this.authAdmin.removeAdmin(id);
+  remove(@Param('id') id: string, @Req() req) {
+    return this.authAdmin.removeAdmin(req.user, id);
   }
 }

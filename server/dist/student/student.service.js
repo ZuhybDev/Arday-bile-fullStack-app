@@ -22,10 +22,13 @@ let StudentService = class StudentService {
         this.prisma = prisma;
         this.jwtService = jwtService;
     }
-    async createStudent(name, password, schoolId) {
+    async createStudent(user, name, password, classname, schoolId) {
         try {
             if (!name || !password || !schoolId) {
                 throw new common_1.NotAcceptableException('Please fill in all required fields');
+            }
+            if (schoolId != user.schoolId) {
+                throw new common_1.ForbiddenException('Acess denied');
             }
             const hashedPassword = await bcrypt.hash(password, 10);
             const studentCode = (0, student_code_generator_1.studentCodeGenerator)();
@@ -35,6 +38,7 @@ let StudentService = class StudentService {
                     password: hashedPassword,
                     code: studentCode,
                     schoolId,
+                    class: classname,
                 },
             });
             return {
@@ -104,21 +108,21 @@ let StudentService = class StudentService {
             throw new common_1.InternalServerErrorException(error.message);
         }
     }
-    async updateStudent(id, name, password, code) {
+    async updateStudent(user, id, name, password, code) {
         const student = await this.prisma.student.findUnique({
             where: { id },
         });
         if (!student) {
             throw new common_1.NotFoundException('Student not found with the given ID');
         }
-        if (password) {
-            password = await bcrypt.hash(password, 10);
+        if (student.schoolId != user.schoolId) {
+            throw new common_1.ForbiddenException('Access denied');
         }
         const updatingData = {};
         if (name)
             updatingData.name = name;
         if (password)
-            updatingData.name = password;
+            updatingData.password = await bcrypt.hash(password, 10);
         if (code)
             updatingData.name = code;
         const updatedStudent = await this.prisma.student.update({
@@ -134,12 +138,64 @@ let StudentService = class StudentService {
             },
         };
     }
-    async deleteStudent(id) {
+    async findOneStudent(user, id) {
+        const student = await this.prisma.student.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                name: true,
+                code: true,
+                role: true,
+                total: true,
+                average: true,
+                schoolId: true,
+                school: {
+                    select: { name: true },
+                },
+                result: {
+                    select: {
+                        grade: true,
+                        subject: {
+                            select: {
+                                name: true,
+                                createdAt: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+        if (!student) {
+            throw new common_1.NotFoundException('Not found. Try again');
+        }
+        if (student.schoolId != user.schoolId) {
+            throw new common_1.ForbiddenException('Access denied');
+        }
+        return {
+            student,
+        };
+    }
+    async findAllStudent(schoolId, user) {
+        const students = await this.prisma.student.findMany({
+            where: { schoolId },
+            select: {
+                code: true,
+                name: true,
+            },
+        });
+        if (!students) {
+            throw new common_1.NotFoundException('Not found. Try again');
+        }
+    }
+    async deleteStudent(user, id) {
         const student = await this.prisma.student.findUnique({
             where: { id: id },
         });
         if (!student) {
             throw new common_1.NotFoundException('This student does not exist. Or already deleted');
+        }
+        if (student.schoolId != user.schoolId) {
+            throw new common_1.ForbiddenException('Access denied');
         }
         const deleteStudent = await this.prisma.student.delete({
             where: { id: id },

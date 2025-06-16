@@ -4,12 +4,15 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { JwtPayload } from 'src/jwt/jwt.strategy';
 import { PrismaService } from 'src/prisma/prisma.service';
 
-// jwt-payload.interface.ts
-export interface JwtPayload {
-  schoolId: string;
-}
+// Explanation
+/**
+ * if you are @NEW to a @NESTJS read this
+ * @JwtPaylaod it checking if the @ADMIN doesnt eqaul to @schoolId that he provides
+ * we add the in the @JWT for the @schoolId so if he doesnt graps the @ID it throws an Error
+ */
 
 @Injectable()
 export class SchoolService {
@@ -66,31 +69,42 @@ export class SchoolService {
     });
 
     if (!schoolData) {
-      throw new NotFoundException();
+      throw new NotFoundException('School does not Exist. Try again');
     }
 
-    if (user.schoolId !== schoolData.id) return schoolData;
+    if (user.schoolId !== schoolData.id) {
+      throw new ForbiddenException('Access deneid');
+    }
+
+    return {
+      message: `${schoolData.name} Data`,
+
+      schoolData,
+    };
   }
 
   // delete statement
 
-  async deletedSchool(id: string) {
-    try {
-      const existingSchool = await this.prisma.school.findUnique({
-        where: { id: id },
-      });
-
-      if (!existingSchool) {
-        throw new NotFoundException('Not foud. Try again');
-      }
-
-      return this.prisma.school.delete({
-        where: { id: id },
-      });
-    } catch (error: any) {
-      return {
-        message: `Interal error ${error}`,
-      };
+  async deletedSchool(id: string, user: JwtPayload) {
+    const existingSchool = await this.prisma.school.findUnique({
+      where: { id: id },
+    });
+    // chech if school exist
+    if (!existingSchool) {
+      throw new NotFoundException('Not foud. Try again');
     }
+
+    //only school's admin can delete
+    if (user.schoolId !== existingSchool.id) {
+      throw new ForbiddenException('Access denied');
+    }
+    // delete if admin it allowed and it exist
+    const deletedSchool = await this.prisma.school.delete({
+      where: { id: id },
+    });
+
+    return {
+      message: `Successfully deleted ${deletedSchool.name}`,
+    };
   }
 }

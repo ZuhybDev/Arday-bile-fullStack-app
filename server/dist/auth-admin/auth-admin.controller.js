@@ -32,11 +32,11 @@ let AuthAdminController = class AuthAdminController {
     findAll() {
         return this.authAdmin.findAllAdmins();
     }
-    updateAdmin(id, body) {
-        return this.authAdmin.updateAdmin(id, body.name, body.email, body.password);
+    updateAdmin(id, body, req) {
+        return this.authAdmin.updateAdmin(req.user, id, body.name, body.email, body.password);
     }
-    remove(id) {
-        return this.authAdmin.removeAdmin(id);
+    remove(id, req) {
+        return this.authAdmin.removeAdmin(req.user, id);
     }
 };
 exports.AuthAdminController = AuthAdminController;
@@ -68,8 +68,10 @@ __decorate([
     (0, common_1.Patch)('update/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
 ], AuthAdminController.prototype, "updateAdmin", null);
 __decorate([
@@ -77,8 +79,9 @@ __decorate([
     (0, roles_decorator_1.Roles)('ADMIN'),
     (0, common_1.Delete)('delete/:id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], AuthAdminController.prototype, "remove", null);
 exports.AuthAdminController = AuthAdminController = __decorate([

@@ -16,18 +16,16 @@ export declare class SchoolController {
         message: string;
         new_name: string;
     }>;
-    readschoolData(): Promise<{
-        id: string;
-        name: string;
-        createdAt: Date;
-        updatedAt: Date;
-    }[]>;
-    delete(id: string): Promise<{
-        id: string;
-        name: string;
-        createdAt: Date;
-        updatedAt: Date;
-    } | {
+    readschoolData(req: any, id: string): Promise<{
+        message: string;
+        schoolData: {
+            id: string;
+            name: string;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+    }>;
+    delete(id: string, req: any): Promise<{
         message: string;
     }>;
 }

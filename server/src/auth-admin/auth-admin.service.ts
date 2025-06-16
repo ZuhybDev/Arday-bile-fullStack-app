@@ -1,5 +1,7 @@
 import {
+  ForbiddenException,
   Injectable,
+  NotAcceptableException,
   NotFoundException,
   UnauthorizedException,
   UnprocessableEntityException,
@@ -7,6 +9,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'src/jwt/jwt.strategy';
 
 @Injectable()
 export class AuthAdminService {
@@ -21,6 +24,26 @@ export class AuthAdminService {
     password: string,
     schoolId: string,
   ) {
+    if (schoolId == undefined) {
+      throw new ForbiddenException(
+        'School not found. Please create the school first.',
+      );
+    }
+
+    if (name == undefined || email == undefined || password == undefined) {
+      throw new NotAcceptableException('Fill all required feilds');
+    }
+
+    const school = await this.prisma.school.findUnique({
+      where: { id: schoolId },
+    });
+
+    if (!school) {
+      throw new ForbiddenException(
+        'School not found. Please create the school first.',
+      );
+    }
+
     const existingAdmin = await this.prisma.admin.findUnique({
       where: { email },
     });
@@ -51,7 +74,9 @@ export class AuthAdminService {
       email: admin.email,
       role: admin.role,
       schoolId: admin.schoolId,
+      // studentId:
     };
+    // console.log(payload);
     const token = this.jwtService.sign(payload);
     return {
       admin_info: {
@@ -85,8 +110,10 @@ export class AuthAdminService {
       role: admin.role,
       schoolId: admin.schoolId,
     };
-    const token = await this.jwtService.signAsync(payload);
 
+    // remove here
+
+    const token = await this.jwtService.signAsync(payload);
     return {
       id: admin.id,
       name: admin.name,
@@ -94,8 +121,10 @@ export class AuthAdminService {
       token,
     };
   }
+
   //update admin
   async updateAdmin(
+    user: JwtPayload,
     id: string,
     name?: string,
     email?: string,
@@ -109,16 +138,20 @@ export class AuthAdminService {
       throw new NotFoundException('Not found. Try again');
     }
 
+    if (user.userId !== id) {
+      throw new ForbiddenException('Access denied');
+    }
+
+    const updatingData: any = {};
+
+    if (name) updatingData.name = name;
+    if (email) updatingData.email = email;
     if (password) {
       password = await bcrypt.hash(password, 10);
     }
     const admin = await this.prisma.admin.update({
       where: { id },
-      data: {
-        name: name,
-        email: email,
-        password: password,
-      },
+      data: updatingData,
     });
 
     return {
@@ -136,13 +169,16 @@ export class AuthAdminService {
   }
 
   //remove admin
-  async removeAdmin(id: string) {
+  async removeAdmin(user: JwtPayload, id: string) {
     const hasAdminExist = await this.prisma.admin.findUnique({
       where: { id },
     });
 
     if (!hasAdminExist) {
       throw new NotFoundException('Not found. Try again');
+    }
+    if (user.userId !== id) {
+      throw new ForbiddenException('Access denied');
     }
 
     const deletedAdmin = await this.prisma.admin.delete({

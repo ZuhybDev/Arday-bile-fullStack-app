@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotAcceptableException,
@@ -7,7 +8,9 @@ import {
 import { JwtService } from '@nestjs/jwt';
 // import bcrypt from 'bcrypt';
 import * as bcrypt from 'bcrypt';
+import { use } from 'passport';
 import { studentCodeGenerator } from 'src/common/lib/student.code.generator';
+import { JwtPayload } from 'src/jwt/jwt.strategy';
 
 //yours
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -19,13 +22,22 @@ export class StudentService {
     private jwtService: JwtService,
   ) {}
 
-  async createStudent(name: string, password: string, schoolId: string) {
+  async createStudent(
+    user: JwtPayload,
+    name: string,
+    password: string,
+    classname: string,
+    schoolId: string,
+  ) {
     try {
       //create student name others and code
-
       //preven nulls
       if (!name || !password || !schoolId) {
         throw new NotAcceptableException('Please fill in all required fields');
+      }
+
+      if (schoolId != user.schoolId) {
+        throw new ForbiddenException('Acess denied');
       }
 
       //code and hash
@@ -39,14 +51,9 @@ export class StudentService {
           password: hashedPassword,
           code: studentCode,
           schoolId,
+          class: classname,
         },
       });
-
-      // move to login please
-      // const payload = { userId: student.id, role: student.role };
-
-      // const token = this.jwtService.sign(payload);
-
       return {
         message: `Student ${student.name} is created successfully`,
         id: student.id,
@@ -78,7 +85,7 @@ export class StudentService {
           id: true,
           name: true,
           code: true,
-          password: true, // needed for comparison, but removed later
+          password: true,
           role: true,
           total: true,
           average: true,
@@ -106,6 +113,7 @@ export class StudentService {
       }
 
       const isMatch = await bcrypt.compare(password, student.password);
+
       if (!isMatch) {
         throw new NotAcceptableException('Invalid RollNo or Password');
       }
@@ -129,6 +137,7 @@ export class StudentService {
 
   // edit student
   async updateStudent(
+    user: JwtPayload,
     id: string,
     name?: string,
     password?: string,
@@ -142,15 +151,20 @@ export class StudentService {
       throw new NotFoundException('Student not found with the given ID');
     }
 
-    //handle it sepratle its challenge when  it comes to beginner
-    if (password) {
-      password = await bcrypt.hash(password, 10);
+    /**
+     * chech if @Admin schoolId in the jwt are same to the student schoolId if doesnt throw an Error
+     */
+
+    if (student.schoolId != user.schoolId) {
+      throw new ForbiddenException('Access denied');
     }
+
+    //handle it sepratle its challenge when  it comes to beginner
 
     const updatingData: any = {};
 
     if (name) updatingData.name = name;
-    if (password) updatingData.name = password;
+    if (password) updatingData.password = await bcrypt.hash(password, 10);
     if (code) updatingData.name = code;
 
     const updatedStudent = await this.prisma.student.update({
@@ -168,9 +182,69 @@ export class StudentService {
     };
   }
 
+  // get single student data
+
+  async findOneStudent(user: JwtPayload, id: string) {
+    const student = await this.prisma.student.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        code: true,
+        role: true,
+        total: true,
+        average: true,
+        schoolId: true,
+        school: {
+          select: { name: true },
+        },
+
+        result: {
+          select: {
+            grade: true,
+            subject: {
+              select: {
+                name: true,
+                createdAt: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!student) {
+      throw new NotFoundException('Not found. Try again');
+    }
+
+    if (student.schoolId != user.schoolId) {
+      throw new ForbiddenException('Access denied');
+    }
+
+    return {
+      student,
+    };
+  }
+
+  // find all student of the school by school Id
+
+  async findAllStudent(schoolId: string, user: JwtPayload) {
+    const students = await this.prisma.student.findMany({
+      where: { schoolId },
+      select: {
+        code: true,
+        name: true,
+      },
+    });
+
+    if (!students) {
+      throw new NotFoundException('Not found. Try again');
+    }
+  }
+
   // delete student their ID in the param
 
-  async deleteStudent(id: string) {
+  async deleteStudent(user: JwtPayload, id: string) {
     const student = await this.prisma.student.findUnique({
       where: { id: id },
     });
@@ -179,6 +253,10 @@ export class StudentService {
       throw new NotFoundException(
         'This student does not exist. Or already deleted',
       );
+    }
+
+    if (student.schoolId != user.schoolId) {
+      throw new ForbiddenException('Access denied');
     }
 
     const deleteStudent = await this.prisma.student.delete({

@@ -1,5 +1,6 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'src/jwt/jwt.strategy';
 export declare class AuthAdminService {
     private prisma;
     private jwtService;
@@ -25,7 +26,7 @@ export declare class AuthAdminService {
         email: string;
         token: string;
     }>;
-    updateAdmin(id: string, name?: string, email?: string, password?: string): Promise<{
+    updateAdmin(user: JwtPayload, id: string, name?: string, email?: string, password?: string): Promise<{
         message: string;
         id: string;
         name: string;
@@ -34,14 +35,14 @@ export declare class AuthAdminService {
     findAllAdmins(): Promise<{
         id: string;
         name: string;
-        email: string;
-        password: string;
-        role: import(".prisma/client").$Enums.Role;
-        schoolId: string;
         createdAt: Date;
         updatedAt: Date;
+        role: import(".prisma/client").$Enums.Role;
+        email: string;
+        password: string;
+        schoolId: string;
     }[]>;
-    removeAdmin(id: string): Promise<{
+    removeAdmin(user: JwtPayload, id: string): Promise<{
         messasge: string;
     }>;
 }

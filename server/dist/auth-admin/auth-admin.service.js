@@ -22,6 +22,18 @@ let AuthAdminService = class AuthAdminService {
         this.jwtService = jwtService;
     }
     async registerAdmin(name, email, password, schoolId) {
+        if (schoolId == undefined) {
+            throw new common_1.ForbiddenException('School not found. Please create the school first.');
+        }
+        if (name == undefined || email == undefined || password == undefined) {
+            throw new common_1.NotAcceptableException('Fill all required feilds');
+        }
+        const school = await this.prisma.school.findUnique({
+            where: { id: schoolId },
+        });
+        if (!school) {
+            throw new common_1.ForbiddenException('School not found. Please create the school first.');
+        }
         const existingAdmin = await this.prisma.admin.findUnique({
             where: { email },
         });
@@ -84,23 +96,27 @@ let AuthAdminService = class AuthAdminService {
             token,
         };
     }
-    async updateAdmin(id, name, email, password) {
+    async updateAdmin(user, id, name, email, password) {
         const hasAdminExist = await this.prisma.admin.findUnique({
             where: { id },
         });
         if (!hasAdminExist) {
             throw new common_1.NotFoundException('Not found. Try again');
         }
+        if (user.userId !== id) {
+            throw new common_1.ForbiddenException('Access denied');
+        }
+        const updatingData = {};
+        if (name)
+            updatingData.name = name;
+        if (email)
+            updatingData.email = email;
         if (password) {
             password = await bcrypt.hash(password, 10);
         }
         const admin = await this.prisma.admin.update({
             where: { id },
-            data: {
-                name: name,
-                email: email,
-                password: password,
-            },
+            data: updatingData,
         });
         return {
             message: 'Successfully updated ',
@@ -112,12 +128,15 @@ let AuthAdminService = class AuthAdminService {
     async findAllAdmins() {
         return this.prisma.admin.findMany();
     }
-    async removeAdmin(id) {
+    async removeAdmin(user, id) {
         const hasAdminExist = await this.prisma.admin.findUnique({
             where: { id },
         });
         if (!hasAdminExist) {
             throw new common_1.NotFoundException('Not found. Try again');
+        }
+        if (user.userId !== id) {
+            throw new common_1.ForbiddenException('Access denied');
         }
         const deletedAdmin = await this.prisma.admin.delete({
             where: { id },

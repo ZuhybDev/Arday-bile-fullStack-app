@@ -1,0 +1,51 @@
+-- RedefineTables
+PRAGMA defer_foreign_keys=ON;
+PRAGMA foreign_keys=OFF;
+CREATE TABLE "new_Admin" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "role" TEXT NOT NULL DEFAULT 'ADMIN',
+    "schoolId" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "Admin_schoolId_fkey" FOREIGN KEY ("schoolId") REFERENCES "School" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+INSERT INTO "new_Admin" ("createdAt", "email", "id", "name", "password", "role", "schoolId", "updatedAt") SELECT "createdAt", "email", "id", "name", "password", "role", "schoolId", "updatedAt" FROM "Admin";
+DROP TABLE "Admin";
+ALTER TABLE "new_Admin" RENAME TO "Admin";
+CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
+CREATE TABLE "new_Result" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "grade" INTEGER NOT NULL,
+    "subjectId" TEXT NOT NULL,
+    "studentId" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "Result_subjectId_fkey" FOREIGN KEY ("subjectId") REFERENCES "Subject" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Result_studentId_fkey" FOREIGN KEY ("studentId") REFERENCES "Student" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+INSERT INTO "new_Result" ("createdAt", "grade", "id", "studentId", "subjectId", "updatedAt") SELECT "createdAt", "grade", "id", "studentId", "subjectId", "updatedAt" FROM "Result";
+DROP TABLE "Result";
+ALTER TABLE "new_Result" RENAME TO "Result";
+CREATE UNIQUE INDEX "Result_studentId_subjectId_key" ON "Result"("studentId", "subjectId");
+CREATE TABLE "new_Student" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "total" INTEGER,
+    "average" REAL,
+    "role" TEXT NOT NULL DEFAULT 'STUDENT',
+    "schoolId" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "Student_schoolId_fkey" FOREIGN KEY ("schoolId") REFERENCES "School" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+INSERT INTO "new_Student" ("average", "code", "createdAt", "id", "name", "password", "role", "schoolId", "total", "updatedAt") SELECT "average", "code", "createdAt", "id", "name", "password", "role", "schoolId", "total", "updatedAt" FROM "Student";
+DROP TABLE "Student";
+ALTER TABLE "new_Student" RENAME TO "Student";
+CREATE UNIQUE INDEX "Student_code_key" ON "Student"("code");
+PRAGMA foreign_keys=ON;
+PRAGMA defer_foreign_keys=OFF;

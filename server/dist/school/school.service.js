@@ -50,27 +50,37 @@ let SchoolService = class SchoolService {
             new_name: updatedSchool.name,
         };
     }
-    async readSchoolData() {
-        const schoolData = await this.prisma.school.findMany();
-        return schoolData;
+    async readSchoolData(user, id) {
+        const schoolData = await this.prisma.school.findUnique({
+            where: { id },
+        });
+        if (!schoolData) {
+            throw new common_1.NotFoundException('School does not Exist. Try again');
+        }
+        if (user.schoolId !== schoolData.id) {
+            throw new common_1.ForbiddenException('Access deneid');
+        }
+        return {
+            message: `${schoolData.name} Data`,
+            schoolData,
+        };
     }
-    async deletedSchool(id) {
-        try {
-            const existingSchool = await this.prisma.school.findUnique({
-                where: { id: id },
-            });
-            if (!existingSchool) {
-                throw new common_1.NotFoundException('Not foud. Try again');
-            }
-            return this.prisma.school.delete({
-                where: { id: id },
-            });
+    async deletedSchool(id, user) {
+        const existingSchool = await this.prisma.school.findUnique({
+            where: { id: id },
+        });
+        if (!existingSchool) {
+            throw new common_1.NotFoundException('Not foud. Try again');
         }
-        catch (error) {
-            return {
-                message: `Interal error ${error}`,
-            };
+        if (user.schoolId !== existingSchool.id) {
+            throw new common_1.ForbiddenException('Access denied');
         }
+        const deletedSchool = await this.prisma.school.delete({
+            where: { id: id },
+        });
+        return {
+            message: `Successfully deleted ${deletedSchool.name}`,
+        };
     }
 };
 exports.SchoolService = SchoolService;

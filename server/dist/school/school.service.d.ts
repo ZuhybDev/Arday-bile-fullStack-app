@@ -1,7 +1,5 @@
+import { JwtPayload } from 'src/jwt/jwt.strategy';
 import { PrismaService } from 'src/prisma/prisma.service';
-export interface JwtPayload {
-    schoolId: string;
-}
 export declare class SchoolService {
     private readonly prisma;
     constructor(prisma: PrismaService);
@@ -17,18 +15,16 @@ export declare class SchoolService {
         message: string;
         new_name: string;
     }>;
-    readSchoolData(): Promise<{
-        id: string;
-        name: string;
-        createdAt: Date;
-        updatedAt: Date;
-    }[]>;
-    deletedSchool(id: string): Promise<{
-        id: string;
-        name: string;
-        createdAt: Date;
-        updatedAt: Date;
-    } | {
+    readSchoolData(user: JwtPayload, id: string): Promise<{
+        message: string;
+        schoolData: {
+            id: string;
+            name: string;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+    }>;
+    deletedSchool(id: string, user: JwtPayload): Promise<{
         message: string;
     }>;
 }

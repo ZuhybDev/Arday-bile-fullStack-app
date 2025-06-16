@@ -7,6 +7,7 @@ import { SchoolModule } from './school/school.module';
 import { AuthAdminModule } from './auth-admin/auht-admin.module';
 import { JwtModule } from '@nestjs/jwt';
 import { StudentModule } from './student/student.module';
+import { SubjectsModule } from './subjects/subjects.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { StudentModule } from './student/student.module';
     SchoolModule,
     JwtModule,
     StudentModule,
+    SubjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

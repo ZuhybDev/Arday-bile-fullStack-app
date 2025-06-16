@@ -29,11 +29,11 @@ let SchoolController = class SchoolController {
     update(id, body, req) {
         return this.schoolservice.updateSchool(req.user, id, body.name);
     }
-    readschoolData() {
-        return this.schoolservice.readSchoolData();
+    readschoolData(req, id) {
+        return this.schoolservice.readSchoolData(req.user, id);
     }
-    delete(id) {
-        return this.schoolservice.deletedSchool(id);
+    delete(id, req) {
+        return this.schoolservice.deletedSchool(id, req.user);
     }
 };
 exports.SchoolController = SchoolController;
@@ -58,9 +58,11 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN'),
-    (0, common_1.Get)('school-data'),
+    (0, common_1.Get)('school-data/:id'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], SchoolController.prototype, "readschoolData", null);
 __decorate([
@@ -68,8 +70,9 @@ __decorate([
     (0, roles_decorator_1.Roles)('ADMIN'),
     (0, common_1.Delete)('delete/:id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], SchoolController.prototype, "delete", null);
 exports.SchoolController = SchoolController = __decorate([

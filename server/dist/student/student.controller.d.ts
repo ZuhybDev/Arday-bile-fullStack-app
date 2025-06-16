@@ -6,7 +6,8 @@ export declare class StudentController {
         name: string;
         password: string;
         schoolId: string;
-    }): Promise<{
+        classname: string;
+    }, req: any): Promise<{
         message: string;
         id: string;
         name: string;
@@ -47,7 +48,7 @@ export declare class StudentController {
         name: string;
         password: string;
         code: string;
-    }): Promise<{
+    }, req: any): Promise<{
         message: string;
         data: {
             id: string;
@@ -55,7 +56,28 @@ export declare class StudentController {
             code: string;
         };
     }>;
-    deleteStudent(id: string): Promise<{
+    studentData(id: string, req: any): Promise<{
+        student: {
+            school: {
+                name: string;
+            };
+            result: {
+                subject: {
+                    name: string;
+                    createdAt: Date;
+                };
+                grade: number;
+            }[];
+            id: string;
+            name: string;
+            role: import(".prisma/client").$Enums.Role;
+            schoolId: string;
+            code: string;
+            total: number | null;
+            average: number | null;
+        };
+    }>;
+    deleteStudent(id: string, req: any): Promise<{
         message: string;
     }>;
 }

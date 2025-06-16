@@ -15,6 +15,7 @@ model School {
   name      String
   admin     Admin[]
   student   Student[]
+  subject   Subject[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -26,7 +27,7 @@ model Admin {
   password  String
   role      Role     @default(ADMIN)
   schoolId  String
-  school    School   @relation(fields: [schoolId], references: [id])
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -36,11 +37,12 @@ model Student {
   name      String
   code      String   @unique
   password  String
+  class     String   @default("")
   total     Int?
   average   Float?
   role      Role     @default(STUDENT)
   schoolId  String
-  school    School   @relation(fields: [schoolId], references: [id])
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   result    Result[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -51,6 +53,8 @@ model Subject {
   name      String
   passMark  Int
   result    Result[]
+  schoolId  String
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -58,10 +62,11 @@ model Subject {
 model Result {
   id        String   @id @default(uuid())
   grade     Int
+  status    String
   subjectId String
-  subject   Subject  @relation(fields: [subjectId], references: [id])
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   studentId String
-  students  Student  @relation(fields: [studentId], references: [id])
+  students  Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

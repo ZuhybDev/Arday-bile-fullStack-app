@@ -1,10 +1,11 @@
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'src/jwt/jwt.strategy';
 import { PrismaService } from 'src/prisma/prisma.service';
 export declare class StudentService {
     private prisma;
     private jwtService;
     constructor(prisma: PrismaService, jwtService: JwtService);
-    createStudent(name: string, password: string, schoolId: string): Promise<{
+    createStudent(user: JwtPayload, name: string, password: string, classname: string, schoolId: string): Promise<{
         message: string;
         id: string;
         name: string;
@@ -38,7 +39,7 @@ export declare class StudentService {
         };
         token: string;
     }>;
-    updateStudent(id: string, name?: string, password?: string, code?: string): Promise<{
+    updateStudent(user: JwtPayload, id: string, name?: string, password?: string, code?: string): Promise<{
         message: string;
         data: {
             id: string;
@@ -46,7 +47,29 @@ export declare class StudentService {
             code: string;
         };
     }>;
-    deleteStudent(id: string): Promise<{
+    findOneStudent(user: JwtPayload, id: string): Promise<{
+        student: {
+            school: {
+                name: string;
+            };
+            result: {
+                subject: {
+                    name: string;
+                    createdAt: Date;
+                };
+                grade: number;
+            }[];
+            id: string;
+            name: string;
+            role: import(".prisma/client").$Enums.Role;
+            schoolId: string;
+            code: string;
+            total: number | null;
+            average: number | null;
+        };
+    }>;
+    findAllStudent(schoolId: string, user: JwtPayload): Promise<void>;
+    deleteStudent(user: JwtPayload, id: string): Promise<{
         message: string;
     }>;
 }

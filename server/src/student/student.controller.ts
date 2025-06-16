@@ -2,9 +2,11 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -13,11 +15,6 @@ import { RolesGuard } from 'src/jwt/roles/roles.guard';
 import { StudentService } from './student.service';
 
 //intialize
-interface StudentDto {
-  name: string;
-  password: string;
-  schoolId: string;
-}
 @Controller('student')
 export class StudentController {
   constructor(private studentService: StudentService) {}
@@ -27,10 +24,23 @@ export class StudentController {
   @Roles('ADMIN')
   @Post('register')
   createStudent(
-    @Body() body: { name: string; password: string; schoolId: string },
+    @Body()
+    body: {
+      name: string;
+      password: string;
+      schoolId: string;
+      classname: string;
+    },
+    @Req() req,
   ) {
-    const { name, password, schoolId } = body;
-    return this.studentService.createStudent(name, password, schoolId);
+    const { name, password, schoolId, classname } = body;
+    return this.studentService.createStudent(
+      req.user,
+      name,
+      password,
+      schoolId,
+      classname,
+    );
   }
 
   //login student
@@ -52,21 +62,29 @@ export class StudentController {
       password: string;
       code: string;
     },
+    @Req() req,
   ) {
     return this.studentService.updateStudent(
+      req.user,
       id,
       body.name,
       body.password,
       body.code,
     );
   }
+  // find one student data
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Get('student-data/:id')
+  studentData(@Param('id') id: string, @Req() req) {
+    return this.studentService.findOneStudent(req.user, id);
+  }
 
   // delete student route
-
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Delete('delete/:id')
-  deleteStudent(@Param('id') id: string) {
-    return this.studentService.deleteStudent(id);
+  deleteStudent(@Param('id') id: string, @Req() req) {
+    return this.studentService.deleteStudent(req.user, id);
   }
 }

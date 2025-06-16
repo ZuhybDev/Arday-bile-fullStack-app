@@ -12,36 +12,36 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StudentController = void 0;
+exports.SubjectsController = void 0;
 const common_1 = require("@nestjs/common");
+const subjects_service_1 = require("./subjects.service");
 const passport_1 = require("@nestjs/passport");
-const roles_decorator_1 = require("../jwt/roles/roles.decorator");
 const roles_guard_1 = require("../jwt/roles/roles.guard");
-const student_service_1 = require("./student.service");
-let StudentController = class StudentController {
-    studentService;
-    constructor(studentService) {
-        this.studentService = studentService;
+const roles_decorator_1 = require("../jwt/roles/roles.decorator");
+let SubjectsController = class SubjectsController {
+    subjectsService;
+    constructor(subjectsService) {
+        this.subjectsService = subjectsService;
     }
-    createStudent(body, req) {
-        const { name, password, schoolId, classname } = body;
-        return this.studentService.createStudent(req.user, name, password, schoolId, classname);
+    create(body, req) {
+        const { name, passMark, schoolId } = body;
+        return this.subjectsService.createSubject(req.user, name, passMark, schoolId);
     }
-    loginStudent(body) {
-        const { code, password } = body;
-        return this.studentService.loginStudent(code, password);
+    findAllSubjects(id, req) {
+        return this.subjectsService.findAllSubjects(id, req.user);
     }
-    updateStudent(id, body, req) {
-        return this.studentService.updateStudent(req.user, id, body.name, body.password, body.code);
+    findOne(id, req) {
+        return this.subjectsService.findOneSubject(id, req.user);
     }
-    studentData(id, req) {
-        return this.studentService.findOneStudent(req.user, id);
+    update(id, body, req) {
+        const { name, passMark } = body;
+        return this.subjectsService.updateSubject(req.user, id, name, passMark);
     }
-    deleteStudent(id, req) {
-        return this.studentService.deleteStudent(req.user, id);
+    remove(id, req) {
+        return this.subjectsService.removeSubject(id, req.user);
     }
 };
-exports.StudentController = StudentController;
+exports.SubjectsController = SubjectsController;
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN'),
@@ -51,14 +51,27 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
-], StudentController.prototype, "createStudent", null);
+], SubjectsController.prototype, "create", null);
 __decorate([
-    (0, common_1.Post)('login'),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    (0, common_1.Get)('subject-data/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
-], StudentController.prototype, "loginStudent", null);
+], SubjectsController.prototype, "findAllSubjects", null);
+__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    (0, common_1.Get)('subject/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], SubjectsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN'),
@@ -69,17 +82,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
-], StudentController.prototype, "updateStudent", null);
-__decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('ADMIN'),
-    (0, common_1.Get)('student-data/:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", void 0)
-], StudentController.prototype, "studentData", null);
+], SubjectsController.prototype, "update", null);
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN'),
@@ -89,9 +92,9 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
-], StudentController.prototype, "deleteStudent", null);
-exports.StudentController = StudentController = __decorate([
-    (0, common_1.Controller)('student'),
-    __metadata("design:paramtypes", [student_service_1.StudentService])
-], StudentController);
-//# sourceMappingURL=student.controller.js.map
+], SubjectsController.prototype, "remove", null);
+exports.SubjectsController = SubjectsController = __decorate([
+    (0, common_1.Controller)('subjects'),
+    __metadata("design:paramtypes", [subjects_service_1.SubjectsService])
+], SubjectsController);
+//# sourceMappingURL=subjects.controller.js.map

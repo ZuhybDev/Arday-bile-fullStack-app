@@ -7,10 +7,10 @@ export declare class SubjectsService {
         subject: {
             id: string;
             name: string;
-            passMark: number;
-            schoolId: string;
             createdAt: Date;
             updatedAt: Date;
+            schoolId: string;
+            passMark: number;
         };
     }>;
     findAllSubjects(schoolId: string, user: JwtPayload): Promise<{
@@ -18,20 +18,20 @@ export declare class SubjectsService {
         allsubjects: {
             id: string;
             name: string;
-            passMark: number;
-            schoolId: string;
             createdAt: Date;
             updatedAt: Date;
+            schoolId: string;
+            passMark: number;
         }[];
     }>;
     findOneSubject(id: string, user: JwtPayload): Promise<{
         subject: {
             id: string;
             name: string;
-            passMark: number;
-            schoolId: string;
             createdAt: Date;
             updatedAt: Date;
+            schoolId: string;
+            passMark: number;
         };
     }>;
     updateSubject(user: JwtPayload, id: string, name?: string, passMark?: number): Promise<{

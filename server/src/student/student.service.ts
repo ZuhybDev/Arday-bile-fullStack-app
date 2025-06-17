@@ -26,7 +26,7 @@ export class StudentService {
     user: JwtPayload,
     name: string,
     password: string,
-    classname: string,
+    className: string,
     schoolId: string,
   ) {
     try {
@@ -51,7 +51,7 @@ export class StudentService {
           password: hashedPassword,
           code: studentCode,
           schoolId,
-          class: classname,
+          class: className,
         },
       });
       return {
@@ -59,6 +59,7 @@ export class StudentService {
         id: student.id,
         name: student.name,
         roll_no: student.code,
+        class: student.class,
         schoolId: student.schoolId,
         total: student.total,
         average: student.average,

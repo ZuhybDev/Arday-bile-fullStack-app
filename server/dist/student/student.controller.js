@@ -24,8 +24,8 @@ let StudentController = class StudentController {
         this.studentService = studentService;
     }
     createStudent(body, req) {
-        const { name, password, schoolId, classname } = body;
-        return this.studentService.createStudent(req.user, name, password, schoolId, classname);
+        const { name, password, schoolId, className } = body;
+        return this.studentService.createStudent(req.user, name, password, className, schoolId);
     }
     loginStudent(body) {
         const { code, password } = body;

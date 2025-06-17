@@ -6,12 +6,13 @@ export declare class StudentController {
         name: string;
         password: string;
         schoolId: string;
-        classname: string;
+        className: string;
     }, req: any): Promise<{
         message: string;
         id: string;
         name: string;
         roll_no: string;
+        class: string;
         schoolId: string;
         total: number | null;
         average: number | null;
@@ -24,9 +25,6 @@ export declare class StudentController {
     }): Promise<{
         message: string;
         data: {
-            school: {
-                name: string;
-            };
             result: {
                 subject: {
                     name: string;
@@ -36,11 +34,14 @@ export declare class StudentController {
             }[];
             id: string;
             name: string;
-            role: import(".prisma/client").$Enums.Role;
-            password: string;
             code: string;
+            password: string;
             total: number | null;
             average: number | null;
+            role: import(".prisma/client").$Enums.Role;
+            school: {
+                name: string;
+            };
         };
         token: string;
     }>;
@@ -58,9 +59,6 @@ export declare class StudentController {
     }>;
     studentData(id: string, req: any): Promise<{
         student: {
-            school: {
-                name: string;
-            };
             result: {
                 subject: {
                     name: string;
@@ -70,11 +68,14 @@ export declare class StudentController {
             }[];
             id: string;
             name: string;
-            role: import(".prisma/client").$Enums.Role;
-            schoolId: string;
             code: string;
             total: number | null;
             average: number | null;
+            role: import(".prisma/client").$Enums.Role;
+            schoolId: string;
+            school: {
+                name: string;
+            };
         };
     }>;
     deleteStudent(id: string, req: any): Promise<{

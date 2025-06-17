@@ -22,7 +22,7 @@ let StudentService = class StudentService {
         this.prisma = prisma;
         this.jwtService = jwtService;
     }
-    async createStudent(user, name, password, classname, schoolId) {
+    async createStudent(user, name, password, className, schoolId) {
         try {
             if (!name || !password || !schoolId) {
                 throw new common_1.NotAcceptableException('Please fill in all required fields');
@@ -38,7 +38,7 @@ let StudentService = class StudentService {
                     password: hashedPassword,
                     code: studentCode,
                     schoolId,
-                    class: classname,
+                    class: className,
                 },
             });
             return {
@@ -46,6 +46,7 @@ let StudentService = class StudentService {
                 id: student.id,
                 name: student.name,
                 roll_no: student.code,
+                class: student.class,
                 schoolId: student.schoolId,
                 total: student.total,
                 average: student.average,

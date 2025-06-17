@@ -5,11 +5,12 @@ export declare class StudentService {
     private prisma;
     private jwtService;
     constructor(prisma: PrismaService, jwtService: JwtService);
-    createStudent(user: JwtPayload, name: string, password: string, classname: string, schoolId: string): Promise<{
+    createStudent(user: JwtPayload, name: string, password: string, className: string, schoolId: string): Promise<{
         message: string;
         id: string;
         name: string;
         roll_no: string;
+        class: string;
         schoolId: string;
         total: number | null;
         average: number | null;
@@ -19,9 +20,6 @@ export declare class StudentService {
     loginStudent(code: string, password: string): Promise<{
         message: string;
         data: {
-            school: {
-                name: string;
-            };
             result: {
                 subject: {
                     name: string;
@@ -31,11 +29,14 @@ export declare class StudentService {
             }[];
             id: string;
             name: string;
-            role: import(".prisma/client").$Enums.Role;
-            password: string;
             code: string;
+            password: string;
             total: number | null;
             average: number | null;
+            role: import(".prisma/client").$Enums.Role;
+            school: {
+                name: string;
+            };
         };
         token: string;
     }>;
@@ -49,9 +50,6 @@ export declare class StudentService {
     }>;
     findOneStudent(user: JwtPayload, id: string): Promise<{
         student: {
-            school: {
-                name: string;
-            };
             result: {
                 subject: {
                     name: string;
@@ -61,11 +59,14 @@ export declare class StudentService {
             }[];
             id: string;
             name: string;
-            role: import(".prisma/client").$Enums.Role;
-            schoolId: string;
             code: string;
             total: number | null;
             average: number | null;
+            role: import(".prisma/client").$Enums.Role;
+            schoolId: string;
+            school: {
+                name: string;
+            };
         };
     }>;
     findAllStudent(schoolId: string, user: JwtPayload): Promise<void>;

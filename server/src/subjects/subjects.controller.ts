@@ -63,6 +63,7 @@ export class SubjectsController {
     return this.subjectsService.updateSubject(req.user, id, name, passMark);
   }
 
+  // delete subject
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Delete('delete/:id')

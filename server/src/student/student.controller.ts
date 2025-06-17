@@ -29,17 +29,17 @@ export class StudentController {
       name: string;
       password: string;
       schoolId: string;
-      classname: string;
+      className: string;
     },
     @Req() req,
   ) {
-    const { name, password, schoolId, classname } = body;
+    const { name, password, schoolId, className } = body;
     return this.studentService.createStudent(
       req.user,
       name,
       password,
+      className,
       schoolId,
-      classname,
     );
   }
 

@@ -24,6 +24,7 @@ export declare class SchoolController {
             createdAt: Date;
             updatedAt: Date;
         };
+        admins: string[];
     }>;
     delete(id: string, req: any): Promise<{
         message: string;

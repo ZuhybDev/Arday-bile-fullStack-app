@@ -38,8 +38,6 @@ model Student {
   code      String   @unique
   password  String
   class     String   @default("")
-  total     Int?
-  average   Float?
   role      Role     @default(STUDENT)
   schoolId  String
   school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)

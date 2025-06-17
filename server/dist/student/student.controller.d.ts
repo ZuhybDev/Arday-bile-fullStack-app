@@ -14,8 +14,6 @@ export declare class StudentController {
         roll_no: string;
         class: string;
         schoolId: string;
-        total: number | null;
-        average: number | null;
         role: import(".prisma/client").$Enums.Role;
         created: Date;
     }>;
@@ -24,25 +22,24 @@ export declare class StudentController {
         password: string;
     }): Promise<{
         message: string;
-        data: {
-            result: {
-                subject: {
-                    name: string;
-                    createdAt: Date;
-                };
-                grade: number;
-            }[];
-            id: string;
-            name: string;
-            code: string;
-            password: string;
-            total: number | null;
-            average: number | null;
-            role: import(".prisma/client").$Enums.Role;
+        student: {
             school: {
                 name: string;
             };
+            id: string;
+            name: string;
+            password: string;
+            role: import(".prisma/client").$Enums.Role;
+            code: string;
         };
+        formattedResult: {
+            name: string;
+            grade: number;
+            status: string;
+        }[];
+        total: number;
+        average: number;
+        grade: string;
         token: string;
     }>;
     updateStudent(id: string, body: {
@@ -59,24 +56,21 @@ export declare class StudentController {
     }>;
     studentData(id: string, req: any): Promise<{
         student: {
-            result: {
-                subject: {
-                    name: string;
-                    createdAt: Date;
-                };
-                grade: number;
-            }[];
-            id: string;
-            name: string;
-            code: string;
-            total: number | null;
-            average: number | null;
-            role: import(".prisma/client").$Enums.Role;
-            schoolId: string;
             school: {
                 name: string;
             };
+            id: string;
+            name: string;
+            role: import(".prisma/client").$Enums.Role;
+            schoolId: string;
+            code: string;
         };
+        formattedResult: {
+            name: string;
+            grade: number;
+            status: string;
+        }[];
+        grade: string;
     }>;
     deleteStudent(id: string, req: any): Promise<{
         message: string;

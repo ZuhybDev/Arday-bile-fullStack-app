@@ -8,33 +8,33 @@ export declare class SubjectsController {
         schoolId: string;
     }, req: any): Promise<{
         subject: {
-            name: string;
-            passMark: number;
-            schoolId: string;
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
+            schoolId: string;
+            passMark: number;
         };
     }>;
     findAllSubjects(id: string, req: any): Promise<{
         cound: number;
         allsubjects: {
-            name: string;
-            passMark: number;
-            schoolId: string;
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
+            schoolId: string;
+            passMark: number;
         }[];
     }>;
     findOne(id: string, req: any): Promise<{
         subject: {
-            name: string;
-            passMark: number;
-            schoolId: string;
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
+            schoolId: string;
+            passMark: number;
         };
     }>;
     update(id: string, body: {

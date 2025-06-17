@@ -72,6 +72,7 @@ export class StudentController {
       body.code,
     );
   }
+
   // find one student data
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')

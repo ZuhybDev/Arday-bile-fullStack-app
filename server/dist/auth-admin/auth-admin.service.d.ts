@@ -37,9 +37,9 @@ export declare class AuthAdminService {
         name: string;
         createdAt: Date;
         updatedAt: Date;
-        role: import(".prisma/client").$Enums.Role;
         email: string;
         password: string;
+        role: import(".prisma/client").$Enums.Role;
         schoolId: string;
     }[]>;
     removeAdmin(user: JwtPayload, id: string): Promise<{

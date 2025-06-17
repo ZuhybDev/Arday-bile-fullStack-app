@@ -57,12 +57,19 @@ let SchoolService = class SchoolService {
         if (!schoolData) {
             throw new common_1.NotFoundException('School does not Exist. Try again');
         }
+        const schoolAdmins = await this.prisma.admin.findMany({
+            select: {
+                name: true,
+            },
+        });
+        const admins = schoolAdmins.map((a) => a.name);
         if (user.schoolId !== schoolData.id) {
             throw new common_1.ForbiddenException('Access deneid');
         }
         return {
             message: `${schoolData.name} Data`,
             schoolData,
+            admins,
         };
     }
     async deletedSchool(id, user) {

@@ -10,6 +10,9 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { use } from 'passport';
 import { studentCodeGenerator } from 'src/common/lib/student.code.generator';
+import { getMostFrequentyLetter } from 'src/common/utils/getMostFrequentyLetter';
+import { calculationLetterGrade } from 'src/common/utils/grade.utilis';
+import { calculateTotalAndAverage } from 'src/common/utils/totalAndAverage';
 import { JwtPayload } from 'src/jwt/jwt.strategy';
 
 //yours
@@ -61,8 +64,6 @@ export class StudentService {
         roll_no: student.code,
         class: student.class,
         schoolId: student.schoolId,
-        total: student.total,
-        average: student.average,
         role: student.role,
         created: student.createdAt,
       };
@@ -72,7 +73,6 @@ export class StudentService {
   }
 
   // student login with jwt for 8 minutes only
-
   async loginStudent(code: string, password: string) {
     try {
       if (!code || !password) {
@@ -88,21 +88,8 @@ export class StudentService {
           code: true,
           password: true,
           role: true,
-          total: true,
-          average: true,
           school: {
             select: { name: true },
-          },
-          result: {
-            select: {
-              grade: true,
-              subject: {
-                select: {
-                  name: true,
-                  createdAt: true,
-                },
-              },
-            },
           },
         },
       });
@@ -113,8 +100,38 @@ export class StudentService {
         );
       }
 
-      const isMatch = await bcrypt.compare(password, student.password);
+      // calculate total and average of the student
+      const result = await this.prisma.result.findMany({
+        where: { studentId: student.id },
+        select: {
+          grade: true,
+          status: true,
+          subject: {
+            select: {
+              passMark: true,
+              name: true,
+            },
+          },
+        },
+      });
 
+      // get most frequency letterStatus
+
+      const letterStatus = result.map((r) => r.status);
+      const priorityGrade = getMostFrequentyLetter(letterStatus);
+
+      //calculate total and grade function
+      const grade = result.map((r) => r.grade);
+      const { total, average } = calculateTotalAndAverage(grade);
+
+      // calculate Letter of the subject based on the passMark
+      const formattedResult = result.map((r) => ({
+        name: r.subject.name,
+        grade: r.grade,
+        status: calculationLetterGrade(r.grade, r.subject.passMark),
+      }));
+
+      const isMatch = await bcrypt.compare(password, student.password);
       if (!isMatch) {
         throw new NotAcceptableException('Invalid RollNo or Password');
       }
@@ -128,7 +145,11 @@ export class StudentService {
 
       return {
         message: 'Student data',
-        data: student,
+        student,
+        formattedResult,
+        total,
+        average,
+        grade: priorityGrade,
         token,
       };
     } catch (error: any) {
@@ -192,24 +213,10 @@ export class StudentService {
         id: true,
         name: true,
         code: true,
-        role: true,
-        total: true,
-        average: true,
         schoolId: true,
+        role: true,
         school: {
           select: { name: true },
-        },
-
-        result: {
-          select: {
-            grade: true,
-            subject: {
-              select: {
-                name: true,
-                createdAt: true,
-              },
-            },
-          },
         },
       },
     });
@@ -218,17 +225,47 @@ export class StudentService {
       throw new NotFoundException('Not found. Try again');
     }
 
+    // fetch the result to to calculate grade and average also overall grade
+    const result = await this.prisma.result.findMany({
+      select: {
+        grade: true,
+        status: true,
+        subject: {
+          select: {
+            name: true,
+            passMark: true,
+          },
+        },
+      },
+    });
+
+    // calculate the average and total
+    const grade = result.map((g) => g.grade);
+    const { total, average } = calculateTotalAndAverage(grade);
+
+    // calculate the frequency letterStatus and get it using this seprate func
+    const letterStatus = result.map((s) => s.status);
+    const priorityGrade = getMostFrequentyLetter(letterStatus);
+
+    // we make it readable so we are making it pretty 😎
+
+    const formattedResult = result.map((res) => ({
+      name: res.subject.name,
+      grade: res.grade,
+      status: calculationLetterGrade(res.grade, res.subject.passMark),
+    }));
+
     if (student.schoolId != user.schoolId) {
       throw new ForbiddenException('Access denied');
     }
-
     return {
       student,
+      formattedResult,
+      grade: priorityGrade,
     };
   }
 
   // find all student of the school by school Id
-
   async findAllStudent(schoolId: string, user: JwtPayload) {
     const students = await this.prisma.student.findMany({
       where: { schoolId },
@@ -244,7 +281,6 @@ export class StudentService {
   }
 
   // delete student their ID in the param
-
   async deleteStudent(user: JwtPayload, id: string) {
     const student = await this.prisma.student.findUnique({
       where: { id: id },

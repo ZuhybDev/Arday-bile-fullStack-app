@@ -36,9 +36,9 @@ export declare class AuthAdminController {
         name: string;
         createdAt: Date;
         updatedAt: Date;
-        role: import(".prisma/client").$Enums.Role;
         email: string;
         password: string;
+        role: import(".prisma/client").$Enums.Role;
         schoolId: string;
     }[]>;
     updateAdmin(id: string, body: {

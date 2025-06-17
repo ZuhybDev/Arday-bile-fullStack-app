@@ -14,6 +14,9 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcrypt");
 const student_code_generator_1 = require("../common/lib/student.code.generator");
+const getMostFrequentyLetter_1 = require("../common/utils/getMostFrequentyLetter");
+const grade_utilis_1 = require("../common/utils/grade.utilis");
+const totalAndAverage_1 = require("../common/utils/totalAndAverage");
 const prisma_service_1 = require("../prisma/prisma.service");
 let StudentService = class StudentService {
     prisma;
@@ -48,8 +51,6 @@ let StudentService = class StudentService {
                 roll_no: student.code,
                 class: student.class,
                 schoolId: student.schoolId,
-                total: student.total,
-                average: student.average,
                 role: student.role,
                 created: student.createdAt,
             };
@@ -71,27 +72,36 @@ let StudentService = class StudentService {
                     code: true,
                     password: true,
                     role: true,
-                    total: true,
-                    average: true,
                     school: {
                         select: { name: true },
-                    },
-                    result: {
-                        select: {
-                            grade: true,
-                            subject: {
-                                select: {
-                                    name: true,
-                                    createdAt: true,
-                                },
-                            },
-                        },
                     },
                 },
             });
             if (!student) {
                 throw new common_1.NotFoundException('Student with this roll number does not exist.');
             }
+            const result = await this.prisma.result.findMany({
+                where: { studentId: student.id },
+                select: {
+                    grade: true,
+                    status: true,
+                    subject: {
+                        select: {
+                            passMark: true,
+                            name: true,
+                        },
+                    },
+                },
+            });
+            const letterStatus = result.map((r) => r.status);
+            const priorityGrade = (0, getMostFrequentyLetter_1.getMostFrequentyLetter)(letterStatus);
+            const grade = result.map((r) => r.grade);
+            const { total, average } = (0, totalAndAverage_1.calculateTotalAndAverage)(grade);
+            const formattedResult = result.map((r) => ({
+                name: r.subject.name,
+                grade: r.grade,
+                status: (0, grade_utilis_1.calculationLetterGrade)(r.grade, r.subject.passMark),
+            }));
             const isMatch = await bcrypt.compare(password, student.password);
             if (!isMatch) {
                 throw new common_1.NotAcceptableException('Invalid RollNo or Password');
@@ -101,7 +111,11 @@ let StudentService = class StudentService {
             delete student.password;
             return {
                 message: 'Student data',
-                data: student,
+                student,
+                formattedResult,
+                total,
+                average,
+                grade: priorityGrade,
                 token,
             };
         }
@@ -146,34 +160,44 @@ let StudentService = class StudentService {
                 id: true,
                 name: true,
                 code: true,
-                role: true,
-                total: true,
-                average: true,
                 schoolId: true,
+                role: true,
                 school: {
                     select: { name: true },
-                },
-                result: {
-                    select: {
-                        grade: true,
-                        subject: {
-                            select: {
-                                name: true,
-                                createdAt: true,
-                            },
-                        },
-                    },
                 },
             },
         });
         if (!student) {
             throw new common_1.NotFoundException('Not found. Try again');
         }
+        const result = await this.prisma.result.findMany({
+            select: {
+                grade: true,
+                status: true,
+                subject: {
+                    select: {
+                        name: true,
+                        passMark: true,
+                    },
+                },
+            },
+        });
+        const grade = result.map((g) => g.grade);
+        const { total, average } = (0, totalAndAverage_1.calculateTotalAndAverage)(grade);
+        const letterStatus = result.map((s) => s.status);
+        const priorityGrade = (0, getMostFrequentyLetter_1.getMostFrequentyLetter)(letterStatus);
+        const formattedResult = result.map((res) => ({
+            name: res.subject.name,
+            grade: res.grade,
+            status: (0, grade_utilis_1.calculationLetterGrade)(res.grade, res.subject.passMark),
+        }));
         if (student.schoolId != user.schoolId) {
             throw new common_1.ForbiddenException('Access denied');
         }
         return {
             student,
+            formattedResult,
+            grade: priorityGrade,
         };
     }
     async findAllStudent(schoolId, user) {

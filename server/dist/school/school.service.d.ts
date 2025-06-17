@@ -23,6 +23,7 @@ export declare class SchoolService {
             createdAt: Date;
             updatedAt: Date;
         };
+        admins: string[];
     }>;
     deletedSchool(id: string, user: JwtPayload): Promise<{
         message: string;

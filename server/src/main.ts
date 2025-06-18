@@ -9,7 +9,13 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
+  //get the port from the ENV
+  const configService = app.get(ConfigService);
+
+  app.enableCors({
+    origin: configService.get<any>('FRONTEND_URL'), //allow only frontend origin
+    credentials: true, // if you're sending cookies (optional) but i didnt add you can
+  });
 
   // use decument builder
   const config = new DocumentBuilder()
@@ -37,9 +43,6 @@ async function bootstrap() {
 
   //thats it done!!!
   // start your app
-
-  //get the port from the ENV
-  const configService = app.get(ConfigService);
 
   // and use it
   const PORT = configService.get<number>('PORT')!;

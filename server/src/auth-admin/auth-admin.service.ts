@@ -10,6 +10,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from 'src/jwt/jwt.strategy';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthAdminService {
@@ -23,6 +24,7 @@ export class AuthAdminService {
     email: string,
     password: string,
     schoolId: string,
+    res: Response,
   ) {
     if (schoolId == undefined) {
       throw new ForbiddenException(
@@ -78,6 +80,15 @@ export class AuthAdminService {
     };
     // console.log(payload);
     const token = this.jwtService.sign(payload);
+
+    res.cookie('token', token, {
+      httpOnly: true, // ⚡️ Can't be accessed by JS (protects from XSS)
+      secure: process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
+      sameSite: 'lax', // prevents CSRF, but allows top-level navigation
+      maxAge: 1000 * 60 * 60 * 24, // 1 day expiry
+      path: '/', // cookie available on all routes
+    });
+
     return {
       admin_info: {
         id: admin.id,
@@ -86,12 +97,10 @@ export class AuthAdminService {
         schoolId: admin.schoolId,
         role: admin.role,
       },
-
-      token,
     };
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string, res: Response) {
     const admin = await this.prisma.admin.findUnique({
       where: { email },
     });
@@ -114,11 +123,19 @@ export class AuthAdminService {
     // remove here
 
     const token = await this.jwtService.signAsync(payload);
+
+    res.cookie('token', token, {
+      httpOnly: true, // ⚡️ Can't be accessed by JS (protects from XSS)
+      secure: process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
+      sameSite: 'lax', // prevents CSRF, but allows top-level navigation
+      maxAge: 1000 * 60 * 60 * 24, // 1 day expiry
+      path: '/', // cookie available on all routes
+    });
+
     return {
       id: admin.id,
       name: admin.name,
       email: admin.email,
-      token,
     };
   }
 

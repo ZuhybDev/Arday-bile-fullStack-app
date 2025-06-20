@@ -1,7 +1,8 @@
 import { ThemeProvider } from "@/components/custom/theme/Theme-provider";
 import { ReactNode } from "react";
 import "./globals.css";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter, Montserrat, Bebas_Neue } from "next/font/google";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,10 +15,17 @@ const montserrat = Montserrat({
   variable: "--font-secondary",
   weight: ["400", "700"],
 });
+const BebasNeue = Bebas_Neue({
+  subsets: ["latin"],
+  variable: "--font-logo",
+  weight: "400",
+});
 
 export const metadata = {
-  title: "Arday bile",
-  description: "Built by Zuhyb",
+  title: {
+    default: "Arday Bile",
+    template: "Arday Bile | %s ",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -25,15 +33,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${montserrat.variable}`}
+      className={`${inter.variable} ${montserrat.variable} ${BebasNeue.variable}`}
     >
-      <body className="font-san">
+      <body className="font-san scroll-smooth">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <Toaster />
           {children}
         </ThemeProvider>
       </body>

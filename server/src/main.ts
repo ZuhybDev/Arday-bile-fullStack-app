@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import * as compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { ConfigService } from '@nestjs/config';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -33,10 +34,12 @@ async function bootstrap() {
   // compression for speed apis
   app.use(compression());
 
+  app.use(cookieParser());
+
   // rate limiting for
   app.use(
     rateLimit({
-      windowMs: 1 * 60 * 1000, // 15 minutes
+      windowMs: 1 * 60 * 1000, // 1 minutes
       max: 100, // limit each IP to 100 requests per windowMs
     }),
   );

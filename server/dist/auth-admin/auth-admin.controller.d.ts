@@ -1,4 +1,5 @@
 import { AuthAdminService } from './auth-admin.service';
+import { Response } from 'express';
 export declare class AuthAdminController {
     private authAdmin;
     constructor(authAdmin: AuthAdminService);
@@ -7,29 +8,26 @@ export declare class AuthAdminController {
         email: string;
         password: string;
         schoolId: string;
-    }): Promise<{
+    }, res: Response): Promise<{
         message: string;
         admin_info?: undefined;
-        token?: undefined;
     } | {
         admin_info: {
             id: string;
             admin: string;
             email: string;
             schoolId: string;
-            role: import(".prisma/client").$Enums.Role;
+            role: import("@prisma/client").$Enums.Role;
         };
-        token: string;
         message?: undefined;
     }>;
     login(body: {
         password: string;
         email: string;
-    }): Promise<{
+    }, res: Response): Promise<{
         id: string;
         name: string;
         email: string;
-        token: string;
     }>;
     findAll(): Promise<{
         id: string;
@@ -38,7 +36,7 @@ export declare class AuthAdminController {
         updatedAt: Date;
         email: string;
         password: string;
-        role: import(".prisma/client").$Enums.Role;
+        role: import("@prisma/client").$Enums.Role;
         schoolId: string;
     }[]>;
     updateAdmin(id: string, body: {

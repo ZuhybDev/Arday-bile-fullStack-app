@@ -23,7 +23,7 @@ export class SchoolService {
       data,
     });
     return {
-      message: `School-ka "${registerSchool.name}" waa la abuuray`,
+      message: `"${registerSchool.name} " created successfully`,
       id: registerSchool.id,
       school: registerSchool.name,
       created: registerSchool.createdAt,

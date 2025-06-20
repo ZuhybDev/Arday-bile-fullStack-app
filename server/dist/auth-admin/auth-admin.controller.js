@@ -23,11 +23,11 @@ let AuthAdminController = class AuthAdminController {
     constructor(authAdmin) {
         this.authAdmin = authAdmin;
     }
-    async registerAdmin(body) {
-        return this.authAdmin.registerAdmin(body.name, body.email, body.password, body.schoolId);
+    async registerAdmin(body, res) {
+        return this.authAdmin.registerAdmin(body.name, body.email, body.password, body.schoolId, res);
     }
-    login(body) {
-        return this.authAdmin.login(body.email, body.password);
+    login(body, res) {
+        return this.authAdmin.login(body.email, body.password, res);
     }
     findAll() {
         return this.authAdmin.findAllAdmins();
@@ -43,15 +43,17 @@ exports.AuthAdminController = AuthAdminController;
 __decorate([
     (0, common_1.Post)('register'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthAdminController.prototype, "registerAdmin", null);
 __decorate([
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], AuthAdminController.prototype, "login", null);
 __decorate([

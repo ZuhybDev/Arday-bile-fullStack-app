@@ -8,6 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 // import bcrypt from 'bcrypt';
 import * as bcrypt from 'bcrypt';
+import { Response } from 'express';
 import { use } from 'passport';
 import { studentCodeGenerator } from 'src/common/lib/student.code.generator';
 import { getMostFrequentyLetter } from 'src/common/utils/getMostFrequentyLetter';
@@ -73,7 +74,7 @@ export class StudentService {
   }
 
   // student login with jwt for 8 minutes only
-  async loginStudent(code: string, password: string) {
+  async loginStudent(code: string, password: string, res: Response) {
     try {
       if (!code || !password) {
         throw new NotAcceptableException('Please fill in all required fields');
@@ -140,6 +141,13 @@ export class StudentService {
       const payload = { userId: student.id, role: student.role };
       const token = this.jwtService.sign(payload);
 
+      res.cookie('token', token, {
+        httpOnly: true, // ⚡️ Can't be accessed by JS (protects from XSS)
+        secure: process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
+        sameSite: 'lax', // prevents CSRF, but allows top-level navigation
+        maxAge: 8 * 60 * 1000, // 1 day expiry
+        path: '/', // cookie available on all routes
+      });
       // Remove password before sending response
       delete (student as any).password;
 
@@ -150,7 +158,6 @@ export class StudentService {
         total,
         average,
         grade: priorityGrade,
-        token,
       };
     } catch (error: any) {
       throw new InternalServerErrorException(error.message);

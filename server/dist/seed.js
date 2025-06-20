@@ -1,21 +1,42 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.calculationLetterGrade = exports.studentCodeGenerator = void 0;
 const client_1 = require("@prisma/client");
-const student_code_generator_1 = require("../common/lib/student.code.generator");
-const grade_utilis_1 = require("../common/utils/grade.utilis");
+const bcrypt = require("bcrypt");
 const prisma = new client_1.PrismaClient();
-const code = (0, student_code_generator_1.studentCodeGenerator)();
+const studentCodeGenerator = () => Math.floor(1000 * Math.random() + 5000).toString();
+exports.studentCodeGenerator = studentCodeGenerator;
+const calculationLetterGrade = (grade, passMark) => {
+    const percentBoundaries = {
+        A: passMark,
+        B: passMark * 0.8,
+        C: passMark * 0.6,
+        D: passMark * 0.5,
+    };
+    if (grade >= percentBoundaries.A)
+        return 'A';
+    if (grade >= percentBoundaries.B)
+        return 'B';
+    if (grade >= percentBoundaries.C)
+        return 'C';
+    if (grade >= percentBoundaries.D)
+        return 'D';
+    return 'F';
+};
+exports.calculationLetterGrade = calculationLetterGrade;
 async function main() {
+    const password = '';
+    const hashedPassword = await bcrypt.hash(password, 10);
     const school = await prisma.school.create({
         data: {
-            name: 'Arday High School',
+            name: 'Arday-bile High School',
         },
     });
     const admin = await prisma.admin.create({
         data: {
             name: 'Admin User',
             email: 'admin@arday.com',
-            password: 'hashed_password_here',
+            password: hashedPassword,
             schoolId: school.id,
         },
     });
@@ -23,15 +44,15 @@ async function main() {
         data: [
             {
                 name: 'Ali Mahdi',
-                code: code,
-                password: 'pass123',
+                code: (0, exports.studentCodeGenerator)(),
+                password: hashedPassword,
                 class: 'Form 1',
                 schoolId: school.id,
             },
             {
                 name: 'Fatima Noor',
-                code: code,
-                password: 'pass123',
+                code: (0, exports.studentCodeGenerator)(),
+                password: hashedPassword,
                 class: 'Form 1',
                 schoolId: school.id,
             },
@@ -60,25 +81,25 @@ async function main() {
                     studentId: ali.id,
                     subjectId: math.id,
                     grade: 38,
-                    status: (0, grade_utilis_1.calculationLetterGrade)(38, math.passMark),
+                    status: (0, exports.calculationLetterGrade)(38, math.passMark),
                 },
                 {
                     studentId: fatima.id,
                     subjectId: math.id,
                     grade: 45,
-                    status: (0, grade_utilis_1.calculationLetterGrade)(45, math.passMark),
+                    status: (0, exports.calculationLetterGrade)(45, math.passMark),
                 },
                 {
                     studentId: ali.id,
                     subjectId: science.id,
                     grade: 52,
-                    status: (0, grade_utilis_1.calculationLetterGrade)(52, science.passMark),
+                    status: (0, exports.calculationLetterGrade)(52, science.passMark),
                 },
                 {
                     studentId: fatima.id,
                     subjectId: science.id,
                     grade: 25,
-                    status: (0, grade_utilis_1.calculationLetterGrade)(25, science.passMark),
+                    status: (0, exports.calculationLetterGrade)(25, science.passMark),
                 },
             ],
         });

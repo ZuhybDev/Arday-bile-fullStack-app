@@ -6,6 +6,17 @@
 @theme inline {
   --font-san: var(--font-primary);
   --font-heading: var(--font-secondary);
+  --font-logo: var(--font-logo);
+}
+
+/* only the landing page */
+[id] {
+  scroll-margin-top: 96px;
+}
+
+/* smooth animation  */
+html {
+  scroll-behavior: smooth;
 }
 
 :root {

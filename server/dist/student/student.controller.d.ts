@@ -1,4 +1,5 @@
 import { StudentService } from './student.service';
+import { Response } from 'express';
 export declare class StudentController {
     private studentService;
     constructor(studentService: StudentService);
@@ -14,13 +15,13 @@ export declare class StudentController {
         roll_no: string;
         class: string;
         schoolId: string;
-        role: import(".prisma/client").$Enums.Role;
+        role: import("@prisma/client").$Enums.Role;
         created: Date;
     }>;
     loginStudent(body: {
         code: string;
         password: string;
-    }): Promise<{
+    }, res: Response): Promise<{
         message: string;
         student: {
             school: {
@@ -29,7 +30,7 @@ export declare class StudentController {
             id: string;
             name: string;
             password: string;
-            role: import(".prisma/client").$Enums.Role;
+            role: import("@prisma/client").$Enums.Role;
             code: string;
         };
         formattedResult: {
@@ -40,7 +41,6 @@ export declare class StudentController {
         total: number;
         average: number;
         grade: string;
-        token: string;
     }>;
     updateStudent(id: string, body: {
         name: string;
@@ -61,7 +61,7 @@ export declare class StudentController {
             };
             id: string;
             name: string;
-            role: import(".prisma/client").$Enums.Role;
+            role: import("@prisma/client").$Enums.Role;
             schoolId: string;
             code: string;
         };

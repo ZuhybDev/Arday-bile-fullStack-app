@@ -27,9 +27,9 @@ let StudentController = class StudentController {
         const { name, password, schoolId, className } = body;
         return this.studentService.createStudent(req.user, name, password, className, schoolId);
     }
-    loginStudent(body) {
+    loginStudent(body, res) {
         const { code, password } = body;
-        return this.studentService.loginStudent(code, password);
+        return this.studentService.loginStudent(code, password, res);
     }
     updateStudent(id, body, req) {
         return this.studentService.updateStudent(req.user, id, body.name, body.password, body.code);
@@ -55,8 +55,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], StudentController.prototype, "loginStudent", null);
 __decorate([

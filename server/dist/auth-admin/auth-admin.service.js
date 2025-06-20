@@ -21,7 +21,7 @@ let AuthAdminService = class AuthAdminService {
         this.prisma = prisma;
         this.jwtService = jwtService;
     }
-    async registerAdmin(name, email, password, schoolId) {
+    async registerAdmin(name, email, password, schoolId, res) {
         if (schoolId == undefined) {
             throw new common_1.ForbiddenException('School not found. Please create the school first.');
         }
@@ -60,6 +60,13 @@ let AuthAdminService = class AuthAdminService {
             schoolId: admin.schoolId,
         };
         const token = this.jwtService.sign(payload);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 1000 * 60 * 60 * 24,
+            path: '/',
+        });
         return {
             admin_info: {
                 id: admin.id,
@@ -68,10 +75,9 @@ let AuthAdminService = class AuthAdminService {
                 schoolId: admin.schoolId,
                 role: admin.role,
             },
-            token,
         };
     }
-    async login(email, password) {
+    async login(email, password, res) {
         const admin = await this.prisma.admin.findUnique({
             where: { email },
         });
@@ -89,11 +95,17 @@ let AuthAdminService = class AuthAdminService {
             schoolId: admin.schoolId,
         };
         const token = await this.jwtService.signAsync(payload);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 1000 * 60 * 60 * 24,
+            path: '/',
+        });
         return {
             id: admin.id,
             name: admin.name,
             email: admin.email,
-            token,
         };
     }
     async updateAdmin(user, id, name, email, password) {

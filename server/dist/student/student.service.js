@@ -59,7 +59,7 @@ let StudentService = class StudentService {
             throw new common_1.InternalServerErrorException(error.message);
         }
     }
-    async loginStudent(code, password) {
+    async loginStudent(code, password, res) {
         try {
             if (!code || !password) {
                 throw new common_1.NotAcceptableException('Please fill in all required fields');
@@ -108,6 +108,13 @@ let StudentService = class StudentService {
             }
             const payload = { userId: student.id, role: student.role };
             const token = this.jwtService.sign(payload);
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                maxAge: 8 * 60 * 1000,
+                path: '/',
+            });
             delete student.password;
             return {
                 message: 'Student data',
@@ -116,7 +123,6 @@ let StudentService = class StudentService {
                 total,
                 average,
                 grade: priorityGrade,
-                token,
             };
         }
         catch (error) {

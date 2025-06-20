@@ -7,12 +7,14 @@ import {
   Patch,
   Post,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthAdminService } from './auth-admin.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/jwt/roles/roles.guard';
 import { Roles } from 'src/jwt/roles/roles.decorator';
+import { Response } from 'express';
 
 @Controller('auth-admin')
 export class AuthAdminController {
@@ -27,18 +29,23 @@ export class AuthAdminController {
       password: string;
       schoolId: string;
     },
+    @Res({ passthrough: true }) res: Response,
   ) {
     return this.authAdmin.registerAdmin(
       body.name,
       body.email,
       body.password,
       body.schoolId,
+      res,
     );
   }
 
   @Post('login')
-  login(@Body() body: { password: string; email: string }) {
-    return this.authAdmin.login(body.email, body.password);
+  login(
+    @Body() body: { password: string; email: string },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.authAdmin.login(body.email, body.password, res);
   }
 
   // for dev only

@@ -7,12 +7,14 @@ import {
   Patch,
   Post,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/jwt/roles/roles.decorator';
 import { RolesGuard } from 'src/jwt/roles/roles.guard';
 import { StudentService } from './student.service';
+import { Response } from 'express';
 
 //intialize
 @Controller('student')
@@ -45,9 +47,12 @@ export class StudentController {
 
   //login student
   @Post('login')
-  loginStudent(@Body() body: { code: string; password: string }) {
+  loginStudent(
+    @Body() body: { code: string; password: string },
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const { code, password } = body;
-    return this.studentService.loginStudent(code, password);
+    return this.studentService.loginStudent(code, password, res);
   }
 
   //update student

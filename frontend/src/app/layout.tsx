@@ -1,9 +1,10 @@
 import { ThemeProvider } from "@/components/custom/theme/Theme-provider";
 import { ReactNode } from "react";
 import "./globals.css";
+
+//fonts
 import { Inter, Montserrat, Bebas_Neue } from "next/font/google";
 import { Toaster } from "sonner";
-
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-primary",
@@ -22,10 +23,8 @@ const BebasNeue = Bebas_Neue({
 });
 
 export const metadata = {
-  title: {
-    default: "Arday Bile",
-    template: "Arday Bile | %s ",
-  },
+  title: "Arday Bile ",
+  description: "Bult by Zuhyb Dev",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -42,8 +41,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           enableSystem
           disableTransitionOnChange
         >
-          <Toaster />
           {children}
+          <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>
     </html>

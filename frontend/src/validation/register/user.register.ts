@@ -22,6 +22,6 @@ export const registerSchema = z
 export const schoolName = z.object({
   name: z
     .string()
-    .min(5, "School name must be at least 3 characters")
-    .max(20, "School name must be at most 20 characters"),
+    .min(5, "School name must be at least 5 characters")
+    .max(100, "School name must be at most 100 characters"),
 });

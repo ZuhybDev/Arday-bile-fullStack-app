@@ -7,13 +7,13 @@ const Home = () => {
   return (
     <div className=" flex flex-col gap-4 m-4">
       Hello home
-      <Link href="/acounts/school-register">
+      <Link href="/accounts/school-register">
         <Button>school</Button>
       </Link>
-      <Link href="/acounts/signup">
+      <Link href="/accounts/signup">
         <Button>signup</Button>
       </Link>
-      <Link href="/acounts/login">
+      <Link href="/accounts/login">
         <Button>login</Button>
       </Link>
     </div>

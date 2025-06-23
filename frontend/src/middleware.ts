@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
 
   if (!token) {
-    return NextResponse.redirect(new URL("/acounts/login", request.url));
+    return NextResponse.redirect(new URL("/accounts/login", request.url));
   }
 
   try {
@@ -28,8 +28,8 @@ export function middleware(request: NextRequest) {
     // ✅ Allow access
     return NextResponse.next();
   } catch (err) {
-    console.error("Failed to decode JWT:", err);
-    return NextResponse.redirect(new URL("/acounts/login", request.url));
+    // console.error("Failed to decode JWT:", err);
+    return NextResponse.redirect(new URL("/accounts/login", request.url));
   }
 }
 

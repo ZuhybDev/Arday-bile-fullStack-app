@@ -5,6 +5,7 @@ import "./globals.css";
 //fonts
 import { Inter, Montserrat, Bebas_Neue } from "next/font/google";
 import { Toaster } from "sonner";
+import { cookies } from "next/headers";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-primary",
@@ -27,7 +28,11 @@ export const metadata = {
   description: "Bult by Zuhyb Dev",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <html
       lang="en"

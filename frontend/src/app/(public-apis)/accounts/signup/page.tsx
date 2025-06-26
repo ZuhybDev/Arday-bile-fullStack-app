@@ -8,7 +8,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import api from "@/store/axios/api";
 import { toast } from "sonner";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
@@ -17,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Eye, EyeOff, Loader2Icon } from "lucide-react";
 import Link from "next/link";
+import { api } from "@/axios/client";
 
 type userRegister = z.infer<typeof registerSchema>;
 

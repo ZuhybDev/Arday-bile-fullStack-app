@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import api from "@/store/axios/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader } from "@/components/ui/card";
@@ -13,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Loader2Icon } from "lucide-react";
 import Link from "next/link";
+import { api } from "@/axios/client";
 
 type SchoolName = z.infer<typeof schoolName>;
 

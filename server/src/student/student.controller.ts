@@ -30,12 +30,12 @@ export class StudentController {
     body: {
       name: string;
       password: string;
-      schoolId: string;
       className: string;
     },
     @Req() req,
   ) {
-    const { name, password, schoolId, className } = body;
+    const { name, password, className } = body;
+    const schoolId = req.user.schoolId;
     return this.studentService.createStudent(
       req.user,
       name,
@@ -86,11 +86,26 @@ export class StudentController {
     return this.studentService.findOneStudent(req.user, id);
   }
 
+  // find all student with sigle school
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Get('all-student/')
+  findAllStudent(@Req() req) {
+    const schoolId = req.user.schoolId;
+    return this.studentService.findAllStudent(schoolId, req.user);
+  }
+
   // delete student route
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Delete('delete/:id')
   deleteStudent(@Param('id') id: string, @Req() req) {
     return this.studentService.deleteStudent(req.user, id);
+  }
+
+  @Get('check-cookie')
+  checkCookie(@Req() req) {
+    console.log('[DEBUG] cookies:', req.cookies);
+    return req.cookies;
   }
 }

@@ -24,7 +24,8 @@ let StudentController = class StudentController {
         this.studentService = studentService;
     }
     createStudent(body, req) {
-        const { name, password, schoolId, className } = body;
+        const { name, password, className } = body;
+        const schoolId = req.user.schoolId;
         return this.studentService.createStudent(req.user, name, password, className, schoolId);
     }
     loginStudent(body, res) {
@@ -37,8 +38,16 @@ let StudentController = class StudentController {
     studentData(id, req) {
         return this.studentService.findOneStudent(req.user, id);
     }
+    findAllStudent(req) {
+        const schoolId = req.user.schoolId;
+        return this.studentService.findAllStudent(schoolId, req.user);
+    }
     deleteStudent(id, req) {
         return this.studentService.deleteStudent(req.user, id);
+    }
+    checkCookie(req) {
+        console.log('[DEBUG] cookies:', req.cookies);
+        return req.cookies;
     }
 };
 exports.StudentController = StudentController;
@@ -84,6 +93,15 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN'),
+    (0, common_1.Get)('all-student/'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], StudentController.prototype, "findAllStudent", null);
+__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
     (0, common_1.Delete)('delete/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Req)()),
@@ -91,6 +109,13 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], StudentController.prototype, "deleteStudent", null);
+__decorate([
+    (0, common_1.Get)('check-cookie'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], StudentController.prototype, "checkCookie", null);
 exports.StudentController = StudentController = __decorate([
     (0, common_1.Controller)('student'),
     __metadata("design:paramtypes", [student_service_1.StudentService])

@@ -63,7 +63,19 @@ export declare class StudentService {
         }[];
         grade: string;
     }>;
-    findAllStudent(schoolId: string, user: JwtPayload): Promise<void>;
+    findAllStudent(schoolId: string, user: JwtPayload): Promise<{
+        id: string;
+        code: string;
+        name: string;
+        class: string;
+        average: number;
+        overallGrade: string;
+        grades: {
+            subject: string;
+            grade: number;
+            status: string;
+        }[];
+    }[]>;
     deleteStudent(user: JwtPayload, id: string): Promise<{
         message: string;
     }>;

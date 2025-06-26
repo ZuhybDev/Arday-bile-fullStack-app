@@ -7,7 +7,7 @@ export declare class SchoolService {
         name: string;
     }): Promise<{
         message: string;
-        id: string;
+        schoolId: string;
         school: string;
         created: Date;
     }>;

@@ -6,7 +6,6 @@ export declare class StudentController {
     createStudent(body: {
         name: string;
         password: string;
-        schoolId: string;
         className: string;
     }, req: any): Promise<{
         message: string;
@@ -72,7 +71,21 @@ export declare class StudentController {
         }[];
         grade: string;
     }>;
+    findAllStudent(req: any): Promise<{
+        id: string;
+        code: string;
+        name: string;
+        class: string;
+        average: number;
+        overallGrade: string;
+        grades: {
+            subject: string;
+            grade: number;
+            status: string;
+        }[];
+    }[]>;
     deleteStudent(id: string, req: any): Promise<{
         message: string;
     }>;
+    checkCookie(req: any): any;
 }

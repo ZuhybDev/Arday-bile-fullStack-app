@@ -14,9 +14,10 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.enableCors({
-    origin: configService.get<any>('FRONTEND_URL'), //allow only frontend origin
-    credentials: true, // if you're sending cookies (optional) but i didnt add you can
-  });
+  origin: 'http://localhost:3000',
+  credentials: true,
+});
+
 
   // use decument builder
   const config = new DocumentBuilder()

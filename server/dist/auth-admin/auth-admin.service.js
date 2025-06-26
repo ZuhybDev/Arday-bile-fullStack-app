@@ -37,12 +37,11 @@ let AuthAdminService = class AuthAdminService {
         const existingAdmin = await this.prisma.admin.findUnique({
             where: { email },
         });
-        if (existingAdmin)
-            return {
-                message: 'Email is already in used',
-            };
+        if (existingAdmin) {
+            throw new common_1.ForbiddenException('Email already in use. Try different');
+        }
         if (password.length < 6) {
-            throw new common_1.UnprocessableEntityException('Password-ka waa inaa ka badnaada 6 xaraf');
+            throw new common_1.UnprocessableEntityException('Password must be at least 6 characters');
         }
         const hashedPassword = await bcrypt.hash(password, 12);
         const admin = await this.prisma.admin.create({
@@ -62,19 +61,17 @@ let AuthAdminService = class AuthAdminService {
         const token = this.jwtService.sign(payload);
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: false,
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
             maxAge: 1000 * 60 * 60 * 24,
             path: '/',
         });
         return {
-            admin_info: {
-                id: admin.id,
-                admin: admin.name,
-                email: admin.email,
-                schoolId: admin.schoolId,
-                role: admin.role,
-            },
+            id: admin.id,
+            admin: admin.name,
+            email: admin.email,
+            schoolId: admin.schoolId,
+            role: admin.role,
         };
     }
     async login(email, password, res) {
@@ -97,8 +94,8 @@ let AuthAdminService = class AuthAdminService {
         const token = await this.jwtService.signAsync(payload);
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: false,
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
             maxAge: 1000 * 60 * 60 * 24,
             path: '/',
         });

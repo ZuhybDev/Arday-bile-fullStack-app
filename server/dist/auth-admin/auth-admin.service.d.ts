@@ -7,17 +7,11 @@ export declare class AuthAdminService {
     private jwtService;
     constructor(prisma: PrismaService, jwtService: JwtService);
     registerAdmin(name: string, email: string, password: string, schoolId: string, res: Response): Promise<{
-        message: string;
-        admin_info?: undefined;
-    } | {
-        admin_info: {
-            id: string;
-            admin: string;
-            email: string;
-            schoolId: string;
-            role: import("@prisma/client").$Enums.Role;
-        };
-        message?: undefined;
+        id: string;
+        admin: string;
+        email: string;
+        schoolId: string;
+        role: import("@prisma/client").$Enums.Role;
     }>;
     login(email: string, password: string, res: Response): Promise<{
         id: string;

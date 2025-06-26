@@ -12,7 +12,7 @@ const getMostFrequentyLetter = (letters) => {
             return b[1] - a[1];
         return gradePrioritize.indexOf(a[0]) - gradePrioritize.indexOf(b[0]);
     });
-    return sorted[0][0];
+    return sorted[0]?.[0] ?? null;
 };
 exports.getMostFrequentyLetter = getMostFrequentyLetter;
 //# sourceMappingURL=getMostFrequentyLetter.js.map

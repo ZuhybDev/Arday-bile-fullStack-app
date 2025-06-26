@@ -50,14 +50,13 @@ export class AuthAdminService {
       where: { email },
     });
 
-    if (existingAdmin)
-      return {
-        message: 'Email is already in used',
-      };
+    if (existingAdmin) {
+      throw new ForbiddenException('Email already in use. Try different');
+    }
 
     if (password.length < 6) {
       throw new UnprocessableEntityException(
-        'Password-ka waa inaa ka badnaada 6 xaraf',
+        'Password must be at least 6 characters',
       );
     }
 
@@ -83,20 +82,18 @@ export class AuthAdminService {
 
     res.cookie('token', token, {
       httpOnly: true, // ⚡️ Can't be accessed by JS (protects from XSS)
-      secure: process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
-      sameSite: 'lax', // prevents CSRF, but allows top-level navigation
+      secure: false, // process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 1000 * 60 * 60 * 24, // 1 day expiry
-      path: '/', // cookie available on all routes
+      path: '/',
     });
 
     return {
-      admin_info: {
-        id: admin.id,
-        admin: admin.name,
-        email: admin.email,
-        schoolId: admin.schoolId,
-        role: admin.role,
-      },
+      id: admin.id,
+      admin: admin.name,
+      email: admin.email,
+      schoolId: admin.schoolId,
+      role: admin.role,
     };
   }
 
@@ -126,8 +123,8 @@ export class AuthAdminService {
 
     res.cookie('token', token, {
       httpOnly: true, // ⚡️ Can't be accessed by JS (protects from XSS)
-      secure: process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
-      sameSite: 'lax', // prevents CSRF, but allows top-level navigation
+      secure: false, // process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 1000 * 60 * 60 * 24, // 1 day expiry
       path: '/', // cookie available on all routes
     });

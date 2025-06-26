@@ -63,7 +63,6 @@ export class AuthAdminController {
   updateAdmin(
     @Param('id') id: string,
     @Body()
-    @Body()
     body: { name?: string; email?: string; password?: string },
     @Req() req,
   ) {
@@ -74,6 +73,17 @@ export class AuthAdminController {
       body.email,
       body.password,
     );
+  }
+
+  // logoutjust delete the cookies
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('token', {
+      path: '/',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    });
+    return { message: 'Logged out' };
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

@@ -274,17 +274,59 @@ export class StudentService {
 
   // find all student of the school by school Id
   async findAllStudent(schoolId: string, user: JwtPayload) {
+    if (user.schoolId !== schoolId) {
+      throw new ForbiddenException('Access denied');
+    }
+
     const students = await this.prisma.student.findMany({
       where: { schoolId },
       select: {
+        id: true,
         code: true,
         name: true,
+        class: true,
+        result: {
+          select: {
+            grade: true,
+            status: true,
+            subject: {
+              select: {
+                name: true,
+                passMark: true,
+              },
+            },
+          },
+        },
       },
     });
 
-    if (!students) {
-      throw new NotFoundException('Not found. Try again');
+    if (students.length === 0) {
+      return [];
     }
+
+    return students.map((student) => {
+      const formattedResult = student.result.map((res) => ({
+        subject: res.subject.name,
+        grade: res.grade,
+        status: calculationLetterGrade(res.grade, res.subject.passMark),
+      }));
+
+      const numericGrades = student.result.map((r) => r.grade).filter(Boolean);
+      const { total, average } = calculateTotalAndAverage(numericGrades);
+
+      const letterStatuses = student.result.map((r) => r.status);
+      const overallGrade = getMostFrequentyLetter(letterStatuses);
+
+      return {
+        id: student.id,
+        code: student.code,
+        name: student.name,
+        class: student.class,
+        average,
+        overallGrade: overallGrade ?? 'N/A',
+        grades: formattedResult,
+      };
+    });
   }
 
   // delete student their ID in the param

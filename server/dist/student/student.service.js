@@ -207,16 +207,53 @@ let StudentService = class StudentService {
         };
     }
     async findAllStudent(schoolId, user) {
+        if (user.schoolId !== schoolId) {
+            throw new common_1.ForbiddenException('Access denied');
+        }
         const students = await this.prisma.student.findMany({
             where: { schoolId },
             select: {
+                id: true,
                 code: true,
                 name: true,
+                class: true,
+                result: {
+                    select: {
+                        grade: true,
+                        status: true,
+                        subject: {
+                            select: {
+                                name: true,
+                                passMark: true,
+                            },
+                        },
+                    },
+                },
             },
         });
-        if (!students) {
-            throw new common_1.NotFoundException('Not found. Try again');
+        if (students.length === 0) {
+            return [];
         }
+        return students.map((student) => {
+            const formattedResult = student.result.map((res) => ({
+                subject: res.subject.name,
+                grade: res.grade,
+                status: (0, grade_utilis_1.calculationLetterGrade)(res.grade, res.subject.passMark),
+            }));
+            const numericGrades = student.result.map((r) => r.grade).filter(Boolean);
+            const { total, average } = (0, totalAndAverage_1.calculateTotalAndAverage)(numericGrades);
+            const letterStatuses = student.result.map((r) => r.status);
+            const overallGrade = (0, getMostFrequentyLetter_1.getMostFrequentyLetter)(letterStatuses);
+            return {
+                id: student.id,
+                code: student.code,
+                name: student.name,
+                class: student.class,
+                average,
+                overallGrade: overallGrade ?? 'N/A',
+                grades: formattedResult,
+            };
+        });
     }
     async deleteStudent(user, id) {
         const student = await this.prisma.student.findUnique({

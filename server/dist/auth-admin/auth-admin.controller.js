@@ -35,6 +35,14 @@ let AuthAdminController = class AuthAdminController {
     updateAdmin(id, body, req) {
         return this.authAdmin.updateAdmin(req.user, id, body.name, body.email, body.password);
     }
+    logout(res) {
+        res.clearCookie('token', {
+            path: '/',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            secure: process.env.NODE_ENV === 'production',
+        });
+        return { message: 'Logged out' };
+    }
     remove(id, req) {
         return this.authAdmin.removeAdmin(req.user, id);
     }
@@ -70,12 +78,18 @@ __decorate([
     (0, common_1.Patch)('update/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
-    __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
 ], AuthAdminController.prototype, "updateAdmin", null);
+__decorate([
+    (0, common_1.Post)('logout'),
+    __param(0, (0, common_1.Res)({ passthrough: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthAdminController.prototype, "logout", null);
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN'),

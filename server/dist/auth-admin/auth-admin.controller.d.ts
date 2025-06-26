@@ -9,17 +9,11 @@ export declare class AuthAdminController {
         password: string;
         schoolId: string;
     }, res: Response): Promise<{
-        message: string;
-        admin_info?: undefined;
-    } | {
-        admin_info: {
-            id: string;
-            admin: string;
-            email: string;
-            schoolId: string;
-            role: import("@prisma/client").$Enums.Role;
-        };
-        message?: undefined;
+        id: string;
+        admin: string;
+        email: string;
+        schoolId: string;
+        role: import("@prisma/client").$Enums.Role;
     }>;
     login(body: {
         password: string;
@@ -49,6 +43,9 @@ export declare class AuthAdminController {
         name: string;
         email: string;
     }>;
+    logout(res: Response): {
+        message: string;
+    };
     remove(id: string, req: any): Promise<{
         messasge: string;
     }>;

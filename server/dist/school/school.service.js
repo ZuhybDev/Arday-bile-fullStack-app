@@ -22,8 +22,8 @@ let SchoolService = class SchoolService {
             data,
         });
         return {
-            message: `School-ka "${registerSchool.name}" waa la abuuray`,
-            id: registerSchool.id,
+            message: `"${registerSchool.name} " Created successfully`,
+            schoolId: registerSchool.id,
             school: registerSchool.name,
             created: registerSchool.createdAt,
         };

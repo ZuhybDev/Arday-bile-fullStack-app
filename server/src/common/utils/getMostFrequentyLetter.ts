@@ -17,5 +17,5 @@ export const getMostFrequentyLetter = (letters: string[]): string => {
     return gradePrioritize.indexOf(a[0]) - gradePrioritize.indexOf(b[0]);
   });
 
-  return sorted[0][0];
+  return sorted[0]?.[0] ?? null;
 };

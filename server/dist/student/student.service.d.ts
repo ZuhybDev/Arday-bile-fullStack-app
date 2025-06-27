@@ -37,12 +37,12 @@ export declare class StudentService {
         average: number;
         grade: string;
     }>;
-    updateStudent(user: JwtPayload, id: string, name?: string, password?: string, code?: string): Promise<{
+    updateStudent(user: JwtPayload, id: string, name?: string, password?: string, className?: string): Promise<{
         message: string;
         data: {
             id: string;
             name: string;
-            code: string;
+            class: string;
         };
     }>;
     findOneStudent(user: JwtPayload, id: string): Promise<{
@@ -55,6 +55,7 @@ export declare class StudentService {
             role: import("@prisma/client").$Enums.Role;
             schoolId: string;
             code: string;
+            className: string;
         };
         formattedResult: {
             name: string;

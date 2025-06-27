@@ -44,13 +44,13 @@ export declare class StudentController {
     updateStudent(id: string, body: {
         name: string;
         password: string;
-        code: string;
+        className: string;
     }, req: any): Promise<{
         message: string;
         data: {
             id: string;
             name: string;
-            code: string;
+            class: string;
         };
     }>;
     studentData(id: string, req: any): Promise<{
@@ -63,6 +63,7 @@ export declare class StudentController {
             role: import("@prisma/client").$Enums.Role;
             schoolId: string;
             code: string;
+            className: string;
         };
         formattedResult: {
             name: string;
@@ -87,5 +88,4 @@ export declare class StudentController {
     deleteStudent(id: string, req: any): Promise<{
         message: string;
     }>;
-    checkCookie(req: any): any;
 }

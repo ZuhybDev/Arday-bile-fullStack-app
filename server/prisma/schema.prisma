@@ -37,7 +37,7 @@ model Student {
   name      String
   code      String   @unique
   password  String
-  class     String   @default("")
+  className String   @default("")
   role      Role     @default(STUDENT)
   schoolId  String
   school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)

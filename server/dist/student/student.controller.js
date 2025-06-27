@@ -33,7 +33,7 @@ let StudentController = class StudentController {
         return this.studentService.loginStudent(code, password, res);
     }
     updateStudent(id, body, req) {
-        return this.studentService.updateStudent(req.user, id, body.name, body.password, body.code);
+        return this.studentService.updateStudent(req.user, id, body.name, body.password, body.className);
     }
     studentData(id, req) {
         return this.studentService.findOneStudent(req.user, id);
@@ -44,10 +44,6 @@ let StudentController = class StudentController {
     }
     deleteStudent(id, req) {
         return this.studentService.deleteStudent(req.user, id);
-    }
-    checkCookie(req) {
-        console.log('[DEBUG] cookies:', req.cookies);
-        return req.cookies;
     }
 };
 exports.StudentController = StudentController;
@@ -109,13 +105,6 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], StudentController.prototype, "deleteStudent", null);
-__decorate([
-    (0, common_1.Get)('check-cookie'),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], StudentController.prototype, "checkCookie", null);
 exports.StudentController = StudentController = __decorate([
     (0, common_1.Controller)('student'),
     __metadata("design:paramtypes", [student_service_1.StudentService])

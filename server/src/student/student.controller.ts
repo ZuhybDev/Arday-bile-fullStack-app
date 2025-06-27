@@ -65,7 +65,7 @@ export class StudentController {
     body: {
       name: string;
       password: string;
-      code: string;
+      className: string;
     },
     @Req() req,
   ) {
@@ -74,7 +74,7 @@ export class StudentController {
       id,
       body.name,
       body.password,
-      body.code,
+      body.className,
     );
   }
 
@@ -101,11 +101,5 @@ export class StudentController {
   @Delete('delete/:id')
   deleteStudent(@Param('id') id: string, @Req() req) {
     return this.studentService.deleteStudent(req.user, id);
-  }
-
-  @Get('check-cookie')
-  checkCookie(@Req() req) {
-    console.log('[DEBUG] cookies:', req.cookies);
-    return req.cookies;
   }
 }

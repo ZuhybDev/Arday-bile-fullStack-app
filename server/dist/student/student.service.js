@@ -41,7 +41,7 @@ let StudentService = class StudentService {
                     password: hashedPassword,
                     code: studentCode,
                     schoolId,
-                    class: className,
+                    className: className,
                 },
             });
             return {
@@ -49,7 +49,7 @@ let StudentService = class StudentService {
                 id: student.id,
                 name: student.name,
                 roll_no: student.code,
-                class: student.class,
+                class: student.className,
                 schoolId: student.schoolId,
                 role: student.role,
                 created: student.createdAt,
@@ -129,7 +129,7 @@ let StudentService = class StudentService {
             throw new common_1.InternalServerErrorException(error.message);
         }
     }
-    async updateStudent(user, id, name, password, code) {
+    async updateStudent(user, id, name, password, className) {
         const student = await this.prisma.student.findUnique({
             where: { id },
         });
@@ -144,8 +144,8 @@ let StudentService = class StudentService {
             updatingData.name = name;
         if (password)
             updatingData.password = await bcrypt.hash(password, 10);
-        if (code)
-            updatingData.name = code;
+        if (className)
+            updatingData.className = className;
         const updatedStudent = await this.prisma.student.update({
             where: { id },
             data: updatingData,
@@ -155,7 +155,7 @@ let StudentService = class StudentService {
             data: {
                 id: updatedStudent.id,
                 name: updatedStudent.name,
-                code: updatedStudent.code,
+                class: updatedStudent.className,
             },
         };
     }
@@ -166,6 +166,7 @@ let StudentService = class StudentService {
                 id: true,
                 name: true,
                 code: true,
+                className: true,
                 schoolId: true,
                 role: true,
                 school: {
@@ -216,7 +217,7 @@ let StudentService = class StudentService {
                 id: true,
                 code: true,
                 name: true,
-                class: true,
+                className: true,
                 result: {
                     select: {
                         grade: true,
@@ -248,7 +249,7 @@ let StudentService = class StudentService {
                 id: student.id,
                 code: student.code,
                 name: student.name,
-                class: student.class,
+                class: student.className,
                 average,
                 overallGrade: overallGrade ?? 'N/A',
                 grades: formattedResult,

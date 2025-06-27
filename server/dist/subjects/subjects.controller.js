@@ -24,11 +24,13 @@ let SubjectsController = class SubjectsController {
         this.subjectsService = subjectsService;
     }
     create(body, req) {
-        const { name, passMark, schoolId } = body;
+        const { name, passMark } = body;
+        const schoolId = req.user.schoolId;
         return this.subjectsService.createSubject(req.user, name, passMark, schoolId);
     }
-    findAllSubjects(id, req) {
-        return this.subjectsService.findAllSubjects(id, req.user);
+    findAllSubjects(req) {
+        const schoolId = req.user.schoolId;
+        return this.subjectsService.findAllSubjects(schoolId, req.user);
     }
     findOne(id, req) {
         return this.subjectsService.findOneSubject(id, req.user);
@@ -55,11 +57,10 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN'),
-    (0, common_1.Get)('subject-data/:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Req)()),
+    (0, common_1.Get)('subject-data/'),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], SubjectsController.prototype, "findAllSubjects", null);
 __decorate([

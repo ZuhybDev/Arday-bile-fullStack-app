@@ -6,10 +6,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-// import bcrypt from 'bcrypt';
 import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
-import { use } from 'passport';
 import { studentCodeGenerator } from 'src/common/lib/student.code.generator';
 import { getMostFrequentyLetter } from 'src/common/utils/getMostFrequentyLetter';
 import { calculationLetterGrade } from 'src/common/utils/grade.utilis';
@@ -55,7 +53,7 @@ export class StudentService {
           password: hashedPassword,
           code: studentCode,
           schoolId,
-          class: className,
+          className: className,
         },
       });
       return {
@@ -63,7 +61,7 @@ export class StudentService {
         id: student.id,
         name: student.name,
         roll_no: student.code,
-        class: student.class,
+        class: student.className,
         schoolId: student.schoolId,
         role: student.role,
         created: student.createdAt,
@@ -170,7 +168,7 @@ export class StudentService {
     id: string,
     name?: string,
     password?: string,
-    code?: string,
+    className?: string,
   ) {
     const student = await this.prisma.student.findUnique({
       where: { id },
@@ -194,7 +192,7 @@ export class StudentService {
 
     if (name) updatingData.name = name;
     if (password) updatingData.password = await bcrypt.hash(password, 10);
-    if (code) updatingData.name = code;
+    if (className) updatingData.className = className;
 
     const updatedStudent = await this.prisma.student.update({
       where: { id },
@@ -206,7 +204,7 @@ export class StudentService {
       data: {
         id: updatedStudent.id,
         name: updatedStudent.name,
-        code: updatedStudent.code,
+        class: updatedStudent.className,
       },
     };
   }
@@ -220,6 +218,7 @@ export class StudentService {
         id: true,
         name: true,
         code: true,
+        className: true,
         schoolId: true,
         role: true,
         school: {
@@ -284,7 +283,7 @@ export class StudentService {
         id: true,
         code: true,
         name: true,
-        class: true,
+        className: true,
         result: {
           select: {
             grade: true,
@@ -321,7 +320,7 @@ export class StudentService {
         id: student.id,
         code: student.code,
         name: student.name,
-        class: student.class,
+        class: student.className,
         average,
         overallGrade: overallGrade ?? 'N/A',
         grades: formattedResult,

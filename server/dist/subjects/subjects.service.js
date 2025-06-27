@@ -43,7 +43,7 @@ let SubjectsService = class SubjectsService {
             where: { schoolId },
         });
         if (!allsubjects || allsubjects.length == 0) {
-            throw new common_1.NotFoundException('No subjects found for this school.');
+            return [];
         }
         if (schoolId != user.schoolId) {
             throw new common_1.ForbiddenException('Access denied');

@@ -13,7 +13,7 @@ export declare class SubjectsService {
             passMark: number;
         };
     }>;
-    findAllSubjects(schoolId: string, user: JwtPayload): Promise<{
+    findAllSubjects(schoolId: string, user: JwtPayload): Promise<never[] | {
         cound: number;
         allsubjects: {
             id: string;

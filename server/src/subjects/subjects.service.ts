@@ -50,7 +50,7 @@ export class SubjectsService {
     });
 
     if (!allsubjects || allsubjects.length == 0) {
-      throw new NotFoundException('No subjects found for this school.');
+      return [];
     }
 
     if (schoolId != user.schoolId) {

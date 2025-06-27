@@ -26,7 +26,8 @@ export class SubjectsController {
     @Body() body: { name: string; passMark: number; schoolId: string },
     @Req() req,
   ) {
-    const { name, passMark, schoolId } = body;
+    const { name, passMark } = body;
+    const schoolId = req.user.schoolId;
     return this.subjectsService.createSubject(
       req.user,
       name,
@@ -38,9 +39,10 @@ export class SubjectsController {
   // get all subject by schoolID
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
-  @Get('subject-data/:id')
-  findAllSubjects(@Param('id') id: string, @Req() req) {
-    return this.subjectsService.findAllSubjects(id, req.user);
+  @Get('subject-data/')
+  findAllSubjects(@Req() req) {
+    const schoolId = req.user.schoolId;
+    return this.subjectsService.findAllSubjects(schoolId, req.user);
   }
   // get One subject by its id
   @UseGuards(AuthGuard('jwt'), RolesGuard)

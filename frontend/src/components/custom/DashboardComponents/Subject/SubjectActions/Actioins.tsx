@@ -11,21 +11,23 @@ import { FileChartLine, FilePen, Trash, EllipsisVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
-import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog";
 import { api } from "@/axios/client";
+import { ConfirmDeleteDialog } from "../../StudentData/StudentActions/ConfirmDeleteDialog";
+import { UpdateSubjectDailog } from "./UpdateSubject";
 
-interface ActionsProps {
+interface subejctsProps {
   id: string;
   name: string;
 }
 
-export const Actions: React.FC<ActionsProps> = ({ id, name }) => {
+export const SubjectActions: React.FC<subejctsProps> = ({ id, name }) => {
   const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
 
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/student/delete/${id}`);
+      const res = await api.delete(`/subjects/delete/${id}`);
       toast.success(`${res.data.message}`);
       router.refresh();
     } catch (error: any) {
@@ -43,11 +45,11 @@ export const Actions: React.FC<ActionsProps> = ({ id, name }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/report/${id}`)}
+            onSelect={(e) => {
+              e.preventDefault();
+              setUpdateDialogOpen(true);
+            }}
           >
-            <FileChartLine className="mr-2 h-4 w-4" /> View Report
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push(`/dashboard/student`)}>
             <FilePen className="mr-2 h-4 w-4" /> Edit
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -68,6 +70,12 @@ export const Actions: React.FC<ActionsProps> = ({ id, name }) => {
         setOpen={setDialogOpen}
         studentName={name}
         onConfirm={handleDelete}
+      />
+
+      <UpdateSubjectDailog
+        open={updateDialogOpen}
+        setOpen={setUpdateDialogOpen}
+        subejctId={id}
       />
     </>
   );

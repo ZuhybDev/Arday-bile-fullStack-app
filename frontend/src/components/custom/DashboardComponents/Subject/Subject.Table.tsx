@@ -23,17 +23,18 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Actions } from "./StudentActions/Actions";
-import AddStudent from "./StudentActions/AddStudent";
-import { columns, Student } from "./Columns";
+import { Actions } from "../StudentData/StudentActions/Actions";
+import AddStudent from "../StudentData/StudentActions/AddStudent";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { Subject, columns } from "./Column";
+import AddSubjects from "./SubjectActions/Addsubject";
 
 interface DataTableProps {
-  data: Student[];
+  data: Subject[];
 }
 
-export const DataTable: React.FC<DataTableProps> = ({ data }) => {
+export const SubjectDataTable: React.FC<DataTableProps> = ({ data }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -41,7 +42,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
     pageSize: 40,
   });
 
-  const table = useReactTable<Student>({
+  const table = useReactTable<Subject>({
     data,
     columns,
     state: { sorting, columnFilters, pagination },
@@ -65,18 +66,15 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
           }
           className="max-w-md"
         />
-        <AddStudent />
+        <AddSubjects />
       </div>
 
       <div className="rounded-md border overflow-hidden">
         <div className="max-h-[500px] overflow-y-auto">
           <Table className="w-full border-collapse">
-            <TableHeader>
+            <TableHeader className="dark:bg-card">
               {table.getHeaderGroups().map((hg) => (
-                <TableRow
-                  key={hg.id}
-                  className="sticky top-0 z-10 bg-background"
-                >
+                <TableRow key={hg.id}>
                   {hg.headers.map((h) => (
                     <TableHead key={h.id}>
                       {h.isPlaceholder

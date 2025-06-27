@@ -4,7 +4,7 @@ import { Student } from "@/components/custom/DashboardComponents/StudentData/Col
 import { DataTable } from "@/components/custom/DashboardComponents/StudentData/DataTable";
 import { api } from "@/axios/client";
 import { getCookies } from "@/axios/getCookies";
-import AddStudent from "@/components/custom/DashboardComponents/StudentActions/AddStudent";
+import AddStudent from "@/components/custom/DashboardComponents/StudentData/StudentActions/AddStudent";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
@@ -32,8 +32,7 @@ const StudentsPage = () => {
 
         setStudent(students);
       } catch (error: any) {
-        toast(error.response.data.message || "Failed to fetch students");
-        serError(error.response.data.message);
+        serError(error.response.data.message || "Failed to fetch students");
       } finally {
         setLoading(false);
       }
@@ -43,13 +42,13 @@ const StudentsPage = () => {
 
   if (loading)
     return (
-      <div className=" flex mt-38 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center">
+      <div className=" mt-38 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center">
         <Loader className=" animate-spin" size={25} />
       </div>
     );
   if (error)
     return (
-      <div className="  flex mt-38 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center">
+      <div className="  mt-38 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center">
         <p>Some went please refresh the page</p>
         {error}
       </div>
@@ -68,7 +67,7 @@ const StudentsPage = () => {
       </section>
 
       {student.length === 0 ? (
-        <div className="  flex mt-34 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center">
+        <div className="  mt-34 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center">
           <p className="text-lg font-medium">No students registered yet.</p>
           <p className="text-sm mt-1 mb-2">Click "+ Add" to get started.</p>
           <AddStudent />

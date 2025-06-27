@@ -1,8 +1,10 @@
 "use client";
 
 import { ColumnDef, CellContext } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Actions } from "./StudentActions/Actions";
+// Assuming this is your action component
 
 export interface Student {
   id: string;
@@ -18,20 +20,19 @@ export const columns: ColumnDef<Student>[] = [
     header: "No",
     cell: (info: CellContext<Student, any>) => {
       const { table, row } = info;
-      const { pageIndex, pageSize } = table.getState().pagination;
-      const allRows = table.getSortedRowModel().rows;
-      const rowIndex = allRows.indexOf(row);
+      const { pageIndex } = table.getState().pagination;
+      const rowIndex = table.getSortedRowModel().rows.indexOf(row);
       return rowIndex + 1 + pageIndex;
     },
     enableSorting: false,
   },
   {
     accessorKey: "code",
-    header: "RollNo",
+    header: "Roll No",
   },
   {
     accessorKey: "name",
-    header: " Student Name",
+    header: "Student Name",
   },
   {
     accessorKey: "class",
@@ -45,5 +46,8 @@ export const columns: ColumnDef<Student>[] = [
     id: "actions",
     header: "Actions",
     enableSorting: false,
+    cell: ({ row }) => (
+      <Actions id={row.original.id} name={row.original.name} />
+    ),
   },
 ];

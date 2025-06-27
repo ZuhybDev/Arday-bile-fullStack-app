@@ -15,13 +15,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { studentSchema } from "@/validation/Student";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2Icon } from "lucide-react";
+import { Eye, EyeOff, Loader2Icon, Rss } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
 import { api } from "@/axios/client";
-import { useRouter } from "next/navigation";
 
 type StudentRegister = z.infer<typeof studentSchema>;
 
@@ -29,8 +28,6 @@ const AddStudent = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<StudentRegister | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const router = useRouter();
 
   const {
     register,
@@ -56,8 +53,8 @@ const AddStudent = () => {
         const res = await api.post("/student/register", formData, {
           withCredentials: true,
         });
+
         toast.success(res.data.message);
-        router.refresh();
         reset();
       } catch (error: any) {
         const errMessage =
@@ -78,9 +75,9 @@ const AddStudent = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="px-8 cursor-pointer">+ Add</Button>
+        <Button className=" cursor-pointer">+ Add Student</Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[420px]">
+      <DialogContent className="max-w-[320px]">
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
           <DialogHeader>
             <DialogTitle>Register Student</DialogTitle>
@@ -94,7 +91,7 @@ const AddStudent = () => {
             <Input
               {...register("name")}
               placeholder="Student name"
-              autoComplete="name"
+              autoComplete="off"
             />
             {errors.name && (
               <p className="text-sm text-red-500">{errors.name.message}</p>
@@ -108,6 +105,7 @@ const AddStudent = () => {
                 {...register("password")}
                 placeholder="Student password"
                 type={showPassword ? "text" : "password"}
+                autoComplete="off"
               />
               <span
                 className="absolute right-3 top-2/4 -translate-y-1/2 cursor-pointer"
@@ -123,7 +121,12 @@ const AddStudent = () => {
 
           <div className="grid gap-3">
             <Label>Class name</Label>
-            <Input {...register("className")} placeholder="Class name" />
+            <Input
+              {...register("className")}
+              placeholder="Class name"
+              autoComplete="off"
+            />
+
             {errors.className && (
               <p className="text-sm text-red-500">{errors.className.message}</p>
             )}

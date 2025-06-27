@@ -76,7 +76,7 @@ const school = () => {
           {/* link */}
           <div className="flex gap-2 items-center text-sm text-secondary-foreground dark:text-primary">
             I have an account?
-            <Link href="/acounts/login" className="hover:underline">
+            <Link href="/accounts/login" className="hover:underline">
               Sign in
             </Link>
           </div>

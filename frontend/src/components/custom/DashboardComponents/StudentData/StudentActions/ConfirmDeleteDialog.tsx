@@ -33,7 +33,7 @@ export const ConfirmDeleteDialog: React.FC<ConfirmDeleteDialogProps> = ({
         <p className="text-sm text-muted-foreground">
           Do you really want to delete{" "}
           <span className="font-sans text-foreground">{studentName}</span>? This
-          action cannot be undone.
+          action cannot be undone. and all <span className=" p-2 round-lg bg-card ">results</span> will be deleted
         </p>
 
         <DialogFooter className="mt-4">

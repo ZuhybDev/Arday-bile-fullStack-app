@@ -79,9 +79,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                 >
                   {hg.headers.map((h) => (
                     <TableHead key={h.id}>
-                      {h.isPlaceholder
-                        ? null
-                        : flexRender(h.column.columnDef.header, h.getContext())}
+                      {flexRender(h.column.columnDef.header, h.getContext())}
                     </TableHead>
                   ))}
                 </TableRow>

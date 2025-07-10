@@ -8,9 +8,9 @@ export const studentSchema = z.object({
     .max(100, "Name must at most 20 charectors"),
   password: z
     .string()
-    .min(5, "Password must be at least 5 charectors")
+    .min(2, "Password must be at least 5 charectors")
     .max(8, "Password is too long"),
-  className: z.string().min(1, "Name must be at least 1 charecters"),
+  className: z.string().min(1, "class name must be at least 1 charecters"),
 });
 
 const emptyOrMin = (min: number) =>

@@ -51,11 +51,6 @@ export const routes = [
     path: "/dashboard/report",
   },
   {
-    name: "Me",
-    icon: UserCog,
-    path: "/dashboard/me",
-  },
-  {
     name: "Settings",
     icon: Settings,
     path: "/dashboard/settings",
@@ -81,12 +76,12 @@ export const features = [
 ];
 
 // search
-export const search = [
-  {
-    icon: Search,
-    path: "/dashboard/search",
-  },
-];
+// export const search = [
+//   {
+//     icon: Search,
+//     path: "/dashboard/search",
+//   },
+// ];
 
 const DesktopNavbbar = ({
   isOpen,
@@ -116,11 +111,11 @@ const DesktopNavbbar = ({
             className=" cursor-pointer hover:rounded-full hover:bg-input/30 text-lg font-heading"
           >
             {/* add the search functions student subjects  */}
-            {search.map(({ icon: Icon, path }) => (
+            {/* {search.map(({ icon: Icon, path }) => (
               <Link href={path} key={path}>
                 <Icon size={20} />
               </Link>
-            ))}
+            ))} */}
           </motion.span>
         )}
       </div>

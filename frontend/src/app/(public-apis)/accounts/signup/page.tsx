@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Eye, EyeOff, Loader2Icon } from "lucide-react";
 import Link from "next/link";
 import { api } from "@/axios/client";
+import { easeInOut, motion } from "framer-motion";
 
 type userRegister = z.infer<typeof registerSchema>;
 
@@ -94,7 +95,12 @@ const signUp = () => {
     }
   };
   return (
-    <div className="flex flex-grow items-center justify-center">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: easeInOut }}
+      className="flex flex-grow items-center justify-center"
+    >
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
         <Card className="w-full flex flex-col gap-6 p-10">
           <span className="flex flex-col items-center justify-center">
@@ -221,7 +227,7 @@ const signUp = () => {
           </div>
         </Card>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

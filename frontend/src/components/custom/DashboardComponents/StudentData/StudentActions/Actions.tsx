@@ -7,7 +7,13 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { FileChartLine, FilePen, Trash, EllipsisVertical } from "lucide-react";
+import {
+  FileChartLine,
+  FilePen,
+  Trash,
+  EllipsisVertical,
+  FileSlidersIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -50,6 +56,11 @@ export const Actions: React.FC<ActionsProps> = ({ id, name }) => {
             <FileChartLine className="mr-2 h-4 w-4" /> View Report
           </DropdownMenuItem>
           <DropdownMenuItem
+            onClick={() => router.push(`/dashboard/studentInfo?studentId=${id}`)}
+          >
+            <FileSlidersIcon className="mr-2 h-4 w-4" /> View Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem
             onSelect={(e) => {
               e.preventDefault();
               setUpdateDialogOpen(true);
@@ -64,7 +75,7 @@ export const Actions: React.FC<ActionsProps> = ({ id, name }) => {
             }}
           >
             <span className="text-red-500 flex gap-2">
-              <Trash className="mr-2 h-4 w-4" /> Delete
+              <Trash className="mr-2 h-4 w-4 text-red-500" /> Delete
             </span>
           </DropdownMenuItem>
         </DropdownMenuContent>

@@ -72,8 +72,8 @@ export function UpdateSubjectDailog({ open, setOpen, subejctId }: Props) {
       const res = await api.patch(`/subjects/update/${subejctId}`, payload, {
         withCredentials: true,
       });
-      console.log(payload);
-      toast.success(res.data.message);
+      const { message } = res.data;
+      toast.success(message);
       setOpen(false);
       router.refresh();
     } catch (error: any) {

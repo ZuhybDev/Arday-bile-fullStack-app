@@ -9,7 +9,7 @@ import MobileSidebar from "@/components/custom/DashboardComponents/MobileSidebar
 import { Separator } from "@/components/ui/separator";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/custom/theme/Theme-toggle";
-import { SchoolProviderWrapper } from "../SchoolProviderWrapper";
+import Footer from "@/components/custom/HomeComponents/Footer";
 
 const layout = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +22,7 @@ const layout = ({ children }: { children: ReactNode }) => {
 
   const activeRouteName = activeRoute?.name || "Home";
   return (
-    <div className=" flex flex-col">
+    <div className="min-h-screen  flex flex-col">
       <div
         className={`flex md:p-1 p-2 flex-col transition-all duration-200 ease-in-out ${
           isOpen ? "md:ml-[220px] block" : "md:ml-[60px] block ml-5"
@@ -38,7 +38,7 @@ const layout = ({ children }: { children: ReactNode }) => {
       <MobileSidebar />
       <DesktopNavbbar isOpen={isOpen} toggleOpen={() => setIsOpen(!isOpen)} />
       <main
-        className={`transition-all duration-200 p-2 ease-in-out ${
+        className={`transition-all duration-200 p-2 ease-in-out flex-grow  ${
           isOpen ? "md:ml-[220px] block" : "md:ml-[60px] block ml-1"
         }`}
       >

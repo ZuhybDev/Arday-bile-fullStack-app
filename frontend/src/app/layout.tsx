@@ -5,7 +5,7 @@ import "./globals.css";
 //fonts
 import { Inter, Montserrat, Bebas_Neue } from "next/font/google";
 import { Toaster } from "sonner";
-import { cookies } from "next/headers";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-primary",

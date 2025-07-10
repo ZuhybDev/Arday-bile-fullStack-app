@@ -70,8 +70,11 @@ const SubjectPage = () => {
           Welcome to your Subjects Data
         </h1>
         <p className=" antialiased text-sm text-primary dark:text-muted-foreground">
-          Manage Create Delete your student's with the detailed information
-          presented in the table below.{" "}
+          Manage student's{" "}
+          <span className=" px-1 rounded-sm py-1 bg-sidebar-ring dark:bg-input">
+            subjects
+          </span>{" "}
+          with the detailed information presented in the table below.{" "}
         </p>
       </section>
       {subjects.length === 0 ? (

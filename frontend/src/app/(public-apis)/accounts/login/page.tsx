@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { api } from "@/axios/client";
+import { easeInOut, motion } from "framer-motion";
 
 type userLogin = z.infer<typeof loginSchema>;
 
@@ -71,7 +72,12 @@ const login = () => {
   };
 
   return (
-    <div className=" flex flex-grow items-center justify-center">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: easeInOut }}
+      className=" flex flex-grow items-center justify-center"
+    >
       <form onSubmit={handleSubmit(onSubmit)} className=" w-full max-w-md ">
         <Card className=" w-full flex flex-col gap-6 p-10">
           {/* name */}
@@ -126,10 +132,6 @@ const login = () => {
 
             {/* link */}
             <div className="flex flex-col gap-2 items-center justify-center text-sm text-secondary-foreground dark:text-primary">
-              <Link href="/accounts/signup" className="hover:underline">
-                I don't have an account?
-              </Link>
-
               <Link
                 href="/accounts/school-register"
                 className="hover:underline"
@@ -140,7 +142,7 @@ const login = () => {
           </div>
         </Card>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

@@ -12,7 +12,7 @@ import { Loader } from "lucide-react";
 const StudentsPage = () => {
   const [loading, setLoading] = useState(false);
   const [student, setStudent] = useState<Student[]>([]);
-  const [error, serError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchStudent = async () => {
@@ -32,7 +32,7 @@ const StudentsPage = () => {
 
         setStudent(students);
       } catch (error: any) {
-        serError(error.response.data.message || "Failed to fetch students");
+        setError(error.response.data.message || "Failed to fetch students");
       } finally {
         setLoading(false);
       }

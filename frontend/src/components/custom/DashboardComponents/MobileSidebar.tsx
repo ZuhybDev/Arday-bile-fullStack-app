@@ -4,7 +4,7 @@ import { AlignLeft, Icon, Search } from "lucide-react";
 import React, { useState } from "react";
 import { easeInOut, motion } from "framer-motion";
 import Link from "next/link";
-import { features, routes, search } from "./DesktopNavbbar";
+import { features, routes } from "./DesktopNavbbar";
 import { usePathname } from "next/navigation";
 
 const MobileSidebar = () => {
@@ -35,7 +35,7 @@ const MobileSidebar = () => {
         className=" md:hidden block h-screen bg-card text-primary fixed top-0 left-0 z-40 overflow-hidden "
         onClick={() => setIsOpen(false)}
       >
-        <div
+        {/* <div
           className={` ${
             isOpen
               ? "  cursor-pointer mt-6 p-1 flex justify-end items-center"
@@ -43,12 +43,7 @@ const MobileSidebar = () => {
           } `}
         >
           {/* add search function for student */}
-          {search.map(({ icon: Icon, path }) => (
-            <Link href={path} key={path}>
-              <Icon size={20} />
-            </Link>
-          ))}
-        </div>
+        {/* </div> */}
 
         {isOpen && (
           <motion.div

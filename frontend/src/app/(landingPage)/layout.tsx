@@ -1,20 +1,20 @@
 "use client";
 
-import DesktopNavbar from "@/components/custom/HomeComponents/DesktobNavbar";
 import Footer from "@/components/custom/HomeComponents/Footer";
-import MobileSidebar from "@/components/custom/HomeComponents/MobileNavbar";
+import HomeNavbar from "@/components/custom/HomeComponents/HomeNvbar";
+import MobileSidebar from "@/components/custom/HomeComponents/MobileSidebar";
 import React, { ReactNode } from "react";
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <DesktopNavbar />
+      <HomeNavbar />
       <MobileSidebar />
-      {/* Main content takes all remaining height */}
+      {/* Main content */}
       <main className="flex-grow">{children}</main>
 
-      {/* Footer stays pushed down */}
+      {/* Footer  */}
       <Footer />
     </div>
   );

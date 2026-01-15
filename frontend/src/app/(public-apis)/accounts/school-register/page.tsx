@@ -35,10 +35,12 @@ const school = () => {
   const onSubmit = async (name: SchoolName) => {
     try {
       setLoading(true);
-      // caliing api
+      // calling api
       const res = await api.post("/school/register", name);
 
       const { message, schoolId } = res.data;
+
+      console.log(res.data);
 
       router.push(`/accounts/signup?schoolId=${schoolId}`);
 

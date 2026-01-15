@@ -9,11 +9,11 @@ export class PrismaService
 {
   async onModuleInit() {
     await this.$connect(); // 🔌 Connect when NestJS starts
-    // console.log('✅ Prisma connected');
+    console.log('✅ Prisma connected');
   }
 
   async onModuleDestroy() {
     await this.$disconnect(); // 🔌 Gracefully disconnect when Nest shuts down
-    // console.log('🔌 Prisma disconnected');
+    console.log('🔌 Prisma disconnected');
   }
 }

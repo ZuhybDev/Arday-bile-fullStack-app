@@ -86,7 +86,7 @@ export class StudentController {
     return this.studentService.findOneStudent(req.user, id);
   }
 
-  // find all student with sigle school
+  // find all student with single school id
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Get('all-student/')

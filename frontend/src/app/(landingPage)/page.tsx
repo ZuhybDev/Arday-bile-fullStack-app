@@ -15,7 +15,7 @@ const Home = () => {
       <Link href="/accounts/login">
         <Button>login</Button>
       </Link> */}
-      <span id="home" className="">
+      {/* <span id="home" className="">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
         reiciendis, qui laboriosam earum aspernatur, corrupti vero tenetur omnis
         aliquam placeat quibusdam! Reiciendis deserunt laborum modi odit beatae
@@ -126,8 +126,8 @@ const Home = () => {
         necessitatibus magnam neque? Incidunt temporibus culpa non beatae enim,
         vitae porro reprehenderit pariatur aliquid id neque tempore dolorem hic
         ab! Corrupti optio, quam in asperiores maxime officia deserunt tempore?
-      </span>
-      <span id="features" className=" mt-6">
+      </span> */}
+      {/* <span id="features" className=" mt-6">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
         reiciendis, qui laboriosam earum aspernatur, corrupti vero tenetur omnis
         aliquam placeat quibusdam! Reiciendis deserunt laborum modi odit beatae
@@ -238,8 +238,8 @@ const Home = () => {
         necessitatibus magnam neque? Incidunt temporibus culpa non beatae enim,
         vitae porro reprehenderit pariatur aliquid id neque tempore dolorem hic
         ab! Corrupti optio, quam in asperiores maxime officia deserunt tempore?
-      </span>
-      <span id="analytics" className=" mt-6">
+      </span> */}
+      {/* <span id="analytics" className=" mt-6">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
         reiciendis, qui laboriosam earum aspernatur, corrupti vero tenetur omnis
         aliquam placeat quibusdam! Reiciendis deserunt laborum modi odit beatae
@@ -350,7 +350,7 @@ const Home = () => {
         necessitatibus magnam neque? Incidunt temporibus culpa non beatae enim,
         vitae porro reprehenderit pariatur aliquid id neque tempore dolorem hic
         ab! Corrupti optio, quam in asperiores maxime officia deserunt tempore?
-      </span>
+      </span> */}
       <span id="about" className=" mt-6">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
         reiciendis, qui laboriosam earum aspernatur, corrupti vero tenetur omnis

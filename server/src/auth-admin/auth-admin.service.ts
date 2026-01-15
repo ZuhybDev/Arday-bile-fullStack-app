@@ -33,7 +33,7 @@ export class AuthAdminService {
     }
 
     if (name == undefined || email == undefined || password == undefined) {
-      throw new NotAcceptableException('Fill all required feilds');
+      throw new NotAcceptableException('Fill all required fields');
     }
 
     const school = await this.prisma.school.findUnique({
@@ -122,8 +122,8 @@ export class AuthAdminService {
     const token = await this.jwtService.signAsync(payload);
 
     res.cookie('token', token, {
-      httpOnly: true, // ⚡️ Can't be accessed by JS (protects from XSS)
-      secure: false, // process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
+      httpOnly: true, // Can't be accessed by JS (protects from XSS)
+      secure: false, // process.env.NODE_ENV === 'production', // HTTPS only in prod
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 1000 * 60 * 60 * 24, // 1 day expiry
       path: '/', // cookie available on all routes
@@ -176,7 +176,7 @@ export class AuthAdminService {
     };
   }
 
-  // for debugiig only dont use this API in the frontend !!!!!
+  // for debuging only dont use this API in the frontend !!!!!
 
   async findAllAdmins() {
     return this.prisma.admin.findMany();
@@ -200,7 +200,7 @@ export class AuthAdminService {
     });
 
     return {
-      messasge: `${(await deletedAdmin).name} Successfully deleted.`,
+      message: `${(await deletedAdmin).name} Successfully deleted.`,
     };
   }
 }

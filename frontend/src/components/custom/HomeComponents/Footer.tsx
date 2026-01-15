@@ -18,7 +18,7 @@ const Footer = () => {
           <GitHubIcon />
         </Link>
         <Link href="https://github.com/ZuhybDev">
-          <InstagramIcon />
+          <InstagramIcon size={20} />
         </Link>
         <ThemeToggle />
       </motion.div>

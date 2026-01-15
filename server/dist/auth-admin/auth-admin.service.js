@@ -26,7 +26,7 @@ let AuthAdminService = class AuthAdminService {
             throw new common_1.ForbiddenException('School not found. Please create the school first.');
         }
         if (name == undefined || email == undefined || password == undefined) {
-            throw new common_1.NotAcceptableException('Fill all required feilds');
+            throw new common_1.NotAcceptableException('Fill all required fields');
         }
         const school = await this.prisma.school.findUnique({
             where: { id: schoolId },
@@ -151,7 +151,7 @@ let AuthAdminService = class AuthAdminService {
             where: { id },
         });
         return {
-            messasge: `${(await deletedAdmin).name} Successfully deleted.`,
+            message: `${(await deletedAdmin).name} Successfully deleted.`,
         };
     }
 };

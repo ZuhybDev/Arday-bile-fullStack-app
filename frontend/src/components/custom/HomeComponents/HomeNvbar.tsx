@@ -67,7 +67,7 @@ const HomeNavbar = () => {
           transition={{ duration: 0.3, ease: easeIn }}
         >
           <Button className="font-san antialiased font-medium">
-            <Link href="/account/login">Start now</Link>
+            <Link href="/accounts/school-register">Start now</Link>
           </Button>
         </motion.span>
       </motion.div>

@@ -10,14 +10,14 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.use(cookieParser());
   //get the port from the ENV
   const configService = app.get(ConfigService);
 
   app.enableCors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-});
-
+    origin: 'http://localhost:3000',
+    credentials: true,
+  });
 
   // use decument builder
   const config = new DocumentBuilder()
@@ -34,8 +34,6 @@ async function bootstrap() {
 
   // compression for speed apis
   app.use(compression());
-
-  app.use(cookieParser());
 
   // rate limiting for
   app.use(

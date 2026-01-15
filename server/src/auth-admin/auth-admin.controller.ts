@@ -51,7 +51,7 @@ export class AuthAdminController {
   // for dev only
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
-  @Get('admin-data')
+  @Get('all-admin')
   findAll() {
     return this.authAdmin.findAllAdmins();
   }

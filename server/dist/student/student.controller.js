@@ -42,6 +42,9 @@ let StudentController = class StudentController {
         const schoolId = req.user.schoolId;
         return this.studentService.findAllStudent(schoolId, req.user);
     }
+    searchStudentByName(name, req) {
+        return this.studentService.searchStudentByName(req.user, name);
+    }
     deleteStudent(id, req) {
         return this.studentService.deleteStudent(req.user, id);
     }
@@ -95,6 +98,16 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], StudentController.prototype, "findAllStudent", null);
+__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    (0, common_1.Get)('search/'),
+    __param(0, (0, common_1.Query)('student')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], StudentController.prototype, "searchStudentByName", null);
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN'),

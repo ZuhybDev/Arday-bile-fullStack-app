@@ -19,9 +19,9 @@ export declare class SchoolService {
         message: string;
         schoolData: {
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
-            name: string;
         };
         admins: string[];
     }>;

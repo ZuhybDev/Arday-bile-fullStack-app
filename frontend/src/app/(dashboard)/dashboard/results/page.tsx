@@ -37,7 +37,7 @@ const CreateResult = () => {
   // fetch student
   useEffect(() => {
     const fetchStudent = async () => {
-      const res = await api.get(`/student/search?search=${search}`);
+      const res = await api.get(`/student/search?student=${search}`);
       setStudent(res.data);
     };
 

@@ -328,6 +328,41 @@ export class StudentService {
     });
   }
 
+  //search student by name
+
+  async searchStudentByName(user: JwtPayload, name: string) {
+    const students = await this.prisma.student.findMany({
+      where: { name: { contains: name } },
+      select: {
+        id: true,
+        code: true,
+        name: true,
+        className: true,
+        schoolId: true,
+        school: { select: { name: true } },
+      },
+    });
+
+    // Only keep students in the same school as the user
+    const studentsInSchool = students.filter(
+      (student) =>
+        student.schoolId === user.schoolId && student.name.includes(name),
+    );
+
+    if (studentsInSchool.length === 0) {
+      throw new NotFoundException('No students found in this name creteria');
+    }
+
+    return studentsInSchool.map((student) => ({
+      id: student.id,
+      code: student.code,
+      name: student.name,
+      class: student.className,
+      schoolId: student.schoolId,
+      schoolName: student.school.name,
+    }));
+  }
+
   // delete student their ID in the param
   async deleteStudent(user: JwtPayload, id: string) {
     const student = await this.prisma.student.findUnique({

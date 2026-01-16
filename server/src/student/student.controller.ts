@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -93,6 +94,14 @@ export class StudentController {
   findAllStudent(@Req() req) {
     const schoolId = req.user.schoolId;
     return this.studentService.findAllStudent(schoolId, req.user);
+  }
+
+  // search student by name
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Get('search/')
+  searchStudentByName(@Query('student') name: string, @Req() req) {
+    return this.studentService.searchStudentByName(req.user, name);
   }
 
   // delete student route

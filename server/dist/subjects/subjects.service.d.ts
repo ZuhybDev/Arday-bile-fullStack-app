@@ -6,32 +6,32 @@ export declare class SubjectsService {
     createSubject(user: JwtPayload, name: string, passMark: number, schoolId: string): Promise<{
         subject: {
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
-            name: string;
-            passMark: number;
             schoolId: string;
+            passMark: number;
         };
     }>;
     findAllSubjects(schoolId: string, user: JwtPayload): Promise<never[] | {
         cound: number;
         allsubjects: {
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
-            name: string;
-            passMark: number;
             schoolId: string;
+            passMark: number;
         }[];
     }>;
     findOneSubject(id: string, user: JwtPayload): Promise<{
         subject: {
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
-            name: string;
-            passMark: number;
             schoolId: string;
+            passMark: number;
         };
     }>;
     updateSubject(user: JwtPayload, id: string, name?: string, passMark?: number): Promise<{

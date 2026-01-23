@@ -268,6 +268,8 @@ export class StudentService {
       student,
       formattedResult,
       grade: priorityGrade,
+      total,
+      average,
     };
   }
 

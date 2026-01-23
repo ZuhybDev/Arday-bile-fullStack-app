@@ -23,10 +23,10 @@ export declare class StudentController {
     }, res: Response): Promise<{
         message: string;
         student: {
-            name: string;
-            password: string;
             id: string;
+            name: string;
             code: string;
+            password: string;
             role: import("@prisma/client").$Enums.Role;
             school: {
                 name: string;
@@ -55,10 +55,10 @@ export declare class StudentController {
     }>;
     studentData(id: string, req: any): Promise<{
         student: {
-            name: string;
-            className: string;
             id: string;
+            name: string;
             code: string;
+            className: string;
             role: import("@prisma/client").$Enums.Role;
             schoolId: string;
             school: {
@@ -71,6 +71,8 @@ export declare class StudentController {
             status: string;
         }[];
         grade: string;
+        total: number;
+        average: number;
     }>;
     findAllStudent(req: any): Promise<{
         id: string;

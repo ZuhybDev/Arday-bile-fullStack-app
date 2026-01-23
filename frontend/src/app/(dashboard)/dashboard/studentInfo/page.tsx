@@ -50,7 +50,7 @@ const studetnInfo = () => {
           className: student.className,
           total: res.data.total,
           grade: res.data.grade,
-          average: res.data.formattedAverage,
+          average: res.data.average,
           school: student.school.name,
           subjects: res.data.formattedResult.map((sub: any) => ({
             name: sub.name,

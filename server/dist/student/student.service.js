@@ -205,6 +205,8 @@ let StudentService = class StudentService {
             student,
             formattedResult,
             grade: priorityGrade,
+            total,
+            average,
         };
     }
     async findAllStudent(schoolId, user) {

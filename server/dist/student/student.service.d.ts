@@ -63,6 +63,8 @@ export declare class StudentService {
             status: string;
         }[];
         grade: string;
+        total: number;
+        average: number;
     }>;
     findAllStudent(schoolId: string, user: JwtPayload): Promise<{
         id: string;

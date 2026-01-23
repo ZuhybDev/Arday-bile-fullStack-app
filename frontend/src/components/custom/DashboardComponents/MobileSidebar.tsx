@@ -35,16 +35,6 @@ const MobileSidebar = () => {
         className=" md:hidden block h-screen bg-card text-primary fixed top-0 left-0 z-40 overflow-hidden "
         onClick={() => setIsOpen(false)}
       >
-        {/* <div
-          className={` ${
-            isOpen
-              ? "  cursor-pointer mt-6 p-1 flex justify-end items-center"
-              : "hidden"
-          } `}
-        >
-          {/* add search function for student */}
-        {/* </div> */}
-
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, x: -12 }}

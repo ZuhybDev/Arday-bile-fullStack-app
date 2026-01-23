@@ -46,11 +46,6 @@ export const routes = [
     path: "/dashboard/results",
   },
   {
-    name: "Report",
-    icon: ClipboardPenLine,
-    path: "/dashboard/report",
-  },
-  {
     name: "Settings",
     icon: Settings,
     path: "/dashboard/settings",

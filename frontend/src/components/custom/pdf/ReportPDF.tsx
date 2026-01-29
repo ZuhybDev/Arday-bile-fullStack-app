@@ -60,8 +60,16 @@ const GenerateStudentPDF = (studentInfo: studentData) => {
   doc.text("Grade", rightX, cardY + 30);
 
   doc.setTextColor(20);
-  doc.text(String(studentInfo.total), rightX + 22, cardY + 13);
-  doc.text(String(studentInfo.average), rightX + 22, cardY + 22);
+  doc.text(
+    String(studentInfo.total.toFixed(2) + " Points"),
+    rightX + 22,
+    cardY + 13,
+  );
+  doc.text(
+    String(studentInfo.average.toFixed(2) + "%"),
+    rightX + 22,
+    cardY + 22,
+  );
   doc.text(String(studentInfo.grade), rightX + 22, cardY + 30);
 
   /* ================= SUBJECTS TABLE ================= */
@@ -105,7 +113,7 @@ const GenerateStudentPDF = (studentInfo: studentData) => {
     { align: "center" },
   );
 
-  doc.save(`${studentInfo.name}_Report.pdf`);
+  doc.save(`${studentInfo.name}Exam_Report.pdf`);
 };
 
 export default GenerateStudentPDF;

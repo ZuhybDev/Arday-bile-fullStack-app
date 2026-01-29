@@ -233,6 +233,9 @@ export class StudentService {
 
     // fetch the result to to calculate grade and average also overall grade
     const result = await this.prisma.result.findMany({
+      where: {
+        studentId: id,
+      },
       select: {
         grade: true,
         status: true,
@@ -244,9 +247,9 @@ export class StudentService {
         },
       },
     });
-
     // calculate the average and total
     const grade = result.map((g) => g.grade);
+
     const { total, average } = calculateTotalAndAverage(grade);
 
     // calculate the frequency letterStatus and get it using this seprate func

@@ -46,7 +46,9 @@ const school = () => {
 
       toast.success(message);
     } catch (error: any) {
-      toast.error(error.response.data || "Registration failed. Try again");
+      toast.error(
+        error.response.data.message || "Registration failed. Try again",
+      );
     } finally {
       setLoading(false);
     }

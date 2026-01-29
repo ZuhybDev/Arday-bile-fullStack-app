@@ -73,7 +73,7 @@ const StudentInfo = ({ data }: { data: studentData }) => {
           <div className=" shadow-md bg-foreground/5 p-4 z-20 rounded-md flex flex-col gap-2 items-center">
             <Gauge />
             <h2 className=" mt-1 text-3xl font-semibold antialiased">
-              {data.average || "0.0"}%
+              {data.average.toFixed(2) || "0.0"}%
             </h2>
             <div className=" flex flex-col space-y-1">
               <h1 className=" text-[14px] font-semibold tracking-widest">

@@ -19,14 +19,14 @@ export declare class StudentService {
     loginStudent(code: string, password: string, res: Response): Promise<{
         message: string;
         student: {
-            id: string;
-            name: string;
-            code: string;
-            password: string;
-            role: import("@prisma/client").$Enums.Role;
             school: {
                 name: string;
             };
+            id: string;
+            name: string;
+            password: string;
+            role: import("@prisma/client").$Enums.Role;
+            code: string;
         };
         formattedResult: {
             name: string;
@@ -47,15 +47,15 @@ export declare class StudentService {
     }>;
     findOneStudent(user: JwtPayload, id: string): Promise<{
         student: {
-            id: string;
-            name: string;
-            code: string;
-            className: string;
-            role: import("@prisma/client").$Enums.Role;
-            schoolId: string;
             school: {
                 name: string;
             };
+            id: string;
+            name: string;
+            role: import("@prisma/client").$Enums.Role;
+            schoolId: string;
+            code: string;
+            className: string;
         };
         formattedResult: {
             name: string;

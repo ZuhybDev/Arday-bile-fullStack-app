@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query"; // Added these
 import {
   Dialog,
   DialogTrigger,
@@ -21,12 +21,13 @@ import { Button } from "@/components/ui/button";
 import { Loader2Icon } from "lucide-react";
 import { api } from "@/axios/client";
 import { subjectSchema } from "@/validation/Student";
+import { useState } from "react";
 
 type SubjectFormData = z.infer<typeof subjectSchema>;
 
 const AddSubjects = () => {
-  const [formData, setFormData] = useState<SubjectFormData | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const queryClient = useQueryClient();
+  const [isOpen, setIsOpen] = useState(false); // Track dialog state
 
   const {
     register,
@@ -37,40 +38,39 @@ const AddSubjects = () => {
     resolver: zodResolver(subjectSchema),
   });
 
-  // 🔥 Submission logic via useEffect
-  useEffect(() => {
-    if (!formData) return;
+  // 1. Define the Mutation
+  const mutation = useMutation({
+    mutationFn: async (formData: SubjectFormData) => {
+      const payload = {
+        ...formData,
+        passMark: Number(formData.passMark),
+      };
+      const res = await api.post("/subjects/register", payload, {
+        withCredentials: true,
+      });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Subject registered!");
 
-    const submitSubject = async () => {
-      setIsSubmitting(true);
-      try {
-        const payload = {
-          ...formData,
-          passMark: Number(formData.passMark), // convert if it's a string in schema
-        };
-        const res = await api.post("/subjects/register", payload, {
-          withCredentials: true,
-        });
+      // 2. The Magic: Tell the SubjectPage to refresh its data
+      queryClient.invalidateQueries({ queryKey: ["subjects"] });
 
-        toast.success(res.data.message || "Subject registered!");
-        reset();
-      } catch (err: any) {
-        const msg = err?.response?.data?.message || "Registration failed.";
-        toast.error(msg);
-      } finally {
-        setIsSubmitting(false);
-      }
-    };
-
-    submitSubject();
-  }, [formData, reset]);
+      reset();
+      setIsOpen(false); // Close dialog on success
+    },
+    onError: (err: any) => {
+      const msg = err?.response?.data?.message || "Registration failed.";
+      toast.error(msg);
+    },
+  });
 
   const onSubmit = (data: SubjectFormData) => {
-    setFormData(data); // 🔄 triggers the useEffect
+    mutation.mutate(data);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button className="cursor-pointer">+ Add Subject</Button>
       </DialogTrigger>
@@ -96,7 +96,7 @@ const AddSubjects = () => {
           </div>
 
           <div className="grid gap-3">
-            <Label htmlFor="fullMarks">Full Marks</Label>
+            <Label htmlFor="passMark">Full Marks</Label>
             <Input
               {...register("passMark")}
               placeholder="e.g. 100"
@@ -108,17 +108,21 @@ const AddSubjects = () => {
           </div>
 
           <DialogFooter>
-            <DialogClose asChild className=" cursor-pointer">
-              <Button type="button" variant="destructive">
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="destructive"
+                className="cursor-pointer"
+              >
                 Cancel
               </Button>
             </DialogClose>
             <Button
               type="submit"
-              disabled={isSubmitting}
-              className=" cursor-pointer"
+              disabled={mutation.isPending}
+              className="cursor-pointer"
             >
-              {isSubmitting ? (
+              {mutation.isPending ? (
                 <>
                   <Loader2Icon className="animate-spin mr-2" size={16} />
                   Saving...

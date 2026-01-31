@@ -15,15 +15,21 @@ export declare class SchoolService {
         message: string;
         new_name: string;
     }>;
-    readSchoolData(user: JwtPayload, id: string): Promise<{
+    readSchoolData(user: JwtPayload, id: string): Promise<0 | {
         message: string;
-        schoolData: {
+        school: {
             id: string;
-            name: string;
             createdAt: Date;
-            updatedAt: Date;
+            name: string;
         };
-        admins: string[];
+        totalAdmins: number;
+        totalStudents: number;
+        Admin: {
+            createdAt: Date;
+            name: string;
+            role: import("@prisma/client").$Enums.Role;
+            email: string;
+        }[];
     }>;
     deletedSchool(id: string, user: JwtPayload): Promise<{
         message: string;

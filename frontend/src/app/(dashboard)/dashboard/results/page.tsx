@@ -13,131 +13,94 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Loader2Icon } from "lucide-react";
-import { setgroups } from "process";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useDebounce } from "@/hooks/use-debounce";
 
-type Student = {
-  id: string;
-  name: string;
-};
-type Subject = {
-  id: string;
-  name: string;
-};
+type Student = { id: string; name: string };
+type Subject = { id: string; name: string };
+
 const CreateResult = () => {
-  const [student, setStudent] = useState<Student[]>([]);
-  const [subject, setSubject] = useState<Subject[]>([]);
   const [studentId, setStudentId] = useState("");
   const [subjectId, setSubjectId] = useState("");
   const [search, setSearch] = useState("");
   const [grade, setGrade] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  // fetch student
-  const isFirstRender = useRef(true);
+  // 1. Debounce the search input to avoid spamming the API
+  // If you don't have a hook, you can use: const debouncedSearch = search
+  const debouncedSearch = useDebounce(search, 500);
 
-  useEffect(() => {
-    // 2. If it's the very first time this component shows up, flip the flag and STOP
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+  // 2. Fetch Students (Runs only when search has 2+ characters)
+  const { data: students = [] } = useQuery<Student[]>({
+    queryKey: ["students", debouncedSearch],
+    queryFn: async () => {
+      const res = await api.get(`/student/search?student=${debouncedSearch}`);
+      return res.data;
+    },
+    enabled: debouncedSearch.length > 1,
+  });
 
-    const fetchStudent = async () => {
-      try {
-        const res = await api.get(`/student/search?student=${search}`);
-        setStudent(res.data);
-      } catch (err: any) {
-        console.error(err);
-      }
-    };
-
-    const deBounce = setTimeout(() => {
-      if (search.length > 1) {
-        fetchStudent();
-      } else {
-        setStudent([]);
-      }
-    }, 500);
-
-    return () => clearTimeout(deBounce);
-  }, [search]);
-
-  // fetch student
-
-  useEffect(() => {
-    const fetchSubject = async () => {
-      if (isFirstRender.current) {
-        isFirstRender.current = false;
-        return;
-      }
+  // 3. Fetch Subjects
+  const { data: subjects = [] } = useQuery<Subject[]>({
+    queryKey: ["subjects"],
+    queryFn: async () => {
       const res = await api.get(`/subjects/subject-data`);
-      const { count, allsubjects } = res.data;
+      const { allsubjects } = res.data;
+      return allsubjects.map((s: any) => ({ id: s.id, name: s.name }));
+    },
+  });
 
-      if (count === 0) {
-        setSubject([]);
-        return;
-      }
+  // 4. Create Result Mutation
+  const mutation = useMutation({
+    mutationFn: async (payload: {
+      studentId: string;
+      subjectId: string;
+      grade: number;
+    }) => {
+      return await api.post("result/register", payload);
+    },
+    onSuccess: () => {
+      toast.success("Result created successfully");
+      setGrade("");
+      setStudentId("");
+      setSubjectId("");
+    },
+    onError: (error: any) => {
+      const errmsg = error.response?.data?.message || "Something went wrong";
+      toast.error(errmsg);
+    },
+  });
 
-      const formattedSubjects: Subject[] = allsubjects.map((subject: any) => ({
-        id: subject.id,
-        name: subject.name,
-      }));
-
-      setSubject(formattedSubjects);
-    };
-
-    const deBounce = setTimeout(() => {
-      fetchSubject();
-    }, 500);
-
-    return () => clearTimeout(deBounce);
-  }, []);
-
-  // create result
-
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!studentId || !subjectId || !grade) {
-      toast.error("Please fill all feilds");
+      toast.error("Please fill all fields");
       return;
     }
-    try {
-      setLoading(true);
-      await api.post("result/register", {
-        studentId,
-        subjectId,
-        grade: Number(grade),
-      });
-      toast.success("Result created successfullt");
-
-      console.log({
-        studentId,
-        subjectId,
-        grade,
-      });
-    } catch (error: any) {
-      const errmsg = error.response.data.message;
-      toast.error(errmsg);
-    } finally {
-      setLoading(false);
-    }
+    mutation.mutate({
+      studentId,
+      subjectId,
+      grade: Number(grade),
+    });
   };
 
   return (
     <main>
-      <div className=" ml-2">
+      <div className="ml-2">
         <h1 className="text-2xl font-medium">Result</h1>
-        <p className=" text-sm font-light text-foreground/70">
-          Create delete and update your student's examination results
+        <p className="text-sm font-light text-foreground/70">
+          Create, delete and update your student's examination results
         </p>
       </div>
-      <div className=" flex flex-grow items-center justify-center mt-16">
-        <div className=" w-full max-w-md ">
-          <Card className="  w-full flex flex-col gap-6 p-8">
-            <h1 className=" text-center text-xl font-medium">Create result</h1>
-            <div className=" flex flex-col gap-2">
-              <Label className=" font-medium  mb-2">Search Student</Label>
+
+      <div className="flex flex-grow items-center justify-center mt-16">
+        <div className="w-full max-w-md">
+          <Card className="w-full flex flex-col gap-6 p-8">
+            <h1 className="text-center text-xl font-medium">Create result</h1>
+
+            {/* Student Search */}
+            <div className="flex flex-col gap-2">
+              <Label className="font-medium mb-2">Search Student</Label>
               <Input
                 placeholder="Enter student name...."
                 value={search}
@@ -148,7 +111,7 @@ const CreateResult = () => {
                   <SelectValue placeholder="Select student" />
                 </SelectTrigger>
                 <SelectContent>
-                  {student.map((s) => (
+                  {students.map((s) => (
                     <SelectItem value={s.id} key={s.id}>
                       {s.name}
                     </SelectItem>
@@ -157,16 +120,15 @@ const CreateResult = () => {
               </Select>
             </div>
 
-            {/* select */}
-
-            <div className=" space-y-2">
+            {/* Subject Select */}
+            <div className="space-y-2">
               <Label className="font-medium mb-2">Select Subject</Label>
               <Select onValueChange={setSubjectId} value={subjectId}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select Subject" />
                 </SelectTrigger>
                 <SelectContent>
-                  {subject.map((sub) => (
+                  {subjects.map((sub) => (
                     <SelectItem value={sub.id} key={sub.id}>
                       {sub.name}
                     </SelectItem>
@@ -175,8 +137,8 @@ const CreateResult = () => {
               </Select>
             </div>
 
-            {/* grade */}
-            <div className=" space-y-2">
+            {/* Grade Input */}
+            <div className="space-y-2">
               <Label>Marks</Label>
               <Input
                 type="number"
@@ -187,11 +149,17 @@ const CreateResult = () => {
               />
 
               <Button
-                className=" w-full text-center mt-2"
+                className="w-full text-center mt-2"
                 onClick={handleSubmit}
-                disabled={!studentId || !subjectId || !grade}
+                disabled={
+                  mutation.isPending || !studentId || !subjectId || !grade
+                }
               >
-                {loading ? <Loader2Icon className=" animate-spin" /> : "Submit"}
+                {mutation.isPending ? (
+                  <Loader2Icon className="animate-spin" />
+                ) : (
+                  "Submit"
+                )}
               </Button>
             </div>
           </Card>

@@ -329,6 +329,7 @@ export class StudentService {
         average,
         overallGrade: overallGrade ?? 'N/A',
         grades: formattedResult,
+        total: total,
       };
     });
   }

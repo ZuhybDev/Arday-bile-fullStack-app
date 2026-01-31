@@ -21,12 +21,12 @@ export declare class StudentService {
         student: {
             id: string;
             name: string;
-            code: string;
-            password: string;
-            role: import("@prisma/client").$Enums.Role;
             school: {
                 name: string;
             };
+            code: string;
+            password: string;
+            role: import("@prisma/client").$Enums.Role;
         };
         formattedResult: {
             name: string;
@@ -49,13 +49,13 @@ export declare class StudentService {
         student: {
             id: string;
             name: string;
-            code: string;
-            className: string;
-            role: import("@prisma/client").$Enums.Role;
             schoolId: string;
             school: {
                 name: string;
             };
+            code: string;
+            className: string;
+            role: import("@prisma/client").$Enums.Role;
         };
         formattedResult: {
             name: string;
@@ -78,6 +78,7 @@ export declare class StudentService {
             grade: number;
             status: string;
         }[];
+        total: number;
     }[]>;
     searchStudentByName(user: JwtPayload, name: string): Promise<{
         id: string;

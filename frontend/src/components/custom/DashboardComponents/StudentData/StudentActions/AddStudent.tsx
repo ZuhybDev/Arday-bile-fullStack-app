@@ -1,5 +1,14 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Eye, EyeOff, Loader2Icon } from "lucide-react";
+import React, { useState } from "react";
+
+import { api } from "@/axios/client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,20 +23,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { studentSchema } from "@/validation/Student";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2Icon, Rss } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { toast } from "sonner";
-import { api } from "@/axios/client";
 
 type StudentRegister = z.infer<typeof studentSchema>;
 
 const AddStudent = () => {
+  const queryClient = useQueryClient();
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState<StudentRegister | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [open, setOpen] = useState(false); // Control dialog visibility
 
   const {
     register,
@@ -43,39 +45,35 @@ const AddStudent = () => {
     },
   });
 
-  // useEffect that watches formData
-  useEffect(() => {
-    if (!formData) return;
-
-    const registerStudent = async () => {
-      setIsSubmitting(true);
-      try {
-        const res = await api.post("/student/register", formData, {
-          withCredentials: true,
-        });
-
-        toast.success(res.data.message);
-        reset();
-      } catch (error: any) {
-        const errMessage =
-          error.response?.data?.message || "Registration failed";
-        toast.error(errMessage);
-      } finally {
-        setIsSubmitting(false);
-      }
-    };
-
-    registerStudent();
-  }, [formData]);
+  // 1. Mutation setup
+  const mutation = useMutation({
+    mutationFn: async (data: StudentRegister) => {
+      const res = await api.post("/student/register", data, {
+        withCredentials: true,
+      });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Student registered successfully!");
+      // 2. Invalidate student-related queries to refresh UI
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      reset();
+      setOpen(false); // Close dialog on success
+    },
+    onError: (error: any) => {
+      const errMessage = error.response?.data?.message || "Registration failed";
+      toast.error(errMessage);
+    },
+  });
 
   const onSubmit = (data: StudentRegister) => {
-    setFormData(data); // triggers useEffect
+    mutation.mutate(data);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className=" cursor-pointer">+ Add Student</Button>
+        <Button className="cursor-pointer">+ Add Student</Button>
       </DialogTrigger>
       <DialogContent className="max-w-[320px]">
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
@@ -86,7 +84,7 @@ const AddStudent = () => {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-3">
+          <div className="grid gap-2">
             <Label>Name</Label>
             <Input
               {...register("name")}
@@ -94,11 +92,11 @@ const AddStudent = () => {
               autoComplete="off"
             />
             {errors.name && (
-              <p className="text-sm text-red-500">{errors.name.message}</p>
+              <p className="text-xs text-red-500">{errors.name.message}</p>
             )}
           </div>
 
-          <div className="grid gap-3">
+          <div className="grid gap-2">
             <Label>Password</Label>
             <div className="relative">
               <Input
@@ -107,40 +105,40 @@ const AddStudent = () => {
                 type={showPassword ? "text" : "password"}
                 autoComplete="off"
               />
-              <span
-                className="absolute right-3 top-2/4 -translate-y-1/2 cursor-pointer"
+              <button
+                type="button" // Important: prevents form submission
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                 onClick={() => setShowPassword((prev) => !prev)}
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </span>
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
             {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
+              <p className="text-xs text-red-500">{errors.password.message}</p>
             )}
           </div>
 
-          <div className="grid gap-3">
+          <div className="grid gap-2">
             <Label>Class name</Label>
             <Input
               {...register("className")}
               placeholder="Class name"
               autoComplete="off"
             />
-
             {errors.className && (
-              <p className="text-sm text-red-500">{errors.className.message}</p>
+              <p className="text-xs text-red-500">{errors.className.message}</p>
             )}
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="gap-2 sm:gap-0">
             <DialogClose asChild>
-              <Button type="button" variant="destructive">
+              <Button type="button" variant="outline">
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <Loader2Icon className="animate-spin mr-2" />
+            <Button type="submit" disabled={mutation.isPending}>
+              {mutation.isPending ? (
+                <Loader2Icon className="animate-spin mr-2" size={18} />
               ) : (
                 "Save"
               )}

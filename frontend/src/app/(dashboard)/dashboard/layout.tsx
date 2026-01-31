@@ -9,7 +9,7 @@ import MobileSidebar from "@/components/custom/DashboardComponents/MobileSidebar
 import { Separator } from "@/components/ui/separator";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/custom/theme/Theme-toggle";
-import Footer from "@/components/custom/HomeComponents/Footer";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const layout = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +21,8 @@ const layout = ({ children }: { children: ReactNode }) => {
     .find((route) => pathName.startsWith(route.path));
 
   const activeRouteName = activeRoute?.name || "Home";
+
+  const queryClient = new QueryClient();
   return (
     <div className="min-h-screen  flex flex-col">
       <div
@@ -42,7 +44,9 @@ const layout = ({ children }: { children: ReactNode }) => {
           isOpen ? "md:ml-[220px] block" : "md:ml-[60px] block ml-1"
         }`}
       >
-        {children}
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
       </main>
     </div>
   );

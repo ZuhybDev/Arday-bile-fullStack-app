@@ -66,28 +66,47 @@ export class SchoolService {
   async readSchoolData(user: JwtPayload, id: string) {
     const schoolData = await this.prisma.school.findUnique({
       where: { id },
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
+      },
     });
 
     if (!schoolData) {
       throw new NotFoundException('School does not Exist. Try again');
     }
+    const totalAdmin = await this.prisma.admin.count();
 
-    const schoolAdmins = await this.prisma.admin.findMany({
+    const adminData = await this.prisma.admin.findMany({
+      where: { schoolId: id },
       select: {
         name: true,
+        email: true,
+        role: true,
+        createdAt: true,
       },
     });
 
-    const admins = schoolAdmins.map((a) => a.name);
+    if (!totalAdmin) {
+      return 0;
+    }
 
+    const totalStudent = await this.prisma.student.count();
+
+    if (!totalStudent) {
+      return 0;
+    }
     if (user.schoolId !== schoolData.id) {
       throw new ForbiddenException('Access deneid');
     }
 
     return {
-      message: `${schoolData.name} Data`,
-      schoolData,
-      admins,
+      message: 'School data',
+      school: schoolData,
+      totalAdmins: totalAdmin,
+      totalStudents: totalStudent,
+      Admin: adminData,
     };
   }
 

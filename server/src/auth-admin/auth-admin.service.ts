@@ -203,4 +203,37 @@ export class AuthAdminService {
       message: `${(await deletedAdmin).name} Successfully deleted.`,
     };
   }
+
+  async findOneAdmin(user: JwtPayload) {
+    const admin = await this.prisma.admin.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+      },
+    });
+
+    const isAdmin = admin.some((a) => a.id === user.userId);
+
+    if (!isAdmin) {
+      console.log('error in the findOneAdmin');
+      throw new NotFoundException('Unauthorized');
+    }
+    return {
+      admin: admin,
+    };
+  }
 }
+
+/**
+ * 
+ * id: string;
+    email: string;
+    name: string;
+    password: string;
+    role: $Enums.Role;
+    schoolId: string; school name | total student | total admins
+    createdAt: Date;
+    updatedAt: Date;
+ */

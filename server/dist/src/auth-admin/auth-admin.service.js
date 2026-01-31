@@ -154,6 +154,24 @@ let AuthAdminService = class AuthAdminService {
             message: `${(await deletedAdmin).name} Successfully deleted.`,
         };
     }
+    async findOneAdmin(user) {
+        const admin = await this.prisma.admin.findMany({
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                createdAt: true,
+            },
+        });
+        const isAdmin = admin.some((a) => a.id === user.userId);
+        if (!isAdmin) {
+            console.log('error in the findOneAdmin');
+            throw new common_1.NotFoundException('Unauthorized');
+        }
+        return {
+            admin: admin,
+        };
+    }
 };
 exports.AuthAdminService = AuthAdminService;
 exports.AuthAdminService = AuthAdminService = __decorate([

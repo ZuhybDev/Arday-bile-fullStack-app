@@ -32,8 +32,9 @@ let AuthAdminController = class AuthAdminController {
     findAll() {
         return this.authAdmin.findAllAdmins();
     }
-    updateAdmin(id, body, req) {
-        return this.authAdmin.updateAdmin(req.user, id, body.name, body.email, body.password);
+    updateAdmin(body, req) {
+        const userId = req.user.userId;
+        return this.authAdmin.updateAdmin(req.user, userId, body.name, body.email, body.password);
     }
     logout(res) {
         res.clearCookie('token', {
@@ -45,6 +46,9 @@ let AuthAdminController = class AuthAdminController {
     }
     remove(id, req) {
         return this.authAdmin.removeAdmin(req.user, id);
+    }
+    findOne(req) {
+        return this.authAdmin.findOneAdmin(req.user);
     }
 };
 exports.AuthAdminController = AuthAdminController;
@@ -75,12 +79,11 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN'),
-    (0, common_1.Patch)('update/:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.Req)()),
+    (0, common_1.Patch)('update/'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], AuthAdminController.prototype, "updateAdmin", null);
 __decorate([
@@ -100,6 +103,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], AuthAdminController.prototype, "remove", null);
+__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    (0, common_1.Get)('admin-data'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthAdminController.prototype, "findOne", null);
 exports.AuthAdminController = AuthAdminController = __decorate([
     (0, common_1.Controller)('auth-admin'),
     __metadata("design:paramtypes", [auth_admin_service_1.AuthAdminService])

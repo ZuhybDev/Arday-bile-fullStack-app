@@ -46,7 +46,7 @@ export const routes = [
     path: "/dashboard/results",
   },
   {
-    name: "Settings",
+    name: "Profile",
     icon: Settings,
     path: "/dashboard/settings",
   },

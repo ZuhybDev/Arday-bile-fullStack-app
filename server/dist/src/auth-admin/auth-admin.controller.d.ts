@@ -26,14 +26,14 @@ export declare class AuthAdminController {
     findAll(): Promise<{
         id: string;
         name: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         password: string;
         role: import("@prisma/client").$Enums.Role;
         schoolId: string;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
-    updateAdmin(id: string, body: {
+    updateAdmin(body: {
         name?: string;
         email?: string;
         password?: string;
@@ -48,5 +48,13 @@ export declare class AuthAdminController {
     };
     remove(id: string, req: any): Promise<{
         message: string;
+    }>;
+    findOne(req: any): Promise<{
+        admin: {
+            id: string;
+            name: string;
+            email: string;
+            createdAt: Date;
+        }[];
     }>;
 }

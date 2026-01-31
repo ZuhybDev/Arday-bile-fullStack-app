@@ -59,16 +59,16 @@ export class AuthAdminController {
   //update admin
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
-  @Patch('update/:id')
+  @Patch('update/')
   updateAdmin(
-    @Param('id') id: string,
     @Body()
     body: { name?: string; email?: string; password?: string },
     @Req() req,
   ) {
+    const userId = req.user.userId;
     return this.authAdmin.updateAdmin(
       req.user,
-      id,
+      userId,
       body.name,
       body.email,
       body.password,
@@ -91,5 +91,12 @@ export class AuthAdminController {
   @Delete('delete/:id')
   remove(@Param('id') id: string, @Req() req) {
     return this.authAdmin.removeAdmin(req.user, id);
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles('ADMIN')
+  @Get('admin-data')
+  findOne(@Req() req) {
+    return this.authAdmin.findOneAdmin(req.user);
   }
 }

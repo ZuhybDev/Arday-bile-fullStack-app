@@ -10,10 +10,10 @@ export declare class SubjectsController {
         subject: {
             id: string;
             name: string;
-            passMark: number;
-            schoolId: string;
             createdAt: Date;
             updatedAt: Date;
+            schoolId: string;
+            passMark: number;
         };
     }>;
     findAllSubjects(req: any): Promise<never[] | {
@@ -21,20 +21,20 @@ export declare class SubjectsController {
         allsubjects: {
             id: string;
             name: string;
-            passMark: number;
-            schoolId: string;
             createdAt: Date;
             updatedAt: Date;
+            schoolId: string;
+            passMark: number;
         }[];
     }>;
     findOne(id: string, req: any): Promise<{
         data: {
             id: string;
             name: string;
-            passMark: number;
-            schoolId: string;
             createdAt: Date;
             updatedAt: Date;
+            schoolId: string;
+            passMark: number;
         };
     }>;
     update(id: string, body: {

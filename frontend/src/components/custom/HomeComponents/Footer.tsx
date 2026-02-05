@@ -13,11 +13,11 @@ const Footer = () => {
     <motion.div className=" flex w-full p-2 dark:bg-input/30 items-center justify-center">
       <motion.div className=" flex gap-3 items-center">
         <span> &copy;{year}</span>
-        <span>Zuhyb Dev</span>
+        <span>ZuhybDev</span>
         <Link href="https://github.com/ZuhybDev">
           <GitHubIcon />
         </Link>
-        <Link href="https://github.com/ZuhybDev">
+        <Link href="https://www.instagram.com/its_me_zuhaibka?igsh=MW0wNDQ0OWZheHVtMw==">
           <InstagramIcon size={20} />
         </Link>
         <ThemeToggle />

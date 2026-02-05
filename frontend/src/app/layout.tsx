@@ -3,10 +3,10 @@ import { ReactNode } from "react";
 import "./globals.css";
 
 //fonts
-import { Inter, Montserrat, Bebas_Neue } from "next/font/google";
+import { Montserrat, Bebas_Neue, DM_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-primary",
   weight: ["400", "700"],
@@ -37,7 +37,7 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${montserrat.variable} ${BebasNeue.variable}`}
+      className={`${dmSans.variable , "antialiased"} ${montserrat.variable} ${BebasNeue.variable}`}
     >
       <body className="font-san scroll-smooth">
         <ThemeProvider

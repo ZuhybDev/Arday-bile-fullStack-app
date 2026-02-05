@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { easeInOut, motion } from "framer-motion";
-import { LucidePanelRightOpen } from "lucide-react";
+import { Hamburger, HamburgerIcon, LucidePanelRightOpen, Menu } from "lucide-react";
 import Logo from "./Logo";
 import { sections } from "./HomeNvbar";
 import { cn } from "@/lib/utils";
@@ -35,27 +35,26 @@ const MobileSidebar = () => {
   }, []);
 
   return (
-    <div className="block md:hidden items-center inset-0  top-0 left-0 sticky z-50 shadow-md">
-      <div className="flex justify-between items-center backdrop-blur-2xl p-4 bg-foreground/5 w-full top-0 ">
-        <Logo />
-        <motion.span
-          initial={{ opacity: 0, x: -15 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <LucidePanelRightOpen className="cursor-pointer hover:bg-foreground/5" />
-        </motion.span>
 
-        {/* blur */}
-        {isOpen && (
+    <div className=" w-full bg-card/50 backdrop-blur-2xl shadow-md">
+      <div className="p-4 flex items-center justify-between">
+
+      <Logo/>
+
+       {/* blur */}
+      {isOpen && (
           <div
             onClick={() => setIsOpen(false)}
-            className=" min-h-screen fixed inset-0 z-10 backdrop-blur-2xl transition-all duration-300 bg-card/65"
+            className="min-h-screen  fixed inset-0 z-10 backdrop-blur-2xl transition-all duration-300 bg-card/50"
           ></div>
         )}
+         
+    <div  onClick={() => setIsOpen(!isOpen)} className=" cursor-pointer border border-white/30   h-10 w-10 inline-flex rounded-md items-center justify-center sm:hidden ">
+      <Menu/>
+    </div>
 
-        <motion.div
+    {/* mobile */}
+<motion.div
           onClick={() => setIsOpen(!isOpen)}
           initial={{ opacity: 0 }}
           animate={{ width: isOpen ? 170 : 0, opacity: 1 }}
@@ -90,10 +89,26 @@ const MobileSidebar = () => {
               </Button>
               <ThemeToggle />
             </motion.div>
+
           )}
-        </motion.div>
+            </motion.div>
+    {/* mobile end */}
+
+    <div className="space-x-4 hidden sm:block">
+       {sections.map((id, idx) => (
+                <Link
+                  key={idx}
+                  href={`#${id}`}
+                className="opacity-65 hover:opacity-100 transition-opacity duration-200"
+                >
+                  {id.charAt(0).toUpperCase() + id.slice(1)}
+                </Link>
+                  ))}
+     <Button> <Link href="/accounts/login">Start Now</Link></Button>
+    </div>
       </div>
     </div>
+
   );
 };
 

@@ -42,6 +42,7 @@ export declare class AuthAdminService {
             id: string;
             name: string;
             email: string;
+            schoolId: string;
             createdAt: Date;
         }[];
     }>;

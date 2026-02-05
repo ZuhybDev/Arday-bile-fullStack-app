@@ -41,8 +41,7 @@ export class SubjectsController {
   @Roles('ADMIN')
   @Get('subject-data/')
   findAllSubjects(@Req() req) {
-    const schoolId = req.user.schoolId;
-    return this.subjectsService.findAllSubjects(schoolId, req.user);
+    return this.subjectsService.findAllSubjects(req.user);
   }
   // get One subject by its id
   @UseGuards(AuthGuard('jwt'), RolesGuard)

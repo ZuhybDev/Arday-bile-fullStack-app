@@ -130,9 +130,9 @@ const AddStudent = () => {
             )}
           </div>
 
-          <DialogFooter className="gap-2 sm:gap-0">
+          <DialogFooter className="gap-2 sm:gap-2">
             <DialogClose asChild>
-              <Button type="button" variant="outline">
+              <Button type="button" variant="destructive">
                 Cancel
               </Button>
             </DialogClose>

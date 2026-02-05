@@ -50,9 +50,9 @@ let SchoolService = class SchoolService {
             new_name: updatedSchool.name,
         };
     }
-    async readSchoolData(user, id) {
+    async readSchoolData(user) {
         const schoolData = await this.prisma.school.findUnique({
-            where: { id },
+            where: { id: user.schoolId },
             select: {
                 id: true,
                 name: true,
@@ -64,7 +64,7 @@ let SchoolService = class SchoolService {
         }
         const totalAdmin = await this.prisma.admin.count();
         const adminData = await this.prisma.admin.findMany({
-            where: { schoolId: id },
+            where: { schoolId: user.schoolId },
             select: {
                 name: true,
                 email: true,
@@ -75,18 +75,44 @@ let SchoolService = class SchoolService {
         if (!totalAdmin) {
             return 0;
         }
-        const totalStudent = await this.prisma.student.count();
+        const totalStudent = await this.prisma.student.count({
+            where: {
+                schoolId: user.schoolId,
+            },
+        });
+        const subjects = await this.prisma.subject.findMany({
+            where: {
+                schoolId: user.schoolId,
+            },
+            select: {
+                id: true,
+            },
+        });
+        const totalSubjects = subjects.length;
+        const subjectIds = subjects.map((s) => s.id);
         if (!totalStudent) {
             return 0;
         }
+        const passedCount = await this.prisma.result.count({
+            where: {
+                subjectId: {
+                    in: subjectIds,
+                },
+                grade: {
+                    gte: 50,
+                },
+            },
+        });
         if (user.schoolId !== schoolData.id) {
-            throw new common_1.ForbiddenException('Access deneid');
+            throw new common_1.ForbiddenException('Access denied');
         }
         return {
             message: 'School data',
             school: schoolData,
             totalAdmins: totalAdmin,
             totalStudents: totalStudent,
+            totalSubjects: totalSubjects,
+            passedCount: passedCount,
             Admin: adminData,
         };
     }

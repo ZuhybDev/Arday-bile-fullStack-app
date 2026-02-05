@@ -35,18 +35,15 @@ let SubjectsService = class SubjectsService {
             subject,
         };
     }
-    async findAllSubjects(schoolId, user) {
-        if (!schoolId) {
+    async findAllSubjects(user) {
+        if (!user.schoolId) {
             throw new common_1.ForbiddenException('Invalid or missing school ID');
         }
         const allsubjects = await this.prisma.subject.findMany({
-            where: { schoolId },
+            where: { schoolId: user.schoolId },
         });
         if (!allsubjects || allsubjects.length == 0) {
             return [];
-        }
-        if (schoolId != user.schoolId) {
-            throw new common_1.ForbiddenException('Access denied');
         }
         return {
             cound: allsubjects.length,
@@ -64,7 +61,7 @@ let SubjectsService = class SubjectsService {
             throw new common_1.ForbiddenException('Access denied');
         }
         return {
-            subject,
+            data: subject,
         };
     }
     async updateSubject(user, id, name, passMark) {

@@ -19,12 +19,14 @@ import { Separator } from "@/components/ui/separator";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { toast } from "sonner"; // Assuming you use a toast library
+import { string } from "zod";
 
-interface AdminData {
+ export interface AdminData {
   id: string;
   name: string;
   email: string;
   password?: string;
+  schoolId: string
   createdAt: string;
 }
 

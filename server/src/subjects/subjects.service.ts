@@ -40,21 +40,17 @@ export class SubjectsService {
     };
   }
   // find all subject
-  async findAllSubjects(schoolId: string, user: JwtPayload) {
+  async findAllSubjects(user: JwtPayload) {
     // prevent nulls
-    if (!schoolId) {
+    if (!user.schoolId) {
       throw new ForbiddenException('Invalid or missing school ID');
     }
     const allsubjects = await this.prisma.subject.findMany({
-      where: { schoolId },
+      where: { schoolId: user.schoolId },
     });
 
     if (!allsubjects || allsubjects.length == 0) {
       return [];
-    }
-
-    if (schoolId != user.schoolId) {
-      throw new ForbiddenException('Access denied');
     }
 
     return {
@@ -76,7 +72,7 @@ export class SubjectsService {
     }
 
     return {
-      subject,
+      data: subject,
     };
   }
 

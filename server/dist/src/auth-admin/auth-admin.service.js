@@ -161,6 +161,7 @@ let AuthAdminService = class AuthAdminService {
                 name: true,
                 email: true,
                 createdAt: true,
+                schoolId: true
             },
         });
         const isAdmin = admin.some((a) => a.id === user.userId);

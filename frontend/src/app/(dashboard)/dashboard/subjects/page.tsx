@@ -21,11 +21,13 @@ const SubjectPage = () => {
         withCredentials: true,
       });
 
-      const { count, allsubjects } = res.data;
+      // Handle both { allsubjects: [] } and a direct [] return
+      const rawData = res.data;
+      const allsubjects = Array.isArray(rawData) ? rawData : rawData?.allsubjects || [];
 
-      if (count === 0) return [];
+      if (allsubjects.length === 0) return [];
 
-      // Format the data right in the query function
+      // Format the data 
       return allsubjects.map((subject: any) => ({
         id: subject.id,
         name: subject.name,
@@ -34,7 +36,7 @@ const SubjectPage = () => {
     },
   });
 
-  // 2. Loading State
+  // 2. Loading State (Original mt-38 layout)
   if (isLoading)
     return (
       <div className="mt-38 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center">
@@ -42,12 +44,12 @@ const SubjectPage = () => {
       </div>
     );
 
-  // 3. Error State
+  // 3. Error State (Original mt-38 layout)
   if (error)
     return (
-      <div className="mt-38 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center">
+      <div className="mt-38 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center px-6">
         <p>Something went wrong, please refresh the page</p>
-        <span className="text-destructive text-sm">
+        <span className="text-destructive text-sm mt-2">
           {(error as any)?.response?.data?.message || error.message}
         </span>
       </div>
@@ -55,8 +57,9 @@ const SubjectPage = () => {
 
   return (
     <div className="p-2">
+      {/* Header Section */}
       <section className="mb-4">
-        <h1 className="text-xl text-foreground">
+        <h1 className="text-xl text-foreground font-semibold">
           Welcome to your Subjects Data
         </h1>
         <p className="antialiased text-sm text-primary dark:text-muted-foreground">
@@ -68,7 +71,7 @@ const SubjectPage = () => {
         </p>
       </section>
 
-      {/* 4. Empty vs Data Display */}
+      {/* 4. Empty vs Data Display (Original mt-34 layout) */}
       {subjects.length === 0 ? (
         <div className="mt-34 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center">
           <p className="text-lg font-medium">No subjects registered yet.</p>

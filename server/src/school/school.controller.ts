@@ -40,9 +40,9 @@ export class SchoolController {
   // read school data
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
-  @Get('school-data/:id')
-  readschoolData(@Req() req, @Param('id') id: string) {
-    return this.schoolservice.readSchoolData(req.user, id);
+  @Get('school-data/')
+  readschoolData(@Req() req) {
+    return this.schoolservice.readSchoolData(req.user);
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)

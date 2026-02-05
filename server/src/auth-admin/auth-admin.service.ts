@@ -211,6 +211,7 @@ export class AuthAdminService {
         name: true,
         email: true,
         createdAt: true,
+        schoolId: true
       },
     });
 

@@ -29,8 +29,7 @@ let SubjectsController = class SubjectsController {
         return this.subjectsService.createSubject(req.user, name, passMark, schoolId);
     }
     findAllSubjects(req) {
-        const schoolId = req.user.schoolId;
-        return this.subjectsService.findAllSubjects(schoolId, req.user);
+        return this.subjectsService.findAllSubjects(req.user);
     }
     findOne(id, req) {
         return this.subjectsService.findOneSubject(id, req.user);

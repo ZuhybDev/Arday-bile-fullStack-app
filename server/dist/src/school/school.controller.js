@@ -29,8 +29,8 @@ let SchoolController = class SchoolController {
     update(id, body, req) {
         return this.schoolservice.updateSchool(req.user, id, body.name);
     }
-    readschoolData(req, id) {
-        return this.schoolservice.readSchoolData(req.user, id);
+    readschoolData(req) {
+        return this.schoolservice.readSchoolData(req.user);
     }
     delete(id, req) {
         return this.schoolservice.deletedSchool(id, req.user);
@@ -58,11 +58,10 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('ADMIN'),
-    (0, common_1.Get)('school-data/:id'),
+    (0, common_1.Get)('school-data/'),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], SchoolController.prototype, "readschoolData", null);
 __decorate([

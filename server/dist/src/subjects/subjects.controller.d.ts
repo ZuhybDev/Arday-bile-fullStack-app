@@ -9,32 +9,32 @@ export declare class SubjectsController {
     }, req: any): Promise<{
         subject: {
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
             passMark: number;
             schoolId: string;
+            createdAt: Date;
+            updatedAt: Date;
         };
     }>;
     findAllSubjects(req: any): Promise<never[] | {
         cound: number;
         allsubjects: {
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
             passMark: number;
             schoolId: string;
+            createdAt: Date;
+            updatedAt: Date;
         }[];
     }>;
     findOne(id: string, req: any): Promise<{
-        subject: {
+        data: {
             id: string;
-            createdAt: Date;
-            updatedAt: Date;
             name: string;
             passMark: number;
             schoolId: string;
+            createdAt: Date;
+            updatedAt: Date;
         };
     }>;
     update(id: string, body: {

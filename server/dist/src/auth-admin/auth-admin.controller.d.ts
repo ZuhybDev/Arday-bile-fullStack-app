@@ -54,6 +54,7 @@ export declare class AuthAdminController {
             id: string;
             name: string;
             email: string;
+            schoolId: string;
             createdAt: Date;
         }[];
     }>;

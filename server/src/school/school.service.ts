@@ -63,9 +63,9 @@ export class SchoolService {
 
   // get all schools only admins and debuging purpose
 
-  async readSchoolData(user: JwtPayload, id: string) {
+  async readSchoolData(user: JwtPayload) {
     const schoolData = await this.prisma.school.findUnique({
-      where: { id },
+      where: { id: user.schoolId },
       select: {
         id: true,
         name: true,
@@ -79,7 +79,7 @@ export class SchoolService {
     const totalAdmin = await this.prisma.admin.count();
 
     const adminData = await this.prisma.admin.findMany({
-      where: { schoolId: id },
+      where: { schoolId: user.schoolId },
       select: {
         name: true,
         email: true,
@@ -92,13 +92,41 @@ export class SchoolService {
       return 0;
     }
 
-    const totalStudent = await this.prisma.student.count();
+    const totalStudent = await this.prisma.student.count({
+      where: {
+        schoolId: user.schoolId,
+      },
+    });
+
+    const subjects = await this.prisma.subject.findMany({
+      where: {
+        schoolId: user.schoolId,
+      },
+      select: {
+        id: true, // Only fetch the IDs to keep the query fast
+      },
+    });
+
+    const totalSubjects = subjects.length;
+    const subjectIds = subjects.map((s) => s.id);
 
     if (!totalStudent) {
       return 0;
     }
+
+    const passedCount = await this.prisma.result.count({
+      where: {
+        subjectId: {
+          in: subjectIds,
+        },
+        grade: {
+          gte: 50, // "Greater Than or Equal" to 50
+        },
+      },
+    });
+
     if (user.schoolId !== schoolData.id) {
-      throw new ForbiddenException('Access deneid');
+      throw new ForbiddenException('Access denied');
     }
 
     return {
@@ -106,6 +134,8 @@ export class SchoolService {
       school: schoolData,
       totalAdmins: totalAdmin,
       totalStudents: totalStudent,
+      totalSubjects: totalSubjects,
+      passedCount: passedCount,
       Admin: adminData,
     };
   }

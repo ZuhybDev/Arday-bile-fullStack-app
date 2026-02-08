@@ -23,7 +23,7 @@ const HomeNavbar = () => {
           }
         });
       },
-      { threshold: 0.6 }
+      { threshold: 0.6 },
     );
 
     sections.forEach((id) => {
@@ -43,7 +43,7 @@ const HomeNavbar = () => {
         </div>
 
         {/* Center nav links - absolute center */}
-        <div className="flex items-center gap-6 p-2 bg-card/50 backdrop-blur-2xl px-4 rounded-full border shadow-md">
+        <div className="flex items-center gap-6 p-2 bg-card/20 backdrop-blur-2xl px-4 rounded-full border shadow-md">
           {sections.map((id) => (
             <motion.a
               key={id}
@@ -52,9 +52,8 @@ const HomeNavbar = () => {
                 "transition-colors hover:text-primary font-san antialiased",
                 active === id.toLowerCase()
                   ? "text-primary"
-                  : " text-foreground"
-              )}
-            >
+                  : " text-foreground",
+              )}>
               {id.charAt(0).toUpperCase() + id.slice(1)}
             </motion.a>
           ))}
@@ -64,8 +63,7 @@ const HomeNavbar = () => {
         <motion.span
           initial={{ opacity: 0, x: 15 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3, ease: easeIn }}
-        >
+          transition={{ duration: 0.3, ease: easeIn }}>
           <Button className="font-san antialiased font-medium">
             <Link href="/accounts/school-register">Start now</Link>
           </Button>

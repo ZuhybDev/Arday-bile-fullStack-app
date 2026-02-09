@@ -4,15 +4,26 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="min-h-screen p-[72px] bg-[radial-gradient(circle_at_bottom,rgba(255,255,255,0.1),transparent_60%)]">
-      <div className="container">
+    <div className="relative min-h-screen p-[72px] bg-background">
+      {/* Radial glow */}
+      <div
+        className="pointer-events-none absolute inset-0
+    bg-[radial-gradient(circle_at_bottom,rgba(255,255,255,0.2),transparent_70%)]"
+      />
+      <div
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-40
+    bg-gradient-to-b from-transparent to-background"
+      />
+
+      {/* Content */}
+      <div className="relative container">
         <div className="flex items-center justify-center flex-col">
           <h1 className="p-1 px-2 bg-sidebar-border/70 rounded-full">
             Empower Your Academic Journey
           </h1>
         </div>
 
-        <p className="italic text-center text-7xl font-semibold tracking-tighter mt-8">
+        <p className="text-center text-7xl font-semibold tracking-tighter mt-8">
           One Task at a Time
         </p>
 
@@ -23,12 +34,32 @@ const Hero = () => {
         </p>
 
         <div className="flex gap-4 justify-center mt-8 cursor-pointer">
-          <Button className="cursor-pointer">
+          <Button>
             <Link href="/accounts/school-register">Start now</Link>
           </Button>
-          <Button className="cursor-pointer">
-            <Link href="/accounts/school-register">Look your academic</Link>
+          <Button>
+            <Link href="/accounts/school-register">View your academics</Link>
           </Button>
+        </div>
+      </div>
+      <div className="absolute bottom-16 left-0 w-full overflow-hidden select-none [mask-image:linear-gradient(to_right,transparent_0,black_128px,black_calc(100%-128px),transparent_100%)]">
+        {/* The container below must be w-max to hold both text blocks side-by-side */}
+        <div className="flex w-max animate-infinite-scroll whitespace-nowrap text-5xl font-bold text-foreground/30">
+          {/* Block 1 */}
+          <div className="flex items-center">
+            <span className="mx-4">
+              🚀 Empower Your Academic Journey • One Task at a Time • Simplify
+              School Management •
+            </span>
+          </div>
+
+          {/* Block 2 (The Twin) - This makes it seamless */}
+          <div className="flex items-center">
+            <span className="mx-4">
+              Empower Your Academic Journey • One Task at a Time • Simplify
+              School Management • 🚀
+            </span>
+          </div>
         </div>
       </div>
     </div>

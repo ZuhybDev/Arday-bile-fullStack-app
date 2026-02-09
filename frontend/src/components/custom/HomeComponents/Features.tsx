@@ -1,6 +1,7 @@
 import { Database, FileText, LogIn, User } from "lucide-react";
 import { features } from "process";
 import React from "react";
+import Feature from "./Feature";
 
 const Features = () => {
   const features = [
@@ -42,14 +43,12 @@ const Features = () => {
 
         <div className=" mt-16 flex flex-col lg:flex-row gap-4">
           {features.map((item, idx) => (
-            <div
-              key={idx}
-              className="space-y-4 border border-foreground/40 px-5 py-10 text-center rounded-md">
-              <div className="inline-flex p-4 bg-foreground/10 rounded-full dark:bg-foreground/20 items-center justify-center">
-                <item.icons />
-              </div>
-              <h1 className=" font-semibold">{item.title}</h1>
-              <p className="text-foreground/60">{item.description}</p>
+            <div key={idx}>
+              <Feature
+                title={item.title}
+                description={item.description}
+                Icons={item.icons}
+              />
             </div>
           ))}
         </div>

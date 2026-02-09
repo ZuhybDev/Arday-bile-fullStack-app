@@ -1,8 +1,19 @@
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
 import appScreen from "../../../assets/images/productShowCase.png";
+import { useScroll, useTransform, motion } from "framer-motion";
 
 const ProductShowCase = () => {
+  const appImage = useRef<HTMLImageElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: appImage,
+    offset: ["start end", "end end"],
+  });
+
+  const rotateY = useTransform(scrollYProgress, [0, 1], [15, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
+
   return (
     <div className="py-[72px] p-10">
       <div className=" container">
@@ -16,11 +27,20 @@ const ProductShowCase = () => {
             organized in one simple, intuitive dashboard.
           </p>
         </div>
-        <Image
-          src={appScreen}
-          alt="product show case image"
-          className="mt-14 shadow-lg rounded-md"
-        />
+
+        <motion.div
+          style={{
+            opacity: opacity,
+            rotateX: rotateY,
+            transformPerspective: "800px",
+          }}>
+          <Image
+            src={appScreen}
+            alt="product show case image"
+            className="mt-14 shadow-lg rounded-md"
+            ref={appImage}
+          />
+        </motion.div>
       </div>
     </div>
   );

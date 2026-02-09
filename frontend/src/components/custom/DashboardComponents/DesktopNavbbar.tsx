@@ -70,7 +70,7 @@ export const features = [
   },
 ];
 
-// search
+// search add if you impl
 // export const search = [
 //   {
 //     icon: Search,
@@ -91,8 +91,7 @@ const DesktopNavbbar = ({
     <motion.div
       animate={{ width: isOpen ? 220 : 60 }}
       transition={{ duration: 0.3, ease: easeInOut }}
-      className="hidden md:block h-screen bg-card text-primary fixed top-0 left-0 z-20 shadow-md"
-    >
+      className="hidden md:block h-screen bg-card text-primary fixed top-0 left-0 z-20 shadow-md">
       {/* heading */}
       <div className="flex items-center justify-between p-2 ">
         <motion.button onClick={toggleOpen}>
@@ -103,8 +102,7 @@ const DesktopNavbbar = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7 }}
-            className=" cursor-pointer hover:rounded-full hover:bg-input/30 text-lg font-heading"
-          >
+            className=" cursor-pointer hover:rounded-full hover:bg-input/30 text-lg font-heading">
             {/* add the search functions student subjects  */}
             {/* {search.map(({ icon: Icon, path }) => (
               <Link href={path} key={path}>
@@ -126,15 +124,13 @@ const DesktopNavbbar = ({
                   isActive
                     ? "dark:bg-border bg-input dark:text-primary text-primary "
                     : "hover:dark:bg-secondary bg-card"
-                }`}
-              >
+                }`}>
                 <Icon size={20} className=" ml-5 shrink-0  min-w-[20px]" />
 
                 <span
                   className={`transition-all duration-200 overflow-hidden  ${
                     isOpen ? "opacity-100 " : "opacity-0"
-                  }`}
-                >
+                  }`}>
                   <span className=" block whitespace-nowrap"> {name}</span>
                 </span>
 
@@ -162,14 +158,12 @@ const DesktopNavbbar = ({
                     isActive
                       ? "dark:bg-border bg-input dark:text-primary text-primary "
                       : "hover:dark:bg-secondary bg-card"
-                  }`}
-                >
+                  }`}>
                   <Icon size={20} className=" ml-5 shrink-0 min-w-[20px]" />
                   <span
                     className={`transition-all duration-200 overflow-hidden  ${
                       isOpen ? "opacity-100 " : "opacity-0"
-                    }`}
-                  >
+                    }`}>
                     <span className=" block whitespace-nowrap"> {name}</span>
 
                     {/* maual tooltip */}

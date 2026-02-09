@@ -2,7 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { easeInOut, motion } from "framer-motion";
-import { Hamburger, HamburgerIcon, LucidePanelRightOpen, Menu } from "lucide-react";
+import {
+  Hamburger,
+  HamburgerIcon,
+  LucidePanelRightOpen,
+  Menu,
+} from "lucide-react";
 import Logo from "./Logo";
 import { sections } from "./HomeNvbar";
 import { cn } from "@/lib/utils";
@@ -23,7 +28,7 @@ const MobileSidebar = () => {
           }
         });
       },
-      { threshold: 0.6 }
+      { threshold: 0.6 },
     );
 
     sections.forEach((id) => {
@@ -35,38 +40,35 @@ const MobileSidebar = () => {
   }, []);
 
   return (
-
-    <div className=" w-full bg-card/50 backdrop-blur-2xl shadow-md">
+    <div className="z-40 w-full bg-card/50 backdrop-blur-2xl shadow-md">
       <div className="p-4 flex items-center justify-between">
+        <Logo />
 
-      <Logo/>
-
-       {/* blur */}
-      {isOpen && (
+        {/* blur */}
+        {isOpen && (
           <div
             onClick={() => setIsOpen(false)}
-            className="min-h-screen  fixed inset-0 z-10 backdrop-blur-2xl transition-all duration-300 bg-card/50"
-          ></div>
+            className="min-h-screen  fixed inset-0 z-40 backdrop-blur-2xl transition-all duration-300 bg-card/50"></div>
         )}
-         
-    <div  onClick={() => setIsOpen(!isOpen)} className=" cursor-pointer border border-white/30   h-10 w-10 inline-flex rounded-md items-center justify-center sm:hidden ">
-      <Menu/>
-    </div>
 
-    {/* mobile */}
-<motion.div
+        <div
+          onClick={() => setIsOpen(!isOpen)}
+          className=" cursor-pointer border border-white/30   h-10 w-10 inline-flex rounded-md items-center justify-center sm:hidden ">
+          <Menu />
+        </div>
+
+        {/* mobile */}
+        <motion.div
           onClick={() => setIsOpen(!isOpen)}
           initial={{ opacity: 0 }}
           animate={{ width: isOpen ? 170 : 0, opacity: 1 }}
-          className=" shadow-md md:hidden block h-screen bg-card text-primary fixed top-0 right-0 z-40 overflow-hidden"
-        >
+          className=" shadow-md md:hidden block h-screen bg-card text-primary fixed top-0 right-0 z-40 overflow-hidden">
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.2, ease: easeInOut }}
-              className=" flex flex-col gap-2  mt-6 m-4 items-center"
-            >
+              className=" flex flex-col gap-2  mt-6 m-4 items-center">
               {sections.map((id, idx) => (
                 <motion.a
                   key={idx}
@@ -78,9 +80,8 @@ const MobileSidebar = () => {
                     "transition-colors hover:text-primary font-san antialiased",
                     isActive === id.toLocaleLowerCase()
                       ? "dark:text-muted-foreground text-muted-foreground"
-                      : "text-foreground"
-                  )}
-                >
+                      : "text-foreground",
+                  )}>
                   {id.charAt(0).toUpperCase() + id.slice(1)}
                 </motion.a>
               ))}
@@ -89,26 +90,26 @@ const MobileSidebar = () => {
               </Button>
               <ThemeToggle />
             </motion.div>
-
           )}
-            </motion.div>
-    {/* mobile end */}
+        </motion.div>
+        {/* mobile end */}
 
-    <div className="space-x-4 hidden sm:block">
-       {sections.map((id, idx) => (
-                <Link
-                  key={idx}
-                  href={`#${id}`}
-                className="opacity-65 hover:opacity-100 transition-opacity duration-200"
-                >
-                  {id.charAt(0).toUpperCase() + id.slice(1)}
-                </Link>
-                  ))}
-     <Button> <Link href="/accounts/login">Start Now</Link></Button>
-    </div>
+        <div className="space-x-4 hidden sm:block">
+          {sections.map((id, idx) => (
+            <Link
+              key={idx}
+              href={`#${id}`}
+              className="opacity-65 hover:opacity-100 transition-opacity duration-200">
+              {id.charAt(0).toUpperCase() + id.slice(1)}
+            </Link>
+          ))}
+          <Button>
+            {" "}
+            <Link href="/accounts/login">Start Now</Link>
+          </Button>
+        </div>
       </div>
     </div>
-
   );
 };
 

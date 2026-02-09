@@ -35,14 +35,13 @@ const HomeNavbar = () => {
   }, []);
 
   return (
-    <div className="hidden md:block sticky top-0 z-40">
+    <div className="hidden md:block sticky top-0 z-40 ">
       <motion.div className=" p-4 flex items-center justify-between ">
         {/* Logo */}
         <div className="flex items-center ">
           <Logo />
         </div>
 
-        {/* Center nav links - absolute center */}
         <div className="flex items-center gap-6 p-2 bg-card/20 backdrop-blur-2xl px-4 rounded-full border shadow-md">
           {sections.map((id) => (
             <motion.a

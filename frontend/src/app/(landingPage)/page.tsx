@@ -1,4 +1,5 @@
 "use client";
+import AboutUs from "@/components/custom/HomeComponents/AboutUs";
 import FAQs from "@/components/custom/HomeComponents/FAQs";
 import Features from "@/components/custom/HomeComponents/Features";
 import Hero from "@/components/custom/HomeComponents/Hero";
@@ -13,6 +14,7 @@ const Home = () => {
       <Hero />
       <Features />
       <ProductShowCase />
+      <AboutUs />
       <FAQs />
     </div>
   );

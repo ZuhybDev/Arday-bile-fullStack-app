@@ -25,7 +25,7 @@ const Home = () => {
       });
 
       const d = res.data;
-     
+
       return {
         id: d.school.id,
         name: d.school.name,
@@ -51,13 +51,17 @@ const Home = () => {
   if (error)
     return (
       <div className="mt-38 min-h-[200px] flex flex-col items-center justify-center text-muted-foreground text-center px-4">
-        <p className="text-destructive font-medium">Failed to load school data</p>
-        <p className="text-sm">{(error as any)?.message || "Please check your connection"}</p>
+        <p className="text-destructive font-medium">
+          Failed to load school data
+        </p>
+        <p className="text-sm">
+          {(error as any)?.message || "Please check your connection"}
+        </p>
       </div>
     );
 
   return (
-    <div className="max-w-7xl mx-auto p-6 lg:p-10 space-y-8">
+    <div className="container mx-auto p-6 lg:p-10 space-y-8 mt-12">
       {/* Header Section */}
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
@@ -102,7 +106,9 @@ const Home = () => {
             <h2 className="text-5xl font-bold tracking-tight">
               {data?.totalSubjects ?? 0}
             </h2>
-            <span className="text-lg font-semibold text-muted-foreground">Units</span>
+            <span className="text-lg font-semibold text-muted-foreground">
+              Units
+            </span>
           </div>
           <p className="text-xs text-muted-foreground mt-6 flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-purple-500" />

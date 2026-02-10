@@ -2,12 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { easeInOut, motion } from "framer-motion";
-import {
-  Hamburger,
-  HamburgerIcon,
-  LucidePanelRightOpen,
-  Menu,
-} from "lucide-react";
+import { Menu } from "lucide-react";
 import Logo from "./Logo";
 import { sections } from "./HomeNvbar";
 import { cn } from "@/lib/utils";
@@ -40,7 +35,7 @@ const MobileSidebar = () => {
   }, []);
 
   return (
-    <div className="z-40 w-full bg-card/50 backdrop-blur-2xl shadow-md">
+    <div className="z-40 w-full bg-card/50 backdrop-blur-2xl shadow-md sticky inset-0">
       <div className="p-4 flex items-center justify-between">
         <Logo />
 

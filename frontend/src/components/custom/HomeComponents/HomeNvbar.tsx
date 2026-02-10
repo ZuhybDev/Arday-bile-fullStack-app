@@ -9,7 +9,7 @@ import { ThemeToggle } from "../theme/Theme-toggle";
 import { cn } from "@/lib/utils";
 
 // sections
-export const sections = ["home", "features", "analytics", "about"];
+export const sections = ["home", "features", "product", "about", "FAQs"];
 
 const HomeNavbar = () => {
   const [active, setActive] = useState<string>("home");

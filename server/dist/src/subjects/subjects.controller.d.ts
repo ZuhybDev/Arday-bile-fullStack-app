@@ -16,7 +16,7 @@ export declare class SubjectsController {
             passMark: number;
         };
     }>;
-    findAllSubjects(req: any): Promise<never[] | {
+    findAllSubjects(req: any): Promise<any[] | {
         cound: number;
         allsubjects: {
             id: string;

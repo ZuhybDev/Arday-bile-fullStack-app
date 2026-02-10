@@ -25,10 +25,10 @@ const Features = () => {
     },
   ];
   return (
-    <div className="py-[72px] px-6">
+    <div className="py-[72px] px-6 " id="features">
       <div className="container">
         <div className="max-w-xl mx-auto">
-          <h1 className=" text-center font-semibold tracking-tighter text-5xl sm:text-6xl">
+          <h1 className=" text-center font-semibold tracking-tighter text-4xl sm:text-6xl">
             Everything you need
           </h1>
           <p className="text-center text-foreground/60 text-xl mt-5">

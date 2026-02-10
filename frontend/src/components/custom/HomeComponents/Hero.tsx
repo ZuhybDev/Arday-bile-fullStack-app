@@ -17,13 +17,13 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative container">
-        <div className="flex items-center justify-center flex-col">
-          <h1 className="p-1 px-2 bg-sidebar-border/70 rounded-full">
+        <div className="flex justify-center w-full">
+          <h1 className="bg-sidebar-border/30 text-foreground/80 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide">
             Empower Your Academic Journey
           </h1>
         </div>
 
-        <p className="text-center text-7xl font-semibold tracking-tighter mt-8">
+        <p className="text-center sm:text-7xl text-6xl font-semibold tracking-tighter mt-8">
           One Task at a Time
         </p>
 
@@ -38,14 +38,15 @@ const Hero = () => {
             <Link href="/accounts/school-register">Start now</Link>
           </Button>
           <Button>
-            <Link href="/accounts/school-register">View your academics</Link>
+            <Link href="/accounts/school-register">I'm a student</Link>
           </Button>
         </div>
       </div>
-      <div className="absolute bottom-16 left-0 w-full overflow-hidden select-none [mask-image:linear-gradient(to_right,transparent_0,black_128px,black_calc(100%-128px),transparent_100%)]">
-        {/* The container below must be w-max to hold both text blocks side-by-side */}
-        <div className="flex w-max animate-infinite-scroll whitespace-nowrap text-5xl font-bold text-foreground/30">
+
+      <div className="absolute sm:bottom-16 left-0 w-full overflow-hidden select-none [mask-image:linear-gradient(to_right,transparent_0,black_128px,black_calc(100%-128px),transparent_100%)]">
+        <div className=" mt-12 flex w-max animate-infinite-scroll whitespace-nowrap text-4xl sm:text-5xl font-bold text-foreground/30">
           {/* Block 1 */}
+
           <div className="flex items-center">
             <span className="mx-4">
               🚀 Empower Your Academic Journey • One Task at a Time • Simplify

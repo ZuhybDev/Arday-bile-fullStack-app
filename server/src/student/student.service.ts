@@ -140,7 +140,7 @@ export class StudentService {
       const token = this.jwtService.sign(payload);
 
       res.cookie('token', token, {
-        httpOnly: true, // ⚡️ Can't be accessed by JS (protects from XSS)
+        httpOnly: true,
         secure: process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
         sameSite: 'lax', // prevents CSRF, but allows top-level navigation
         maxAge: 8 * 60 * 1000, // 1 day expiry
@@ -179,14 +179,14 @@ export class StudentService {
     }
 
     /**
-     * chech if @Admin schoolId in the jwt are same to the student schoolId if doesnt throw an Error
+     * check if @Admin schoolId in the jwt are same to the student schoolId if doesn't throw an Error
      */
 
     if (student.schoolId != user.schoolId) {
       throw new ForbiddenException('Access denied');
     }
 
-    //handle it sepratle its challenge when  it comes to beginner
+    //handle it separately its challenge when  it comes to beginner
 
     const updatingData: any = {};
 

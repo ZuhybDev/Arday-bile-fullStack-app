@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { MinusIcon, Plus } from "lucide-react";
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const faqs = [
   {
@@ -46,22 +47,38 @@ const AccordionItem = ({ que, ans }: { que: string; ans: string }) => {
         <span className=" flex-1  text-lg font-semibold">{que}</span>
         {isOpen ? <MinusIcon /> : <Plus />}
       </div>
-      <div
-        className={clsx("mt-4", {
-          hidden: !isOpen,
-          "": isOpen == true,
-        })}>
-        {ans}
-      </div>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{
+              opacity: 0,
+              height: 0,
+              marginTop: 0,
+            }}
+            animate={{
+              opacity: 1,
+              height: "auto",
+              marginTop: "16px",
+            }}
+            exit={{
+              opacity: 0,
+              height: 0,
+              marginTop: 0,
+            }}>
+            {ans}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
 const FAQs = () => {
   return (
-    <div className=" p-[72px] px-6">
-      <div className="container">
-        <h1 className=" text-center text-5xl sm:text-6xl font-semibold ">
+    <div className=" p-[72px] px-6" id="FAQs">
+      <div className=" container">
+        <h1 className=" text-center text-4xl sm:text-6xl font-semibold ">
           Frequently asked questions
         </h1>
         <div className="mt-12 max-w-[648px] mx-auto">

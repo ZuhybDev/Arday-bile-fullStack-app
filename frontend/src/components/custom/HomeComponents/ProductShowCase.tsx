@@ -15,9 +15,9 @@ const ProductShowCase = () => {
   const opacity = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
 
   return (
-    <div className="py-[72px] p-10">
+    <div className="py-[72px] p-10" id="product">
       <div className=" container">
-        <h2 className=" text-center font-semibold text-5xl sm:text-6xl tracking-tight">
+        <h2 className=" text-center font-semibold text-4xl mb-4 sm:text-6xl tracking-tight">
           Intuitive interface
         </h2>
 

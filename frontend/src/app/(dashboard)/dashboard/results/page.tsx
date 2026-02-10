@@ -39,6 +39,7 @@ const CreateResult = () => {
       return res.data;
     },
     enabled: debouncedSearch.length > 1,
+    staleTime: 10 * 60 * 1000,
   });
 
   // 3. Fetch Subjects
@@ -49,6 +50,7 @@ const CreateResult = () => {
       const { allsubjects } = res.data;
       return allsubjects.map((s: any) => ({ id: s.id, name: s.name }));
     },
+    staleTime: Infinity,
   });
 
   // 4. Create Result Mutation
@@ -63,8 +65,6 @@ const CreateResult = () => {
     onSuccess: () => {
       toast.success("Result created successfully");
       setGrade("");
-      setStudentId("");
-      setSubjectId("");
     },
     onError: (error: any) => {
       const errmsg = error.response?.data?.message || "Something went wrong";
@@ -153,8 +153,7 @@ const CreateResult = () => {
                 onClick={handleSubmit}
                 disabled={
                   mutation.isPending || !studentId || !subjectId || !grade
-                }
-              >
+                }>
                 {mutation.isPending ? (
                   <Loader2Icon className="animate-spin" />
                 ) : (

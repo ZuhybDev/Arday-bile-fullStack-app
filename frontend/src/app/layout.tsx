@@ -5,6 +5,7 @@ import "./globals.css";
 //fonts
 import { Montserrat, Bebas_Neue, DM_Sans } from "next/font/google";
 import { Toaster } from "sonner";
+import Head from "next/head";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -26,6 +27,11 @@ const BebasNeue = Bebas_Neue({
 export const metadata = {
   title: "Arday Bile ",
   description: "Bult by Zuhyb Dev",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default async function RootLayout({
@@ -38,6 +44,13 @@ export default async function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={`${(dmSans.variable, "antialiased")} ${montserrat.variable} ${BebasNeue.variable}`}>
+      <Head>
+        <title>Student Portal</title>
+        {/* Favicon links */}
+        <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
+      </Head>
       <body className="font-san scroll-smooth">
         <ThemeProvider
           attribute="class"

@@ -39,11 +39,16 @@ export const subjectSchema = z.object({
       (val) => !isNaN(Number(val)) && Number(val) >= 1 && Number(val) <= 100,
       {
         message: "Full marks must be a number between 1 and 100",
-      }
+      },
     ),
 });
 
 export const updateSubjectSchema = z.object({
   name: emptyOrMin(2),
   passMark: emptyOrMin(1),
+});
+
+export const StudentLoginSchema = z.object({
+  code: emptyOrMin(4),
+  password: emptyOrMin(3),
 });

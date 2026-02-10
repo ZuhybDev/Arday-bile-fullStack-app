@@ -58,8 +58,7 @@ const school = () => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: easeInOut }}
-      className="flex flex-grow items-center justify-center"
-    >
+      className="flex flex-grow items-center justify-center">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
         <Card className="w-full flex flex-col gap-6 p-10">
           <span className="flex flex-col items-center justify-center">
@@ -78,8 +77,7 @@ const school = () => {
           <Button
             disabled={loading}
             type="submit"
-            className="w-full flex items-center justify-center"
-          >
+            className="w-full flex items-center justify-center">
             {loading ? <Loader2Icon className="animate-spin" /> : "Register"}
           </Button>
 

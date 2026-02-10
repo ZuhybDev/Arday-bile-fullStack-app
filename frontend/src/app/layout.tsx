@@ -37,16 +37,15 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${dmSans.variable , "antialiased"} ${montserrat.variable} ${BebasNeue.variable}`}
-    >
+      className={`${(dmSans.variable, "antialiased")} ${montserrat.variable} ${BebasNeue.variable}`}>
       <body className="font-san scroll-smooth">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
-        >
+          disableTransitionOnChange>
           {children}
+
           <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>

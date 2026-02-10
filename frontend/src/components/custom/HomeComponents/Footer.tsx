@@ -19,12 +19,12 @@ const Footer = () => {
           </div>
 
           <ul className=" flex justify-center items-center gap-2.5">
-            <li>
+            <Link href="https://www.instagram.com/its_me_zuhaibka?igsh=MW0wNDQ0OWZheHVtMw==">
               <InstagramIcon />
-            </li>
-            <li>
+            </Link>
+            <Link href="https://github.com/ZuhybDev">
               <Github />
-            </li>
+            </Link>
             <li>
               <ThemeToggle />
             </li>

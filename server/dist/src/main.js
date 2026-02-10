@@ -13,7 +13,7 @@ async function bootstrap() {
     app.use(cookieParser());
     const configService = app.get(config_1.ConfigService);
     app.enableCors({
-        origin: 'http://localhost:3000',
+        origin: configService.get('NEXTJS_PUBLIC_API'),
         credentials: true,
     });
     const config = new swagger_1.DocumentBuilder()

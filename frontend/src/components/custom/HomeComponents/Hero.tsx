@@ -38,7 +38,7 @@ const Hero = () => {
             <Link href="/accounts/school-register">Start now</Link>
           </Button>
           <Button>
-            <Link href="/accounts/school-register">I'm a student</Link>
+            <Link href="/accounts/student">I'm a student</Link>
           </Button>
         </div>
       </div>

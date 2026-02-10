@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import * as compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { ConfigService } from '@nestjs/config';
+
 import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
@@ -15,7 +16,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: configService.get<string>('NEXTJS_PUBLIC_API')!,
     credentials: true,
   });
 

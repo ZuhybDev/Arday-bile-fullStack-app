@@ -1,7 +1,8 @@
 # Arday Bile FullStack App
 
-![Arday Bile Banner](/frontend//src//assets//images//desktopViewImage.png")
-
+<p align="center">
+  <img src="/frontend//src//assets//images//desktopViewImage.png" width="600" alt="Dashboard Screenshot" />
+</p>
 **Arday Bile** is a modern, full-stack web application designed for schools to efficiently manage student information, examination results, and grading workflows. Built with a robust Next.js frontend and a scalable Node.js/TypeScript backend, Arday Bile delivers a seamless and interactive user experience for administrators, teachers, and students.
 
 ---

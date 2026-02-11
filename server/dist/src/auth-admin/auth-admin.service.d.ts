@@ -26,13 +26,13 @@ export declare class AuthAdminService {
     }>;
     findAllAdmins(): Promise<{
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
-        name: string;
-        schoolId: string;
+        email: string;
         password: string;
         role: import("@prisma/client").$Enums.Role;
-        email: string;
+        schoolId: string;
     }[]>;
     removeAdmin(user: JwtPayload, id: string): Promise<{
         message: string;
@@ -40,10 +40,10 @@ export declare class AuthAdminService {
     findOneAdmin(user: JwtPayload): Promise<{
         admin: {
             id: string;
-            createdAt: Date;
             name: string;
-            schoolId: string;
+            createdAt: Date;
             email: string;
+            schoolId: string;
         }[];
     }>;
 }

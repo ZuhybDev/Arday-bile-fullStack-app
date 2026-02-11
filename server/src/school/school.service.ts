@@ -76,7 +76,9 @@ export class SchoolService {
     if (!schoolData) {
       throw new NotFoundException('School does not Exist. Try again');
     }
-    const totalAdmin = await this.prisma.admin.count();
+    const totalAdmin = await this.prisma.admin.count({
+      where: { schoolId: user.schoolId },
+    });
 
     const adminData = await this.prisma.admin.findMany({
       where: { schoolId: user.schoolId },
@@ -87,10 +89,6 @@ export class SchoolService {
         createdAt: true,
       },
     });
-
-    if (!totalAdmin) {
-      return 0;
-    }
 
     const totalStudent = await this.prisma.student.count({
       where: {
@@ -103,16 +101,12 @@ export class SchoolService {
         schoolId: user.schoolId,
       },
       select: {
-        id: true, // Only fetch the IDs to keep the query fast
+        id: true,
       },
     });
 
     const totalSubjects = subjects.length;
     const subjectIds = subjects.map((s) => s.id);
-
-    if (!totalStudent) {
-      return 0;
-    }
 
     const passedCount = await this.prisma.result.count({
       where: {
@@ -132,10 +126,10 @@ export class SchoolService {
     return {
       message: 'School data',
       school: schoolData,
-      totalAdmins: totalAdmin,
-      totalStudents: totalStudent,
-      totalSubjects: totalSubjects,
-      passedCount: passedCount,
+      totalAdmins: totalAdmin || 0,
+      totalStudents: totalStudent || 0,
+      totalSubjects: totalSubjects || 0,
+      passedCount: passedCount || 0,
       Admin: adminData,
     };
   }

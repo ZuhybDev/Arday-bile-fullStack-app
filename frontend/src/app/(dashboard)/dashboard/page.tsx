@@ -123,11 +123,11 @@ const Home = () => {
           </p>
           <div className="mt-3">
             <h2 className="text-5xl font-bold tracking-tight text-emerald-600">
-              {data?.passRate}
+              {data?.passRate || 0.0}
             </h2>
           </div>
           <p className="text-xs text-muted-foreground mt-6">
-            Based on {data?.passedCount} passing students
+            Based on {data?.passedCount || 0.0} passing students
           </p>
         </div>
 

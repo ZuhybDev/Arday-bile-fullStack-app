@@ -40,8 +40,6 @@ const school = () => {
 
       const { message, schoolId } = res.data;
 
-      console.log(res.data);
-
       router.push(`/accounts/signup?schoolId=${schoolId}`);
 
       toast.success(message);

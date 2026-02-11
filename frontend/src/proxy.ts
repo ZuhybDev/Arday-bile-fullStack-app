@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
 
   if (!token) {
@@ -18,10 +18,9 @@ export function middleware(request: NextRequest) {
       schoolId?: string | null;
     };
 
-    // 🛑 Block if schoolId is missing
     if (!decoded?.schoolId) {
       return NextResponse.redirect(
-        new URL("/accounts/school-register/", request.url)
+        new URL("/accounts/school-register/", request.url),
       );
     }
 

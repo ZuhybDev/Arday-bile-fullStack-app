@@ -61,9 +61,6 @@ const login = () => {
       //and push the user into the dashboard
       router.push("/dashboard");
     } catch (error: any) {
-      console.log({
-        ...data,
-      });
       const message = error.response.data.message;
       toast.error(message || "Something went wrong please try again.");
     } finally {
@@ -76,8 +73,7 @@ const login = () => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: easeInOut }}
-      className=" flex flex-grow items-center justify-center"
-    >
+      className=" flex flex-grow items-center justify-center">
       <form onSubmit={handleSubmit(onSubmit)} className=" w-full max-w-md ">
         <Card className=" w-full flex flex-col gap-6 p-10">
           {/* name */}
@@ -116,8 +112,7 @@ const login = () => {
 
               <span
                 className=" absolute right-4 top-6.5 cursor-pointer"
-                onClick={() => setShowPassword((prev) => !prev)}
-              >
+                onClick={() => setShowPassword((prev) => !prev)}>
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </span>
             </section>
@@ -125,8 +120,7 @@ const login = () => {
             <Button
               className=" flex items-center tracking-wide"
               type="submit"
-              disabled={loading}
-            >
+              disabled={loading}>
               {loading ? <Loader2Icon className=" animate-spin" /> : "Login"}
             </Button>
 
@@ -134,8 +128,7 @@ const login = () => {
             <div className="flex flex-col gap-2 items-center justify-center text-sm text-secondary-foreground dark:text-primary">
               <Link
                 href="/accounts/school-register"
-                className="hover:underline"
-              >
+                className="hover:underline">
                 I didn't register a school?
               </Link>
             </div>

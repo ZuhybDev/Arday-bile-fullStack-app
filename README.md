@@ -29,11 +29,8 @@
 
 ---
 
-## 📸 Screenshots
+## 📸 Screenshots  mobile view
 
-<p align="center">
-  <img src="/frontend//src//assets//images//desktopViewImage.png" width="600" alt="Dashboard Screenshot" />
-</p>
 <p align="center">
   <img src="/frontend//src//assets//images//mobileVewImage.png" width="300" alt="Mobile View" />
 </p>

@@ -6,6 +6,7 @@ import "./globals.css";
 import { Montserrat, Bebas_Neue, DM_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import Head from "next/head";
+import { connection } from "next/server";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
+  await connection();
   return (
     <html
       lang="en"

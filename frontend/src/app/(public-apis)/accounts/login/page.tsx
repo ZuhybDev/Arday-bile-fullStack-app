@@ -62,6 +62,7 @@ const login = () => {
       router.push("/dashboard");
     } catch (error: any) {
       const message = error.response.data.message;
+      console.log(message);
       toast.error(message || "Something went wrong please try again.");
     } finally {
       setLoading(false);

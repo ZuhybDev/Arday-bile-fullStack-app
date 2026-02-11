@@ -81,10 +81,10 @@ export class AuthAdminService {
     const token = this.jwtService.sign(payload);
 
     res.cookie('token', token, {
-      httpOnly: true, // ⚡️ Can't be accessed by JS (protects from XSS)
-      secure: process.env.NODE_ENV === 'production', // process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      maxAge: 1000 * 60 * 60 * 24, // 1 day expiry
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 1000 * 60 * 60 * 24,
       path: '/',
     });
 
@@ -120,13 +120,12 @@ export class AuthAdminService {
     // remove here
 
     const token = await this.jwtService.signAsync(payload);
-
     res.cookie('token', token, {
-      httpOnly: true, // Can't be accessed by JS (protects from XSS)
-      secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
-      sameSite: 'strict',
-      maxAge: 1000 * 60 * 60 * 24, // 1 day expiry
-      path: '/', // cookie available on all routes
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 1000 * 60 * 60 * 24,
+      path: '/',
     });
 
     return {

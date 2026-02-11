@@ -1,8 +1,4 @@
-<h1 align="center">
-
 # Arday Bile FullStack App
-</h1>
-
 
 <p align="center">
   <img src="/frontend//src//assets//images//desktopViewImage.png" width="600" alt="Dashboard Screenshot" />

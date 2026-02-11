@@ -27,7 +27,7 @@ export function proxy(request: NextRequest) {
     // ✅ Allow access
     return NextResponse.next();
   } catch (err) {
-    // console.error("Failed to decode JWT:", err);
+    console.error("Failed to decode JWT:", err);
     return NextResponse.redirect(new URL("/accounts/login", request.url));
   }
 }

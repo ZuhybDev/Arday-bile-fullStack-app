@@ -16,22 +16,22 @@ export declare class SchoolController {
         message: string;
         new_name: string;
     }>;
-    readschoolData(req: any): Promise<0 | {
+    readschoolData(req: any): Promise<{
         message: string;
         school: {
             id: string;
-            createdAt: Date;
             name: string;
+            createdAt: Date;
         };
         totalAdmins: number;
         totalStudents: number;
         totalSubjects: number;
         passedCount: number;
         Admin: {
-            createdAt: Date;
             name: string;
-            role: import("@prisma/client").$Enums.Role;
+            createdAt: Date;
             email: string;
+            role: import("@prisma/client").$Enums.Role;
         }[];
     }>;
     delete(id: string, req: any): Promise<{

@@ -82,7 +82,7 @@ export class AuthAdminService {
 
     res.cookie('token', token, {
       httpOnly: true, // ⚡️ Can't be accessed by JS (protects from XSS)
-      secure: false, // process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
+      secure: process.env.NODE_ENV === 'production', // process.env.NODE_ENV === 'production', // ⚡️ HTTPS only in prod
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 1000 * 60 * 60 * 24, // 1 day expiry
       path: '/',

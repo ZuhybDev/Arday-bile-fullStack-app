@@ -1,6 +1,6 @@
 # Arday Bile FullStack App
 
-![Arday Bile Banner](https://raw.githubusercontent.com/ZuhybDev/Arday-bile-fullStack-app/main/assets/banner.png)
+![Arday Bile Banner](/frontend//src//assets//images//desktopViewImage.png")
 
 **Arday Bile** is a modern, full-stack web application designed for schools to efficiently manage student information, examination results, and grading workflows. Built with a robust Next.js frontend and a scalable Node.js/TypeScript backend, Arday Bile delivers a seamless and interactive user experience for administrators, teachers, and students.
 
@@ -11,7 +11,7 @@
 - **Student Management**: Register, update, and manage student profiles.
 - **Result Management**: Create, update, and delete examination results for students.
 - **Smart Grading**: Automatic calculation of grades and average marks, including letter grade status.
-- **Role-Based Access**: Secure authentication and authorization for different user roles (admin, teacher, student).
+- **Role-Based Access**: Secure authentication and authorization for different user roles (admin, student).
 - **Modern UI/UX**: Responsive, mobile-friendly dashboards with animated navigation and theme toggling.
 - **School Management**: Multi-school support with isolated data per institution.
 - **Secure Login**: JWT-based authentication with short-lived tokens for enhanced security.
@@ -31,10 +31,10 @@
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ZuhybDev/Arday-bile-fullStack-app/main/assets/dashboard.png" width="600" alt="Dashboard Screenshot" />
+  <img src="/frontend//src//assets//images//desktopViewImage.png" width="600" alt="Dashboard Screenshot" />
 </p>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ZuhybDev/Arday-bile-fullStack-app/main/assets/mobile.png" width="300" alt="Mobile View" />
+  <img src="/frontend//src//assets//images//mobileVewImage.png" width="300" alt="Mobile View" />
 </p>
 
 ---
@@ -53,27 +53,43 @@ cd Arday-bile-fullStack-app
 ```bash
 # For backend
 cd server
-npm install
+pnpm install
 
 # For frontend
-cd ../frontend
-npm install
+cd frontend
+pnpm install
 ```
 
 ### 3. Configure environment
 
 Set up `.env` files in both `server` and `frontend` directories with your database and API keys.
 
+```bash
+#frontend --
+NEXT_PUBLIC_NESTJS_API='http://localhost:8000' #nestjs development url
+#server --
+
+JWT_SECRET_KEY="YOUR-SECRET"
+PORT=8000 #development port
+DATABASE_URL='YOUR-SQL-URL'
+JWT_EXPIRY_IN='1hr' # 1d,
+NEXTJS_PUBLIC_API="http://localhost:3000" #nextjs development url
+```
+
 ### 4. Run the app
 
 ```bash
-# Start backend
-cd server
-npm run dev
-
 # Start frontend
 cd ../frontend
-npm run dev
+pnpm run dev
+
+
+# Start backend
+cd server
+pnpm run start:dev
+
+
+#prisma
 ```
 
 ---
@@ -83,7 +99,7 @@ npm run dev
 - **Dashboard**: Manage students, subjects, and results from a clean, animated interface.
 - **Authentication**: Secure login/signup for admins and students.
 - **Results**: Add, update, and view exam results with automatic grade calculation.
-- **Responsive Sidebar**: Smooth navigation optimized for both desktop and mobile screens.
+- **Responsive design**: Smooth navigation optimized for both desktop and mobile screens.
 
 ---
 

@@ -61,8 +61,8 @@ let AuthAdminService = class AuthAdminService {
         const token = this.jwtService.sign(payload);
         res.cookie('token', token, {
             httpOnly: true,
-            secure: false,
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            secure: true,
+            sameSite: 'none',
             maxAge: 1000 * 60 * 60 * 24,
             path: '/',
         });
@@ -94,8 +94,8 @@ let AuthAdminService = class AuthAdminService {
         const token = await this.jwtService.signAsync(payload);
         res.cookie('token', token, {
             httpOnly: true,
-            secure: false,
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            secure: true,
+            sameSite: 'none',
             maxAge: 1000 * 60 * 60 * 24,
             path: '/',
         });
@@ -161,7 +161,7 @@ let AuthAdminService = class AuthAdminService {
                 name: true,
                 email: true,
                 createdAt: true,
-                schoolId: true
+                schoolId: true,
             },
         });
         const isAdmin = admin.some((a) => a.id === user.userId);

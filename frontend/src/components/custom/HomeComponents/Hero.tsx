@@ -44,7 +44,7 @@ const Hero = () => {
       </div>
 
       <div className="absolute sm:bottom-16 left-0 w-full overflow-hidden select-none [mask-image:linear-gradient(to_right,transparent_0,black_128px,black_calc(100%-128px),transparent_100%)]">
-        <div className=" mt-12 flex w-max animate-infinite-scroll whitespace-nowrap text-4xl sm:text-5xl font-bold text-foreground/30">
+        <div className="flex w-max animate-infinite-scroll whitespace-nowrap text-4xl sm:text-5xl font-bold text-foreground/30 mt-12 sm:mt-0">
           {/* Block 1 */}
 
           <div className="flex items-center">

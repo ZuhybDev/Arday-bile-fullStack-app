@@ -80,6 +80,7 @@ const MobileSidebar = () => {
                   {id.charAt(0).toUpperCase() + id.slice(1)}
                 </motion.a>
               ))}
+              <Link href="/accounts/login">Login</Link>
               <Button>
                 <Link href="/accounts/login">Start Now</Link>
               </Button>
@@ -98,8 +99,8 @@ const MobileSidebar = () => {
               {id.charAt(0).toUpperCase() + id.slice(1)}
             </Link>
           ))}
+          <Link href="/accounts/login">Login</Link>
           <Button>
-            {" "}
             <Link href="/accounts/login">Start Now</Link>
           </Button>
         </div>

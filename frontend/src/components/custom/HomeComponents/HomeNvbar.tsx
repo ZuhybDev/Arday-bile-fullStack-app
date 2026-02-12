@@ -62,10 +62,13 @@ const HomeNavbar = () => {
         <motion.span
           initial={{ opacity: 0, x: 15 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3, ease: easeIn }}>
+          transition={{ duration: 0.3, ease: easeIn }}
+          className=" space-y-2">
           <Button className="font-san antialiased font-medium">
             <Link href="/accounts/school-register">Start now</Link>
           </Button>
+
+          <Link href="/accounts/login">Login</Link>
         </motion.span>
       </motion.div>
     </div>
